@@ -1,7 +1,7 @@
 {
-  "name": "aurox-app-ui-tester",
-  "version": "0.2.1",
-  "description": "Repository for isolated testing of UI modules.",
+  "name": "website-thingy",
+  "version": "0.0.1",
+  "description": "website-thingy",
   "scripts": {
     "build-styl": "stylus source/index/index.styl -o compiled/css/",
     "watch-styl": "stylus source/index/index.styl -o compiled/css/ -w",
@@ -31,19 +31,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JhonnyJason/aurox-app-main.git"
+    "url": "git+https://github.com/JhonnyJason/repo.git"
   },
   "author": "Lenard Frommelt",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/JhonnyJason/aurox-app-main/issues"
+    "url": "https://github.com/JhonnyJason/repo/issues"
   },
-  "homepage": "https://github.com/JhonnyJason/aurox-app-main#readme",
+  "homepage": "https://github.com/JhonnyJason/repo#readme",
   "dependencies": {
     "browser-sync": "^2.26.3",
     "coffeescript": "^2.3.2",
-    "fastclick": "^1.0.6",
-    "gsap": "^2.0.2",
     "npm-run-all": "^4.1.5",
     "pug-cli": "^1.0.0-alpha6",
     "stylus": "^0.54.5",
