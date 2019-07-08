@@ -12,14 +12,21 @@ try {
 }
 
 
+
 const delayPromise = (timeMS) => {
     return new Promise((resolve) => { setTimeout(resolve, timeMS) })
 }
+
 const producePackageJason = async () => {
-    console.log("not producing anything ;-)")
     console.log("sourceInfo is: " + sourceInfo)
-    await delayPromise(3000)
-    console.log("Waited 3 seconds!")
+    var packageJason = generalThingyBase.getBase()
+    var scripts = packageJason.scripts
+    var dependencies = packageJason.dependencies
+
+    var thingyScripts = specificThingyInfo.getScripts()
+    var thingyDepencencies = specificThingyInfo.getDependencies()
+    
+    console.log(JSON.stringify(packageJason, null, 2))
     //read name and type
     // var promises = []
 
