@@ -32,7 +32,7 @@ module.exports = {
     getScripts: () => {
         return {
             //general Base expects this script and calls it on postinstall
-            "initialize-project": "run-s -ns patch-stuff create-compile-folders build copyscript",
+            "initialize-thingy": "run-s -ns patch-stuff create-compile-folders build copyscript",
 
             //the generalBase already includes a script named "build-coffee" and "watch-coffee"
             "build-js": "run-s -ns build-coffee bundle",

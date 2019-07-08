@@ -1,6 +1,6 @@
 #!/bin/bash
-mkdir compiled
-mkdir compiled/css
-mkdir compiled/js
+mkdir toolset/compiled
+mkdir toolset/compiled/css
+mkdir toolset/compiled/js
 
 echo 0
