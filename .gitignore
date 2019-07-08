@@ -1,3 +1,4 @@
 compiled
+#used links to the right files
 thingy-build-system/specificThingyInfo.js
-thingy-build-system/sourceInfo.js
+thingy-build-system/*/sourceInfo.js

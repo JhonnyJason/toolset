@@ -11,7 +11,7 @@ const jsDest = "toolset/compiled/js/"
 
 const getThingyName = () => {
     var cwd = process.cwd()
-    console.log("getBase in cwd: " + cwd)
+    // console.log("getBase in cwd: " + cwd)
     var directoryChain = cwd.split(pathModule.sep)
     if(directoryChain.length < 2) {
         throw new Error("Unexpected cwd: " + cwd + "\n Too small path depth!")

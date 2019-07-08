@@ -1,38 +1,30 @@
 #!/usr/bin/env node
-const fs = require("fs").promises
+const fs = require("fs")
+const pathModule = require("path")
 
 const generalThingyBase = require("./generalThingyBase")
 const specificThingyInfo = require("./specificThingyInfo")
 
-var sourceInfo = null
-try {
-    sourceInfo = require("./sourceInfo")
-} catch(err) { 
-    console.log(err.message)
-}
+const projectRoot = pathModule.resolve(process.cwd(), "..")
+const packageJasonPath = pathModule.resolve(projectRoot, "package.json")
 
+var packageJason = generalThingyBase.getBase()
+var scripts = packageJason.scripts
+var dependencies = packageJason.dependencies
 
+var thingyScripts = specificThingyInfo.getScripts()
+var thingyDepencencies = specificThingyInfo.getDependencies()
 
-const delayPromise = (timeMS) => {
-    return new Promise((resolve) => { setTimeout(resolve, timeMS) })
-}
+Object.assign(scripts, thingyScripts)
+Object.assign(dependencies, thingyDepencencies)
 
-const producePackageJason = async () => {
-    console.log("sourceInfo is: " + sourceInfo)
-    var packageJason = generalThingyBase.getBase()
-    var scripts = packageJason.scripts
-    var dependencies = packageJason.dependencies
+const packageJasonString = JSON.stringify(packageJason, null, 4)
+// console.log("\nPath to package.json is: " + packageJasonPath)
+// console.log(packageJasonString)
 
-    var thingyScripts = specificThingyInfo.getScripts()
-    var thingyDepencencies = specificThingyInfo.getDependencies()
-    
-    console.log(JSON.stringify(packageJason, null, 2))
-    //read name and type
-    // var promises = []
+//write package.json
+fs.writeFileSync(packageJasonPath, packageJasonString)
 
-    // promises.push()
-    
-    //
-}
+//produceConfigFiles
+specificThingyInfo.produceConfigFiles(projectRoot)
 
-producePackageJason()
