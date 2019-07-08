@@ -85,10 +85,10 @@ module.exports = {
         const webpackConfigObject = {
             mode: "production",
             devtool: "none",
-            entry: "toolset/compiled/js/index.js",
+            entry: pathModule.resolve(projectRoot, "toolset/compiled/js/index.js"),
             output: {
                 filename: 'bundle.js',
-                path: 'toolset/compiled'
+                path: pathModule.resolve(projectRoot, 'toolset/compiled')
             }
         }
         
