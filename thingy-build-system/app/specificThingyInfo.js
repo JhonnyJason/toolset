@@ -7,7 +7,8 @@ const pugIndexIOS = "sources/source/ios/index.pug"
 const pugIndexAndroid = "sources/source/android/index.pug"
 const htmlDestAndroid = "toolset/cordova-source/merges/android"
 const htmlDestIOS = "toolset/cordova-source/merges/ios"
-const cssDest = "toolset/compiled/css/"
+const cssDestAndroid = "toolset/compiled/css/android.css"
+const cssDestIOS = "toolset/compiled/css/ios.css"
 
 const webpackConfig = "webpack.config.js"
 const webpackWatchConfig = "webpack-watch.config.js"
@@ -53,14 +54,14 @@ module.exports = {
             "watch-js": "run-p -nsr watch-coffee watch-bundle",
 
             //android build lane
-            "android-build-styl": "stylus " + stylusIndexAndroid + " -o " + cssDest,
-            "android-watch-styl": "stylus " + stylusIndexAndroid + " -o " + cssDest + " -w",
+            "android-build-styl": "stylus " + stylusIndexAndroid + " -o " + cssDestAndroid,
+            "android-watch-styl": "stylus " + stylusIndexAndroid + " -o " + cssDestAndroid + " -w",
             "android-build-index-pug": "pug -o " + htmlDestAndroid + " " + pugIndexAndroid,
             "android-watch-index-pug": "pug -o " + htmlDestAndroid + " " + pugIndexAndroid + " -w",
             
             //IOS build lane
-            "ios-build-styl": "stylus " + stylusIndexIOS + " -o " + cssDest,
-            "ios-watch-styl": "stylus " + stylusIndexIOS + " -o " + cssDest + " -w",
+            "ios-build-styl": "stylus " + stylusIndexIOS + " -o " + cssDestIOS,
+            "ios-watch-styl": "stylus " + stylusIndexIOS + " -o " + cssDestIOS + " -w",
             "ios-build-index-pug": "pug -o " + htmlDestIOS +  " " + pugIndexIOS,
             "ios-watch-index-pug": "pug -o " + htmlDestIOS +  " " + pugIndexIOS + " -w",
 
