@@ -1,4 +1,6 @@
 compiled
+cordova-source
+local-build
 #used links to the right files
 thingy-build-system/specificThingyInfo.js
 thingy-build-system/*/sourceInfo.js
