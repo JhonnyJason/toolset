@@ -1,16 +1,17 @@
 const fs = require("fs")
 const pathModule = require("path")
 
-const servicePath = "output/service.js"
+const jsDest = "output/"
+const coffeeSource = "sources/source/*/*.coffee"
 
 //shellscrip paths
-const patchScript = "sources/patches/patch-stuff.sh"
 const copyScript = "sources/ressources/copyscript.sh"
 
-const toolsetWebsiteBase = "toolset/thingy-build-system/website/"
-const createFoldersScript = toolsetWebsiteBase + "create-compile-folders.sh" 
-const pushScript = toolsetWebsiteBase + "add-commit-and-push-all-repos.sh"
-const pullScript = toolsetWebsiteBase + "pull-all.sh" 
+const toolsetCliBase = "toolset/thingy-build-system/cli/"
+const pushScript = toolsetCliBase + "add-commit-and-push-all-repos.sh"
+const pullScript = toolsetCliBase + "pull-all.sh" 
+const cleanPackageScript = toolsetCliBase + "clean-package.sh"
+const installNodeModulesScript = toolsetCliBase + "install-node-modules.sh"
 
 
 var sourceInfo = null
@@ -23,26 +24,24 @@ try {
 // console.log("sourceInfo is: " + sourceInfo)
 
 module.exports = {
-    type: "service",
+    type: "cli",
     getScripts: () => {
         return {
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns patch-stuff create-compile-folders copyscript build",
-
+            "initialize-thingy": "run-s -ns build",
             
-            "bundle": "webpack-cli --config " + webpackConfig,
-            "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
-
-            "watch-service": "nodemon " + servicePath,
-
+            // overwrite the general base stuff
+            "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
+            "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
+    
             //For testing and building
-            "test": "run-s -ns build watch",
-            "build": "run-s -ns build-coffee bundle",
-            "watch": "run-p -nsr watch-coffee watch-bundle watch-service",
+            // "test": "run-s -ns build watch",
+            "build": "run-s -ns clean-package build-coffee copyscript install-node-modules",
+            "watch": "run-p -nsr watch-coffee",
             
             // shellscripts to be called
-            "create-compile-folders": createFoldersScript,            
-            "patch-stuff": patchScript,
+            "clean-package": cleanPackageScript,
+            "install-node-modules": installNodeModulesScript,
             "copyscript": copyScript,
             "push": pushScript,
             "pull": pullScript    
@@ -50,14 +49,7 @@ module.exports = {
     },
     getDependencies: () => {
         
-        var thingyDeps = {
-            "chalk": "^2.4.2",
-            "clear": "0.0.1",
-            "clui": "^0.3.6",
-            "figlet": "^1.2.3",
-            "inquirer": "^5.2.0",
-            "minimist": "^1.2.0"
-        }
+        var thingyDeps = { }
 
         if(sourceInfo) {
             Object.assign(thingyDeps, sourceInfo.getDependencies())
