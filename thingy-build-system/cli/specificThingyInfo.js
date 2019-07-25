@@ -8,6 +8,7 @@ const coffeeSource = "sources/source/*/*.coffee"
 const copyScript = "sources/ressources/copyscript.sh"
 
 const toolsetCliBase = "toolset/thingy-build-system/cli/"
+const publishScript = toolsetCliBase + "publish-on-npm.sh"
 const pushScript = toolsetCliBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetCliBase + "pull-all.sh" 
 const cleanPackageScript = toolsetCliBase + "clean-package.sh"
@@ -39,7 +40,11 @@ module.exports = {
             "build": "run-s -ns clean-package build-coffee copyscript install-node-modules",
             "watch": "run-p -nsr watch-coffee",
             
+            //for release
+            "release": "run-s -ns build publish-script",
+
             // shellscripts to be called
+            "publish-script": publishScript,
             "clean-package": cleanPackageScript,
             "install-node-modules": installNodeModulesScript,
             "copyscript": copyScript,
