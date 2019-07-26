@@ -13,7 +13,7 @@ const pushScript = toolsetCliBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetCliBase + "pull-all.sh" 
 const cleanPackageScript = toolsetCliBase + "clean-package.sh"
 const installNodeModulesScript = toolsetCliBase + "install-node-modules.sh"
-
+const prependShebangScript = toolsetCliBase + "prepend-shebang-to-output-index.sh"
 
 var sourceInfo = null
 try {
@@ -37,13 +37,14 @@ module.exports = {
     
             //For testing and building
             // "test": "run-s -ns build watch",
-            "build": "run-s -ns clean-package build-coffee copyscript install-node-modules",
+            "build": "run-s -ns clean-package build-coffee copyscript install-node-modules prepend-shebang",
             "watch": "run-p -nsr watch-coffee",
             
             //for release
             "release": "run-s -ns build publish-script",
 
             // shellscripts to be called
+            "prepend-shebang": prependShebangScript,
             "publish-script": publishScript,
             "clean-package": cleanPackageScript,
             "install-node-modules": installNodeModulesScript,
