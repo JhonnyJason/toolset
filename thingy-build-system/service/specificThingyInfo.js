@@ -72,6 +72,7 @@ module.exports = {
         const webpackConfigObject = {
             mode: "production",
             devtool: "none",
+            target: "node",
             entry: pathModule.resolve(projectRoot, "toolset/compiled/js/index.js"),
             output: {
                 filename: 'service.js',
