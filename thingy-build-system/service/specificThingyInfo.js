@@ -10,10 +10,10 @@ const webpackWatchConfig = "webpack-watch.config.js"
 const patchScript = "sources/patches/patch-stuff.sh"
 const copyScript = "sources/ressources/copyscript.sh"
 
-const toolsetWebsiteBase = "toolset/thingy-build-system/website/"
-const createFoldersScript = toolsetWebsiteBase + "create-compile-folders.sh" 
-const pushScript = toolsetWebsiteBase + "add-commit-and-push-all-repos.sh"
-const pullScript = toolsetWebsiteBase + "pull-all.sh" 
+const toolsetServiceBase = "toolset/thingy-build-system/service/"
+const createFoldersScript = toolsetServiceBase + "create-compile-folders.sh" 
+const pushScript = toolsetServiceBase + "add-commit-and-push-all-repos.sh"
+const pullScript = toolsetServiceBase + "pull-all.sh" 
 
 
 var sourceInfo = null
