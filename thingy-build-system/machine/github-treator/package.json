@@ -1,0 +1,23 @@
+{
+  "name": "machine-github-treator",
+  "version": "1.0.0",
+  "description": "Node Service which communicates to github",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JhonnyJason/machine-github-treator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JhonnyJason/machine-github-treator/issues"
+  },
+  "homepage": "https://github.com/JhonnyJason/machine-github-treator#readme",
+  "dependencies": {
+    "github-api": "^3.0.0",
+    "systemd": "^0.3.1"
+  }
+}
