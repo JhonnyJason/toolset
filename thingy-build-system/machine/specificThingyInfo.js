@@ -38,16 +38,16 @@ module.exports = {
             // "initialize-thingy": "run-s -ns create-compile-folders copyscript build",
             "initialize-thingy": "run-s -ns create-compile-folders copyscript",
 
-            // "bundle": "webpack-cli --config " + webpackConfig,
-            // "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
-
-            // "watch-service": "nodemon " + servicePath,
+            "bundle": "webpack-cli --config " + webpackConfig,
+            "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
 
             //For testing and building
-            // "test": "run-s -ns build watch",
-            // "build": "run-s -ns build-coffee bundle",
-            // "watch": "run-p -nsr watch-coffee watch-bundle watch-service",
-            
+            "prepare": "run-p -nsr create-commander-and-webhook-config prepare-deployment build-installer",
+            "build-installer": "run-s -ns build-coffee bundle",
+            "watch-installer": "run-p -nsr watch-coffee watch-bundle",
+            //TODO watch machine config to rebuild commander and webhandlerconfig
+            //"watch": ...
+
             "prepare-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m prepare",
             "refresh-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m refresh",
             "remove-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m remove",
