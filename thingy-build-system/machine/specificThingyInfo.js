@@ -1,6 +1,8 @@
 const fs = require("fs")
 const pathModule = require("path")
 
+const configPath = "sources/machine-config.js"
+const keysPath = "output/keys"
 const installerPath = "output/installer.js"
 
 const webpackConfig = "webpack.config.js"
@@ -46,6 +48,10 @@ module.exports = {
             // "build": "run-s -ns build-coffee bundle",
             // "watch": "run-p -nsr watch-coffee watch-bundle watch-service",
             
+            "prepare-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m prepare",
+            "refresh-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m refresh",
+            "remove-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m remove",
+
             // shellscripts to be called
             "create-commander-and-webhook-config": createCommanderAndWebhookConfigScript,
             "create-commander": createCommanderScript,
@@ -61,7 +67,8 @@ module.exports = {
         var thingyDeps = {
             "mustache": "^2.3.2",
             "webpack": "^4.29.0",
-            "webpack-cli": "^3.2.1"
+            "webpack-cli": "^3.2.1",
+            "prepare-machine-thingy-deployment": "^0.1.0"
         }
 
         if(sourceInfo) {
