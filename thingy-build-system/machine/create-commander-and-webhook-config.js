@@ -3,8 +3,8 @@ var fs = require('fs');
 var mustache = require('mustache');
 var machineConfig = require("../../../sources/machine-config");
 
-console.log("check config before we start: ");
-console.log(JSON.stringify(machineConfig));
+// console.log("check config before we start: ");
+// console.log(JSON.stringify(machineConfig));
 
 var webhookHandlerConfigContent = {}
 var commanderScriptContent = {}
@@ -36,43 +36,43 @@ function initializeOuterConfig() {
 }
 
 function extractConfig() {
-    console.log("separateConfig")
+    // console.log("extractConfig")
     var thingies = machineConfig.thingies; 
     
     for (var index = 1; index < (thingies.length + 1); index++) {
         var thingy = thingies[index - 1]
-        console.log(JSON.stringify(thingy, null, 2))
+        // console.log(JSON.stringify(thingy, null, 2))
         addWebhookHandlerConfigEntry(thingy, index)
         addCommanderSection(thingy.updateCode, index)
     }
 }
 
 function writeTemplateFiles() {
-    console.log("writeTemplateFiles")
-    console.log(JSON.stringify(webhookHandlerConfigContent))
-    console.log(JSON.stringify(commanderScriptContent))
+    // console.log("writeTemplateFiles")
+    // console.log(JSON.stringify(webhookHandlerConfigContent))
+    // console.log(JSON.stringify(commanderScriptContent))
     configTemplate = fs.readFileSync("sources/templates/config-template.mustache", {encoding:"utf-8"});
-    console.log("config template:")
-    console.log(configTemplate);
-    console.log("- - - - - ")
+    // console.log("config template:")
+    // console.log(configTemplate);
+    // console.log("- - - - - ")
     commanderTemplate = fs.readFileSync("sources/templates/commander-template.mustache", {encoding:"utf-8"});
-    console.log("commander template:")
-    console.log(commanderTemplate);
-    console.log("- - - - - ")
+    // console.log("commander template:")
+    // console.log(commanderTemplate);
+    // console.log("- - - - - ")
     configFile = mustache.render(configTemplate, webhookHandlerConfigContent);
-    console.log("config.js")
-    console.log(configFile)
-    console.log("- - - - - ")
+    // console.log("config.js")
+    // console.log(configFile)
+    // console.log("- - - - - ")
     commanderFile = mustache.render(commanderTemplate, commanderScriptContent);
-    console.log("commander.pl")
-    console.log(commanderFile)
-    console.log("- - - - - ")
+    // console.log("commander.pl")
+    // console.log(commanderFile)
+    // console.log("- - - - - ")
     fs.writeFileSync("output/webhook-handler-config.js", configFile)
     fs.writeFileSync("output/commander.pl", commanderFile)
 }
 
 function addWebhookHandlerConfigEntry(thingy, index) {
-    console.log("addWebhookHandlerConfigEntry")
+    // console.log("addWebhookHandlerConfigEntry")
     repository = {}
     repository.configLine = (index == 1)? "":",";
     repository.configLine += '"' + thingy.repository + '":"' + index + '\\n"'
@@ -82,7 +82,7 @@ function addWebhookHandlerConfigEntry(thingy, index) {
 }
 
 function addCommanderSection(updateCode, index) {
-    console.log("addCommanderSection")
+    // console.log("addCommanderSection")
     command = {};
     command.index = index;
     command.codeLines = []

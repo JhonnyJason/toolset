@@ -3,7 +3,9 @@ const pathModule = require("path")
 
 const configPath = "sources/machine-config.js"
 const keysPath = "output/keys"
-const installerPath = "output/installer.js"
+const serviceFilesPath = "output/service-files"
+const nginxFilesPath = "output/nginx-files"
+// const installerPath = "output/installer.js"
 
 const webpackConfig = "webpack.config.js"
 const webpackWatchConfig = "webpack-watch.config.js"
@@ -17,9 +19,6 @@ const pushScript = toolsetMachineBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetMachineBase + "pull-all.sh" 
 
 const createCommanderAndWebhookConfigScript = toolsetMachineBase + "create-commander-and-webhook-config.js"
-const createWebhookConfigScript = toolsetMachineBase + "create-webhook-config.js"
-const createCommanderScript = toolsetMachineBase + "create-commander.js"
-
 
 var sourceInfo = null
 try {
@@ -42,7 +41,7 @@ module.exports = {
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
 
             //For testing and building
-            "prepare": "run-p -nsr create-commander-and-webhook-config prepare-deployment build-installer",
+            "prepare": "run-s -ns create-commander-and-webhook-config prepare-deployment generate-files build-installer",
             "build-installer": "run-s -ns build-coffee bundle",
             "watch-installer": "run-p -nsr watch-coffee watch-bundle",
             //TODO watch machine config to rebuild commander and webhandlerconfig
@@ -52,10 +51,12 @@ module.exports = {
             "refresh-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m refresh",
             "remove-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m remove",
 
+            "generate-files": "run-s -ns generate-nginx-files generate-service-files",
+            "generate-nginx-files": "generate-nginx-config-for-thingies " + configPath + " " + nginxFilesPath,
+            "generate-service-files": "generate-service-files-for-thingies " + configPath + " " + serviceFilesPath,
+
             // shellscripts to be called
             "create-commander-and-webhook-config": createCommanderAndWebhookConfigScript,
-            "create-commander": createCommanderScript,
-            "create-webhook-config": createWebhookConfigScript,
             "create-compile-folders": createFoldersScript,            
             "copyscript": copyScript,
             "push": pushScript,
@@ -68,6 +69,8 @@ module.exports = {
             "mustache": "^2.3.2",
             "webpack": "^4.29.0",
             "webpack-cli": "^3.2.1",
+            "generate-nginx-config-for-thingies": "^0.1.1",
+            "generate-service-files-for-thingies": "^0.1.2",
             "prepare-machine-thingy-deployment": "^0.1.0"
         }
 
