@@ -20,15 +20,6 @@ console.log("all Done!")
 // helper functions
 //============================================================
 function initializeOuterConfig() {
-    var now = new Date();
-    
-    var day = now.getDate()
-    var month = now.getMonth() + 1;
-    var year = now.getFullYear();
-    var today = "" + day + "." + month + "." + year;
-    
-    webhookHandlerConfigContent.today = today;
-    commanderScriptContent.today = today;
 
     webhookHandlerConfigContent.secret = machineConfig.webhookSecret;
     webhookHandlerConfigContent.port = machineConfig.webhookPort;
@@ -67,7 +58,7 @@ function writeTemplateFiles() {
     // console.log("commander.pl")
     // console.log(commanderFile)
     // console.log("- - - - - ")
-    fs.writeFileSync("output/webhook-handler-config.js", configFile)
+    fs.writeFileSync("output/webhook-config.js", configFile)
     fs.writeFileSync("output/commander.pl", commanderFile)
 }
 
