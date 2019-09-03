@@ -14,6 +14,8 @@ const webpackWatchConfig = "webpack-watch.config.js"
 const copyScript = "sources/ressources/copyscript.sh"
 
 const toolsetMachineBase = "toolset/thingy-build-system/machine/"
+const releaseScript = toolsetMachineBase + "release-script.sh"
+const inspectInstallScript = toolsetMachineBase + "build-and-inspect.sh"
 const createFoldersScript = toolsetMachineBase + "create-compile-folders.sh"
 const pushScript = toolsetMachineBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetMachineBase + "pull-all.sh" 
@@ -35,15 +37,15 @@ module.exports = {
         return {
             //general Base expects this script and calls it on postinstall
             // "initialize-thingy": "run-s -ns create-compile-folders copyscript build",
-            "initialize-thingy": "run-s -ns create-compile-folders copyscript",
+            "initialize-thingy": "run-s -ns prepare",
 
             "bundle": "webpack-cli --config " + webpackConfig,
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
 
             //For testing and building
-            "prepare": "run-s -ns create-commander-and-webhook-config prepare-deployment generate-files build-installer",
             "build-installer": "run-s -ns build-coffee bundle",
             "watch-installer": "run-p -nsr watch-coffee watch-bundle",
+            "inspect-new-build": "run-s -ns build-installer inspect-install",
             //TODO watch machine config to rebuild commander and webhandlerconfig
             //"watch": ...
 
@@ -55,7 +57,14 @@ module.exports = {
             "generate-nginx-files": "generate-nginx-config-for-thingies " + configPath + " " + nginxFilesPath,
             "generate-service-files": "generate-service-files-for-thingies " + configPath + " " + serviceFilesPath,
 
+
+            "prepare": "run-s -ns create-commander-and-webhook-config prepare-deployment generate-files copyscript build-installer",
+            "release": "run-s -ns prepare release-script",
+            // testing convenience
+
             // shellscripts to be called
+            "release-script": releaseScript,
+            "inspect-install": inspectInstallScript,
             "create-commander-and-webhook-config": createCommanderAndWebhookConfigScript,
             "create-compile-folders": createFoldersScript,            
             "copyscript": copyScript,

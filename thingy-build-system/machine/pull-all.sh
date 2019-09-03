@@ -6,7 +6,11 @@ cd ../toolset
 git checkout master
 git pull origin master
 
-cd sources
+cd ../sources
+git checkout master
+git pull origin master
+
+cd ../output
 git checkout master
 git pull origin master
 
