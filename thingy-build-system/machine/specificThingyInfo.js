@@ -16,7 +16,7 @@ const copyScript = "sources/ressources/copyscript.sh"
 const toolsetMachineBase = "toolset/thingy-build-system/machine/"
 const releaseScript = toolsetMachineBase + "release-script.sh"
 const inspectInstallScript = toolsetMachineBase + "build-and-inspect.sh"
-const createFoldersScript = toolsetMachineBase + "create-compile-folders.sh"
+const createFoldersScript = toolsetMachineBase + "create-folders.sh"
 const pushScript = toolsetMachineBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetMachineBase + "pull-all.sh" 
 
@@ -37,7 +37,7 @@ module.exports = {
         return {
             //general Base expects this script and calls it on postinstall
             // "initialize-thingy": "run-s -ns create-compile-folders copyscript build",
-            "initialize-thingy": "run-s -ns prepare",
+            "initialize-thingy": "run-s -ns create-folders prepare",
 
             "bundle": "webpack-cli --config " + webpackConfig,
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
@@ -66,7 +66,7 @@ module.exports = {
             "release-script": releaseScript,
             "inspect-install": inspectInstallScript,
             "create-commander-and-webhook-config": createCommanderAndWebhookConfigScript,
-            "create-compile-folders": createFoldersScript,            
+            "create-folders": createFoldersScript,            
             "copyscript": copyScript,
             "push": pushScript,
             "pull": pullScript    
