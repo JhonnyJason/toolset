@@ -58,7 +58,7 @@ function writeTemplateFiles() {
     // console.log("commander.pl")
     // console.log(commanderFile)
     // console.log("- - - - - ")
-    fs.writeFileSync("output/webhook-config.js", configFile)
+    fs.writeFileSync("output/webhook-config.json", configFile)
     fs.writeFileSync("output/commander.pl", commanderFile)
 }
 
