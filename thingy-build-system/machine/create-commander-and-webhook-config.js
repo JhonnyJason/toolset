@@ -4,7 +4,7 @@ var mustache = require('mustache');
 var machineConfig = require("../../../sources/machine-config");
 
 // console.log("check config before we start: ");
-// console.log(JSON.stringify(machineConfig));
+console.log(JSON.stringify(machineConfig));
 
 var webhookHandlerConfigContent = {}
 var commanderScriptContent = {}
@@ -20,9 +20,9 @@ console.log("all Done!")
 // helper functions
 //============================================================
 function initializeOuterConfig() {
-
     webhookHandlerConfigContent.secret = machineConfig.webhookSecret;
     webhookHandlerConfigContent.port = machineConfig.webhookPort;
+    webhookHandlerConfigContent.uri = machineConfig.uri;
     webhookHandlerConfigContent.repositories = [];
 }
 
