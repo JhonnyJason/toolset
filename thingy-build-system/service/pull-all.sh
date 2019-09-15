@@ -1,17 +1,22 @@
 #!/bin/bash
-git checkout master
 git pull origin master
+git checkout master
 
-cd ../toolset
-git checkout master
-git pull origin master
 
-cd sources
-git checkout master
+cd toolset
 git pull origin master
+git checkout master
+
+cd ../sources
+git pull origin master
+git checkout master
 
 cd ../testing
-git checkout master
 git pull origin master
+git checkout master
+
+cd ../output
+git pull origin master
+git checkout master
 
 echo 0

@@ -20,9 +20,9 @@ console.log("all Done!")
 // helper functions
 //============================================================
 function initializeOuterConfig() {
-
     webhookHandlerConfigContent.secret = machineConfig.webhookSecret;
     webhookHandlerConfigContent.port = machineConfig.webhookPort;
+    webhookHandlerConfigContent.uri = machineConfig.uri;
     webhookHandlerConfigContent.repositories = [];
 }
 
