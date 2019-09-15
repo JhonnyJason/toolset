@@ -11,6 +11,7 @@ const patchScript = "sources/patches/patch-stuff.sh"
 const copyScript = "sources/ressources/copyscript.sh"
 
 const toolsetServiceBase = "toolset/thingy-build-system/service/"
+const releaseScript = toolsetServiceBase + "release-script.sh"
 const createFoldersScript = toolsetServiceBase + "create-compile-folders.sh" 
 const pushScript = toolsetServiceBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetServiceBase + "pull-all.sh" 
@@ -37,6 +38,7 @@ module.exports = {
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
 
             "watch-service": "nodemon " + servicePath,
+            "release": "initialize-thingy release-script",
 
             //For testing and building
             "test": "run-s -ns build watch",
@@ -44,6 +46,7 @@ module.exports = {
             "watch": "run-p -nsr watch-coffee watch-bundle watch-service",
             
             // shellscripts to be called
+            "release-script": releaseScript,
             "create-compile-folders": createFoldersScript,            
             "patch-stuff": patchScript,
             "copyscript": copyScript,
