@@ -38,7 +38,7 @@ module.exports = {
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
 
             "watch-service": "nodemon " + servicePath,
-            "release": "initialize-thingy release-script",
+            "release": "run-s -ns initialize-thingy release-script",
 
             //For testing and building
             "test": "run-s -ns build watch",
