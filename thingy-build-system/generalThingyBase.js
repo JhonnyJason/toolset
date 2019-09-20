@@ -49,7 +49,7 @@ const getHomepage = (name) => {
 
 const getBaseDependencies = ()  => {
     return {
-        "coffeescript": "^2.3.2",
+        "coffeescript": "^2.4.1",
         "npm-run-all": "^4.1.5"  
     }
 }

@@ -8,6 +8,7 @@ const coffeeSource = "sources/source/*/*.coffee"
 const copyScript = "sources/ressources/copyscript.sh"
 
 const toolsetCliBase = "toolset/thingy-build-system/cli/"
+const updatePackagesScript = toolsetCliBase + "update-packages.sh"
 const publishScript = toolsetCliBase + "publish-on-npm.sh"
 const pushScript = toolsetCliBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetCliBase + "pull-all.sh" 
@@ -44,6 +45,7 @@ module.exports = {
             "release": "run-s -ns build publish-script",
 
             // shellscripts to be called
+            "update-packages": updatePackagesScript,
             "prepend-shebang": prependShebangScript,
             "publish-script": publishScript,
             "clean-package": cleanPackageScript,
