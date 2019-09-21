@@ -45,7 +45,7 @@ module.exports = {
             "release": "run-s -ns build publish-script",
 
             // shellscripts to be called
-            "update-packages": updatePackagesScript,
+            "update-cli-packages": updatePackagesScript,
             "prepend-shebang": prependShebangScript,
             "publish-script": publishScript,
             "clean-package": cleanPackageScript,

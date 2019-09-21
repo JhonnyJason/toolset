@@ -26,7 +26,10 @@ const getBaseScripts = (name) => {
     return {
         "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
         "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
-        "postinstall": "npm run initialize-thingy"  
+        "ncu-update": "ncu -u",
+        "update-packages":"run-s -ns ncu-update install",
+        "postinstall": "npm run initialize-thingy"
+         
     }
 }
 
@@ -50,6 +53,7 @@ const getHomepage = (name) => {
 const getBaseDependencies = ()  => {
     return {
         "coffeescript": "^2.4.1",
+        "npm-check-updates": "^3.1.23",
         "npm-run-all": "^4.1.5"  
     }
 }
