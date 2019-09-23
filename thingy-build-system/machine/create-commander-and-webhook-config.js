@@ -7,6 +7,7 @@ var machineConfig = require("../../../sources/machine-config");
 // console.log(JSON.stringify(machineConfig));
 
 var webhookHandlerConfigContent = {}
+var branchMap = {}
 var commanderScriptContent = {}
 commanderScriptContent.commands = []
 
@@ -36,6 +37,7 @@ function extractConfig() {
         addWebhookHandlerConfigEntry(thingy, index)
         addCommanderSection(thingy.updateCode, index)
     }
+    generateWebhookHandlerConfigContent()
 }
 
 function writeTemplateFiles() {
@@ -64,12 +66,46 @@ function writeTemplateFiles() {
 
 function addWebhookHandlerConfigEntry(thingy, index) {
     // console.log("addWebhookHandlerConfigEntry")
-    repository = {}
-    repository.configLine = (index == 1)? "":",";
-    repository.configLine += '"' + thingy.repository + '":"' + index + '\\n"'
-    repository.branchLine = (index == 1)? "":",";
-    repository.branchLine += '"' + thingy.repository + '":"' + thingy.branch + '"'
-    webhookHandlerConfigContent.repositories.push(repository)
+    var repo = thingy.repository
+    if(!branchMap[repo]) {
+        branchMap[repo] = {
+            indices: [],
+            branches: []
+
+        }
+    }
+
+    var repoObject = branchMap[repo]
+
+    repoObject.indices.push(index)
+    repoObject.branches.push(thingy.branch)
+
+}
+
+function generateWebhookHandlerConfigContent() {
+    var keys = Object.keys(branchMap)
+
+    keys.forEach(key => {
+        generateWebhookHandlerConfigLine(key, branchMap[key])
+    });
+}
+
+function generateWebhookHandlerConfigLine(key, contentObject) {
+    var repository = {
+        configLine: "",
+        branchLine: ""
+    }
+    if (contentObject.indices[0] != 1) {
+        repository.configLine += ","
+        repository.branchLine += ","
+    }
+    var indices = JSON.stringify(contentObject.indices)
+    var branches = JSON.stringify(contentObject.branches)
+
+    repository.configLine += '"' + key + '":' + indices
+    repository.branchLine += '"' + key + '":' + branches 
+
+    webhookHandlerConfigContent.repositories.push(repository)    
 }
 
 function addCommanderSection(updateCode, index) {
