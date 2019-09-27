@@ -43,6 +43,7 @@ module.exports = {
             //For testing and building
             "test": "run-s -ns build watch",
             "build": "run-s -ns build-coffee bundle",
+            "build-watch": "run-p -nsr watch-coffee watch-bundle",
             "watch": "run-p -nsr watch-coffee watch-bundle watch-service",
             
             // shellscripts to be called
