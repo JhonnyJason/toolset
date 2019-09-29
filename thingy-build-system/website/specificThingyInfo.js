@@ -14,6 +14,7 @@ const copyScript = "sources/ressources/copyscript.sh"
 
 const toolsetWebsiteBase = "toolset/thingy-build-system/website/"
 const createFoldersScript = toolsetWebsiteBase + "create-compile-folders.sh" 
+const releaseScript = toolsetWebsiteBase + "release-script.sh"
 const pushScript = toolsetWebsiteBase + "add-commit-and-push-all-repos.sh"
 const pullScript = toolsetWebsiteBase + "pull-all.sh" 
 
@@ -51,10 +52,12 @@ module.exports = {
             "test": "run-s -ns build watch",
             "build": "run-s -ns build-styl build-js build-index-pug",
             "watch": "run-p -nsr watch-js watch-styl watch-index-pug ui-sync",
+            "release": "run-s -ns initialize-thingy release-script",
             //synced testing
             "ui-sync": "browser-sync start --server '" + htmlDest + "' --files '" + htmlDest + "index.html' --no-open",
             
             // shellscripts to be called            
+            "release-script": releaseScript,
             "patch-stuff": patchScript,
             "copyscript": copyScript,
             "create-compile-folders": createFoldersScript,
