@@ -14,6 +14,7 @@ var dependencies = packageJason.dependencies
 
 var thingyScripts = specificThingyInfo.getScripts()
 var thingyDepencencies = specificThingyInfo.getDependencies()
+packageJason.type = specificThingyInfo.type
 
 Object.assign(scripts, thingyScripts)
 Object.assign(dependencies, thingyDepencencies)
