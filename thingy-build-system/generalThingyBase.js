@@ -28,6 +28,9 @@ const getBaseScripts = (name) => {
         "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
         "ncu-update": "ncu -u",
         "update-packages":"run-s -ns ncu-update install",
+        "module-gen": "thingy-module-gen --",
+        "sync-allmodules": "thingy-allmodules-sync",
+        "add-module": "run-s -ns \"module-gen {*}\" sync-allmodules --",
         "postinstall": "npm run initialize-thingy"
          
     }
@@ -54,7 +57,9 @@ const getBaseDependencies = ()  => {
     return {
         "coffeescript": "^2.4.1",
         "npm-check-updates": "^3.1.23",
-        "npm-run-all": "^4.1.5"  
+        "npm-run-all": "^4.1.5",
+        "thingy-allmodules-sync": "^0.1.0",
+        "thingy-module-gen": "^0.1.0" 
     }
 }
 
