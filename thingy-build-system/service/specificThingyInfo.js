@@ -58,9 +58,9 @@ module.exports = {
     getDependencies: () => {
         
         var thingyDeps = {
-            "nodemon": "^1.19.2",
-            "webpack": "^4.40.2",
-            "webpack-cli": "^3.3.9"
+            "nodemon": "^2.0.2",
+            "webpack": "^4.41.3",
+            "webpack-cli": "^3.3.10"
         }
 
         if(sourceInfo) {
