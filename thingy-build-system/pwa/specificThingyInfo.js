@@ -1,9 +1,9 @@
 const fs = require("fs")
 const pathModule = require("path")
 
-const stylusIndex = "sources/source/index/index.styl"
+const stylusHeads = "sources/source/*/*[^style].styl"
 const cssDest = "toolset/compiled/css/"
-const pugIndex = "sources/source/index/index.pug"
+const pugHeads = "sources/page-heads/*/*[^include].pug"
 const htmlDest = "output/"
 const webpackConfig = "webpack.config.js"
 const webpackWatchConfig = "webpack-watch.config.js"
@@ -42,11 +42,11 @@ module.exports = {
             "bundle": "webpack-cli --config " + webpackConfig,
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
             
-            "build-styl": "stylus " + stylusIndex + " -o " + cssDest,
-            "watch-styl": "stylus " + stylusIndex + " -o " + cssDest + " -w",
+            "build-styl": "stylus " + stylusHeads + " -o " + cssDest,
+            "watch-styl": "stylus " + stylusHeads + " -o " + cssDest + " -w",
             
-            "build-index-pug": "pug -o " + htmlDest + " " + pugIndex,
-            "watch-index-pug": "pug -o " + htmlDest + " " + pugIndex + " -w",
+            "build-index-pug": "pug -o " + htmlDest + " " + pugHeads,
+            "watch-index-pug": "pug -o " + htmlDest + " " + pugHeads + " -w",
             
             //For testing and building
             "test": "run-s -ns build watch",
@@ -80,33 +80,5 @@ module.exports = {
         }
         return thingyDeps
 
-    },
-    produceConfigFiles: (projectRoot) => {
-        const exportsString = "module.exports = "
-        
-
-        const webpackConfigObject = {
-            mode: "production",
-            devtool: "none",
-            entry: pathModule.resolve(projectRoot, "toolset/compiled/js/index.js"),
-            output: {
-                filename: 'bundle.js',
-                path: pathModule.resolve(projectRoot, 'toolset/compiled')
-            }
-        }
-        
-        const configString = exportsString + JSON.stringify(webpackConfigObject, null, 4)
-        webpackConfigObject.watch = true
-
-        const watchConfigString = exportsString + JSON.stringify(webpackConfigObject, null, 4)
-        const configPath = pathModule.resolve(projectRoot, webpackConfig)
-        const watchConfigPath = pathModule.resolve(projectRoot, webpackWatchConfig)
-
-        // console.log("\nWebpack config path: " + configPath)
-        // console.log(configString)
-        // console.log("\nWebpack watch config path: " + watchConfigPath)
-        // console.log(watchConfigString)
-        fs.writeFileSync(configPath, configString)
-        fs.writeFileSync(watchConfigPath, watchConfigString)
     }
 }
