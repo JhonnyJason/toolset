@@ -16,9 +16,9 @@ const deployConfigName = "webpack-deploy.config.js"
 const devConfigName = "webpack-dev.config.js"
 const watchConfigName = "webpack-watch.config.js"
 
-const deployConfigPath = pathModule.resolve(process.cwd(), deployConfigName)
-const devConfigPath = pathModule.resolve(process.cwd(), devConfigName)
-const watchConfigPath = pathModule.resolve(process.cwd(), watchConfigName)
+const deployConfigPath = pathModule.resolve(process.cwd(), ".build-config", deployConfigName)
+const devConfigPath = pathModule.resolve(process.cwd(), ".build-config", devConfigName)
+const watchConfigPath = pathModule.resolve(process.cwd(), ".build-config", watchConfigName)
 
 var deployConfig = {}
 var devConfig = {}

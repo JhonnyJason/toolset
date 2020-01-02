@@ -13,7 +13,7 @@ const exportsString = "module.exports = "
 
 //#region configFileStuff
 const configName = "browser-sync.config.js"
-const configPath = pathModule.resolve(process.cwd(), configName)
+const configPath = pathModule.resolve(process.cwd(), ".build-config", configName)
 
 var config = {}
 try {config = require(configPath)} catch(error) {}

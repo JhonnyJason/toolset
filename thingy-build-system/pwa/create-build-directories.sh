@@ -21,4 +21,6 @@ mkdir toolset/build/html/pretty
 mkdir toolset/build/includes
 mkdir toolset/build/js
 
+mkdir .build-config
+
 echo 0
