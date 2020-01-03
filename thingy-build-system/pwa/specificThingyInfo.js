@@ -1,21 +1,46 @@
 const fs = require("fs")
 const pathModule = require("path")
 
-const stylusHeads = "sources/source/*/*[^style].styl"
-const cssDest = "toolset/compiled/css/"
-const pugHeads = "sources/page-heads/*/*[^include].pug"
-const htmlDest = "output/"
-const webpackConfig = "webpack.config.js"
-const webpackWatchConfig = "webpack-watch.config.js"
+const testDir = "testing/document-root/"
+const deployDir = "output/"
+
+const browserSyncConfig = ".build-config/browser-sync.config.js"
+
+const pugHeads = "toolset/build/heads/pug/*"
+const prettyHtml = "toolset/build/html/pretty/"
+const minifiedHTML = "toolset/build/html/minified/"
+
+const webpackDevConfig = ".build-config/webpack-dev.config.js"
+const webpackDevWorkerConfig = ".build-config/webpack-dev-worker.config.js"
+const webpackWatchConfig = ".build-config/webpack-watch.config.js"
+const webpackWatchWorkerConfig = ".build-config/webpack-watch-worker.config.js"
+const webpackDeployConfig = ".build-config/webpack-deploy.config.js"
+const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js"
+
+const stylusHeads = "toolset/build/heads/styl/*"
+const dirtyCssDest = "toolset/build/css/dirty/"
 
 //shellscrip paths
 const patchScript = "sources/patches/patch-stuff.sh"
 const copyScript = "sources/ressources/copyscript.sh"
+const linkerScript = "sources/ressources/linkerscript.sh"
+
 
 const toolsetPwaBase = "toolset/thingy-build-system/pwa/"
-const createFoldersScript = toolsetPwaBase + "create-compile-folders.sh" 
+const createCertsScript = toolsetPwaBase + "create-certificates.sh"
+const injectCssScriptsScript = toolsetPwaBase + "inject-css-scripts.js"
+const buildBrowserSyncConfigScript = toolsetPwaBase + "rebuild-browser-sync-config.js"
+const buildWebpackConfigScript = toolsetPwaBase + "rebuild-webpack-config.js"
+const buildWebpackWorkerConfigScript = toolsetPwaBase + "rebuild-webpack-worker-config.js"
+const linkIncludesForTestingScript = toolsetPwaBase + "link-for-testing.js"
+const linkIncludesForDeploymentScript = toolsetPwaBase + "link-for-deployment.js"
+const linkDevWorkerScript = toolsetPwaBase + "link-dev-worker.js"
+const linkDevHtmlScript = toolsetPwaBase + "link-test-html.js"
+const createBuildHeadsScript = toolsetPwaBase + "create-build-heads.js"
+const createBuildDirsScript = toolsetPwaBase + "create-build-directories.sh" 
+const copyMinifiedHTMLScript = toolsetPwaBase + "copy-minified-html.sh"
+const copyDeployWorkerScript = toolsetPwaBase + "copy-deploy-worker.sh"
 const releaseScript = toolsetPwaBase + "release-script.sh"
-
 
 var sourceInfo = null
 try {
@@ -30,45 +55,91 @@ module.exports = {
     type: "pwa",
     getScripts: () => {
         return {
+    
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns patch-stuff create-compile-folders build copyscript",
+            "initialize-thingy": "run-s -ns inject-css-scripts cert-setup patch-stuff create-build-dirs prepare-for-test",
+            
+            //our most called scripts
+            "test": "run-s -ns prepare-for-test watch-for-test",
+            "prepare-for-test": "run-s -ns create-dev-bundles create-build-heads build-style link-for-test build-pug dev-linkage",
+            "dev-linkage": "run-s -ns link-dev-worker link-test-html link-ressources",
+            "create-dev-bundles": "run-s -ns build-coffee prepare-webpack dev-bundle dev-worker-bundle", 
+            "watch-for-test": "run-p watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
+            
+            //for deployment
+            "check-deployment": "run-s -ns deployment-build expose-deployment",
+            "deployment-build": "run-s -ns create-deployment-bundles create-build-heads create-deplyoment-css create-deployment-html copy-for-deployment",
+            "create-deployment-html": "run-s -ns link-for-deployment build-pug minify-html",
+            "create-deployment-css": "run-s -ns build-style clean-css purge-css",
+            "create-deployment-bundles": "run-s -ns build-coffee prepare-webpack deploy-bundle deploy-worker-bundle",
+            "copy-for-deployment": "run-s -ns copy-minified-html copy-deploy-worker copy-ressources",
+            
 
-            //the generalBase already includes a script named "build-coffee" and "watch-coffee"
-            "build-js": "run-s -ns build-coffee bundle",
-            "watch-js": "run-p -nsr watch-coffee watch-bundle",
+            //browser-sync stuff
+            "cert-setup": "run-s create-certs rebuild-browser-sync-config",
+            "expose-deployment": "browser-sync start --server '"+deployDir+"' --files '"+deployDir+"*' --no-open --config " + browserSyncConfig,
+            "expose": "browser-sync start --server '"+testDir+"' --files '"+testDir+"*' --no-open --config " + browserSyncConfig,
             
-            "bundle": "webpack-cli --config " + webpackConfig,
+            //html Stuff
+            "build-pug": "pug "+pugHeads+" -o "+prettyHtml+" --pretty",
+            "watch-pug": "pug -w "+pugHeads+" -o "+prettyHtml+" --pretty",
+            "minify-html": "html-minifier --input-dir "+prettyHtml+" --output-dir "+minifiedHTML+" --file-ext html --collapse-whitespace --remove-comments --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-js true --minify-css true",
+            
+
+            //webpack Stuff            
+            "prepare-webpack": "run-s rebuild-webpack-worker-config rebuild-webpack-config",
+            // the Bundling
+            "dev-bundle": "webpack-cli --config " + webpackDevConfig,
+            "dev-worker-bundle": "webpack-cli --config " + webpackDevWorkerConfig,
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
+            "watch-worker-bundle": "webpack-cli --config " + webpackWatchWorkerConfig,
+            "deploy-bundle": "webpack-cli --config " + webpackDeployConfig,
+            "deploy-worker-bundle": "webpack-cli --config " + webpackDeployWorkerConfig,
             
-            "build-styl": "stylus " + stylusHeads + " -o " + cssDest,
-            "watch-styl": "stylus " + stylusHeads + " -o " + cssDest + " -w",
-            
-            "build-index-pug": "pug -o " + htmlDest + " " + pugHeads,
-            "watch-index-pug": "pug -o " + htmlDest + " " + pugHeads + " -w",
-            
-            //For testing and building
-            "test": "run-s -ns build watch",
-            "build": "run-s -ns build-styl build-js build-index-pug",
-            "watch": "run-p -nsr watch-js watch-styl watch-index-pug ui-sync",
-            "release": "run-s -ns initialize-thingy release-script",
-            //synced testing
-            "ui-sync": "browser-sync start --server '" + htmlDest + "' --files '" + htmlDest + "index.html' --no-open",
-            
-            // shellscripts to be called            
-            "release-script": releaseScript,
+            //style stuff
+            "build-style": "stylus "+stylusHeads+" -o "+dirtyCssDest+" --include-css",
+            "watch-style": "stylus -w "+stylusHeads+" -o "+dirtyCssDest+" --include-css",
+
+            // external scripts
+            //general preparation scripts
             "patch-stuff": patchScript,
-            "copyscript": copyScript,
-            "create-compile-folders": createFoldersScript
+            "create-build-dirs": createBuildDirsScript,
+            "create-build-heads": createBuildHeadsScript,
+            "create-certs": createCertsScript,
+            "inject-css-scripts": injectCssScriptsScript,
+            
+            //scropts for building config files
+            "rebuild-browser-sync-config": buildBrowserSyncConfigScript,
+            "rebuild-webpack-config": buildWebpackConfigScript,
+            "rebuild-webpack-worker-config": buildWebpackWorkerConfigScript,
+            
+            //linkage for testing
+            "link-for-test": linkIncludesForTestingScript,
+            "link-dev-worker": linkDevWorkerScript,
+            "link-test-html": linkDevHtmlScript,
+            "link-ressources": linkerScript,
+            
+            //deployment scripts
+            "link-for-deployment": linkIncludesForDeploymentScript,
+            "copy-minified-html": copyMinifiedHTMLScript,
+            "copy-deploy-worker": copyDeployWorkerScript,
+            "copy-ressources": copyScript,
+            
+            //pushes output to release branch
+            "release": releaseScript    
         }
     },
     getDependencies: () => {
         
         var thingyDeps = {
-            "browser-sync": "^2.26.3",
+            "browser-sync": "^2.26.7",
+            "clean-css-cli": "^4.3.0",
+            "html-minifier": "^4.0.0",
             "pug-cli": "^1.0.0-alpha6",
-            "stylus": "^0.54.5",
-            "webpack": "^4.29.0",
-            "webpack-cli": "^3.2.1"      
+            "purgecss": "^1.4.2",
+            "stylus": "^0.54.7",
+            "webpack": "^4.41.5",
+            "webpack-cli": "^3.3.10"    
         }
 
         if(sourceInfo) {

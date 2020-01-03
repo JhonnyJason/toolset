@@ -6,7 +6,7 @@ const stdInitialVersion = "0.0.1"
 const stdLicense = "Unlicense"
 
 const coffeeSource = "sources/source/*/*.coffee"
-const jsDest = "toolset/compiled/js/"
+const jsDest = "toolset/build/js/"
 
 
 const getThingyName = () => {
@@ -77,7 +77,7 @@ const getBugs = (remoteURL) => {
     }
 }
 
-const getHomepage = (remote) => {
+const getHomepage = (remoteURL) => {
     return remoteURL + "#readme"
 } 
 
