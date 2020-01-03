@@ -1,7 +1,7 @@
 const pathModule = require("path")
+const fs = require("fs")
 
 const stdAuthor = "Lenard Frommelt"
-const stdRepoBase = "https://github.com/JhonnyJason"
 const stdInitialVersion = "0.0.1"
 const stdLicense = "Unlicense"
 
@@ -22,6 +22,33 @@ const getThingyName = () => {
     return directoryChain[directoryChain.length - 2]
 } 
 
+const getThingyRemote = () => {
+    const gitConfigPath = pathModule.resolve("../.git/config")
+    const gitConfig = fs.readFileSync(gitConfigPath, "utf8")
+    const remoteSegment = '[remote "origin"]'
+    const urlSegment = "\n\turl = "
+    const fetchSegment = "\n\tfetch = "
+    const remoteSegmentIndex = gitConfig.indexOf(remoteSegment)
+    const urlSegmentIndex = gitConfig.indexOf(urlSegment, remoteSegmentIndex)
+    const fetchSegmentIndex = gitConfig.indexOf(fetchSegment, urlSegmentIndex)
+    const remoteStart = urlSegmentIndex + urlSegment.length
+    const remoteEnd = fetchSegmentIndex
+    const result = gitConfig.slice(remoteStart, remoteEnd)
+    
+    let httpsResult = ""
+
+    if(result.substr(0, 8) == "https://") httpsResult = result
+    if(result.substr(0, 4) == "git@") {
+        httpsResult = result.replace(":", "/")
+        httpsResult = httpsResult.replace("git@", "https://")
+    } else {
+        throw "Remote was neither started with https:// nor git@"
+    }
+    if(httpsResult.lastIndexOf(".git") == (httpsResult.length - 4))
+        httpsResult = httpsResult.slice(0, -4)
+    return httpsResult
+}
+
 const getBaseScripts = (name) => {
     return {
         "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
@@ -31,26 +58,27 @@ const getBaseScripts = (name) => {
         "module-gen": "thingy-module-gen --",
         "sync-allmodules": "thingy-allmodules-sync",
         "add-module": "run-s -ns \"module-gen {*}\" sync-allmodules --",
-        "postinstall": "npm run initialize-thingy"
-         
+        "postinstall": "npm run initialize-thingy",
+        "push": "thingysync push",
+        "pull": "thingysync pull"
     }
 }
 
-const getRepository = (name) => {
+const getRepository = (remoteURL) => {
     return {
         "type": "git",
-        "url": "git+" + stdRepoBase + "/" + name + ".git"  
+        "url": "git+" + remoteURL + ".git"  
     }
 }
 
-const getBugs = (name) => {
+const getBugs = (remoteURL) => {
     return {
-        "url": stdRepoBase + "/" + name + "/issues"
+        "url": remoteURL + "/issues"
     }
 }
 
-const getHomepage = (name) => {
-    return stdRepoBase + "/" + name + "#readme"
+const getHomepage = (remote) => {
+    return remoteURL + "#readme"
 } 
 
 const getBaseDependencies = ()  => {
@@ -60,7 +88,8 @@ const getBaseDependencies = ()  => {
         "npm-run-all": "^4.1.5",
         "thingy-allmodules-sync": "^0.1.0",
         "thingy-module-gen": "^0.1.1",
-        "thingymodulecreate": "^0.1.1"
+        "thingymodulecreate": "^0.1.1",
+        "thingysync": "^0.1.0"
     }
 }
 
@@ -72,14 +101,15 @@ const getDescription = () => {
 module.exports = {
     getBase: () => {
         const name = getThingyName()
+        const remoteURL = getThingyRemote()
         const version = stdInitialVersion
         const description = getDescription()
         const scripts = getBaseScripts()
-        const repository = getRepository(name)
+        const repository = getRepository(remoteURL)
         const author = stdAuthor
         const license = stdLicense
-        const bugs = getBugs(name)
-        const homepage = getHomepage(name)
+        const bugs = getBugs(remoteURL)
+        const homepage = getHomepage(remoteURL)
         const dependencies = getBaseDependencies()
         
         return {

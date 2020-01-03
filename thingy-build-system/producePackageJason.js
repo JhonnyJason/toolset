@@ -20,12 +20,9 @@ Object.assign(scripts, thingyScripts)
 Object.assign(dependencies, thingyDepencencies)
 
 const packageJasonString = JSON.stringify(packageJason, null, 4)
-// console.log("\nPath to package.json is: " + packageJasonPath)
-// console.log(packageJasonString)
 
 //write package.json
 fs.writeFileSync(packageJasonPath, packageJasonString)
-
 //produceConfigFiles
-specificThingyInfo.produceConfigFiles(projectRoot)
+if(specificThingyInfo.produceConfigFiles) specificThingyInfo.produceConfigFiles(projectRoot)
 
