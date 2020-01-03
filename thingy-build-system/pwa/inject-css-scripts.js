@@ -58,8 +58,8 @@ function getCleanCSSLine(head) {
 function getPurgeCSSLine(head) {
     const cssName = head + ".css"
     const sourcePath = pathModule.resolve(cleanCSSPath, cssName)
-    const pugName = head + ".pug"
-    const contentPath = pathModule.resolve(process.cwd(), "toolset/build/heads/pug", pugName)
+    const htmlName = head + ".html"
+    const contentPath = pathModule.resolve(process.cwd(), "toolset/build/html/pretty", htmlName)
     const scriptLine = "purgecss --css " + sourcePath + " --content " + contentPath + " --out " + purgedCSSPath 
     return scriptLine
 }

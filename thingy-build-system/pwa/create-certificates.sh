@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir testing/certificates
-cd testing/certificates
+pushd testing/certificates
 mkcert -key-file key.pem -cert-file cert.pem localhost
-cd ../..
+popd
 
 echo 0

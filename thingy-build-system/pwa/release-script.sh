@@ -1,10 +1,10 @@
 #!/bin/bash
-cd output/
+pushd output/
 git pull origin release
 git checkout release
 git merge master
 git push origin release
 git checkout master
-cd ..
+popd
 
 echo 0

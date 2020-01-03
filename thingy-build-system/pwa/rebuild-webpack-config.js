@@ -7,8 +7,8 @@ function olog(obj) {
 }
 
 const headsPath = pathModule.resolve(process.cwd(), "sources/page-heads")
-const sourceHeadsPath = pathModule.resolve(process.cwd(), "output/build/js")
-const bundlePath = pathModule.resolve(process.cwd(), "output/build/bundles")
+const sourceHeadsPath = pathModule.resolve(process.cwd(), "toolset/build/js")
+const bundlePath = pathModule.resolve(process.cwd(), "toolset/build/bundles")
 const exportsString = "module.exports = "
 
 //#region configFileStuff

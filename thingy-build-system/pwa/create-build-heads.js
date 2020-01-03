@@ -3,8 +3,8 @@ const pathModule = require("path")
 const fs = require("fs")
 
 const headsPath = pathModule.resolve("sources/page-heads")
-const pugHeadsPath = pathModule.resolve("output/build/heads/pug")
-const stylusHeadsPath = pathModule.resolve("output/build/heads/styl")
+const pugHeadsPath = pathModule.resolve("toolset/build/heads/pug")
+const stylusHeadsPath = pathModule.resolve("toolset/build/heads/styl")
 const sourceHeadsPath = pathModule.resolve("sources/source")
 
 const pugHeadFileName = "document-head.pug"

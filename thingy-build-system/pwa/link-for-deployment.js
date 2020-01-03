@@ -2,9 +2,9 @@
 const pathModule = require("path")
 const fs = require("fs")
 
-const purgedCssBase = pathModule.resolve("output/build/css/purged")
-const deployBundlesBase = pathModule.resolve("output/build/bundles/deploy")
-const includesPath = pathModule.resolve("output/build/includes")
+const purgedCssBase = pathModule.resolve("toolset/build/css/purged")
+const deployBundlesBase = pathModule.resolve("toolset/build/bundles/deploy")
+const includesPath = pathModule.resolve("toolset/build/includes")
 
 const headsPath = pathModule.resolve("sources/page-heads")
 var heads = fs.readdirSync(headsPath)

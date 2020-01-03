@@ -15,8 +15,6 @@ const copyScript = "sources/ressources/copyscript.sh"
 const toolsetPwaBase = "toolset/thingy-build-system/pwa/"
 const createFoldersScript = toolsetPwaBase + "create-compile-folders.sh" 
 const releaseScript = toolsetPwaBase + "release-script.sh"
-const pushScript = toolsetPwaBase + "add-commit-and-push-all-repos.sh"
-const pullScript = toolsetPwaBase + "pull-all.sh" 
 
 
 var sourceInfo = null
@@ -60,9 +58,7 @@ module.exports = {
             "release-script": releaseScript,
             "patch-stuff": patchScript,
             "copyscript": copyScript,
-            "create-compile-folders": createFoldersScript,
-            "push": pushScript,
-            "pull": pullScript    
+            "create-compile-folders": createFoldersScript
         }
     },
     getDependencies: () => {

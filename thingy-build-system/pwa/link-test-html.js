@@ -2,7 +2,7 @@
 const pathModule = require("path")
 const fs = require("fs")
 
-const htmlBase = pathModule.resolve(process.cwd(), "output/build/html/pretty")
+const htmlBase = pathModule.resolve(process.cwd(), "toolset/build/html/pretty")
 const documentRoot = pathModule.resolve(process.cwd(), "testing/document-root")
 
 const headsPath = pathModule.resolve(process.cwd(), "sources/page-heads")
