@@ -54,7 +54,8 @@ const getBaseScripts = (name) => {
         "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
         "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
         "ncu-update": "ncu -u",
-        "update-packages":"run-s -ns ncu-update install",
+        "reinstall": "npm install",
+        "update-packages":"run-s -ns ncu-update reinstall",
         "module-gen": "thingy-module-gen --",
         "sync-allmodules": "thingy-allmodules-sync",
         "add-module": "run-s -ns \"module-gen {*}\" sync-allmodules --",
@@ -83,13 +84,13 @@ const getHomepage = (remoteURL) => {
 
 const getBaseDependencies = ()  => {
     return {
-        "coffeescript": "^2.4.1",
+        "coffeescript": "^2.5.0",
         "npm-check-updates": "^4.0.1",
         "npm-run-all": "^4.1.5",
-        "thingy-allmodules-sync": "^0.1.0",
+        "thingy-allmodules-sync": "^0.1.1",
         "thingy-module-gen": "^0.1.1",
         "thingymodulecreate": "^0.1.1",
-        "thingysync": "^0.1.0"
+        "thingysync": "^0.1.1"
     }
 }
 
