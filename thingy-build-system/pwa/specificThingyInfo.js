@@ -57,7 +57,7 @@ module.exports = {
         return {
     
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns inject-css-scripts cert-setup patch-stuff create-build-dirs prepare-for-test",
+            "initialize-thingy": "run-s -ns create-build-dirs inject-css-scripts cert-setup patch-stuff prepare-for-test",
             
             //our most called scripts
             "test": "run-s -ns prepare-for-test watch-for-test",
