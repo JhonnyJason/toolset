@@ -23,4 +23,7 @@ mkdir toolset/build/js
 
 mkdir .build-config
 
+mkdir testing/certificates
+mkdir testing/document-root
+
 echo 0
