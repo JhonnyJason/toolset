@@ -53,15 +53,27 @@ const getBaseScripts = (name) => {
     return {
         "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
         "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
+        
         "ncu-update": "ncu -u",
         "reinstall": "npm install",
         "update-packages":"run-s -ns ncu-update reinstall",
+        
         "module-gen": "thingy-module-gen --",
         "sync-allmodules": "thingy-allmodules-sync",
         "add-module": "run-s -ns \"module-gen {*}\" sync-allmodules --",
-        "postinstall": "npm run initialize-thingy",
+
+        "sourcemodulecreate": "cd sources/source && thingymodulecreate",
+        "use-sub-sourcemodule": "run-s \"sourcemodulecreate submodule,{1},use,{2}\"  --",
+        "merge-sub-sourcemodule": "run-s -ns  \"sourcemodulecreate submodule,{1},merge,{2}\"  --",
+        "merge-dir-sourcemodule": "run-s -ns  \"sourcemodulecreate directory,{1},merge,{2}\"  --",    
+        "sourcemodule-to-sub": "run-s \"sourcemodulecreate submodule,{1}\" --",
+        "sourcemodule-to-dir": "run-s \"sourcemodulecreate directory,{1}\" --",
+
         "push": "thingysync push",
-        "pull": "thingysync pull"
+        "pull": "thingysync pull",
+
+        "postinstall": "npm run initialize-thingy"
+
     }
 }
 

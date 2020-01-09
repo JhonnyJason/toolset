@@ -100,6 +100,17 @@ module.exports = {
             "build-style": "stylus "+stylusHeads+" -o "+dirtyCssDest+" --include-css",
             "watch-style": "stylus -w "+stylusHeads+" -o "+dirtyCssDest+" --include-css",
 
+
+            //createing modules stuff
+            "pageheadcreate": "cd sources/page-heads && thingymodulecreate",
+    
+            "create-sub-sourcemodule": "run-s -ns  \"sourcemodulecreate submodule,{1},create,uisourcemodule\"  --",
+            "create-dir-sourcemodule": "run-s -ns  \"sourcemodulecreate directory,{1},create,uisourcemodule\"  --",
+            "create-dir-pagehead": "run-s -ns  \"pageheadcreate directory,{1},create,sourcespagehead\"  --",
+            "create-dir-pageheadsourcemodule": "run-s -ns  \"sourcemodulecreate directory,{1},create,pageheadsourcemodule\"  --",
+            
+            "create-subapp": "run-s -ns \"create-dir-pagehead {1}\" \"create-dir-pageheadsourcemodule {1}\" --",
+            
             // external scripts
             //general preparation scripts
             "patch-stuff": patchScript,
