@@ -13,7 +13,7 @@ my $result = symlink($specificThingyBasePath, $specificThingyBaseLink);
 print $result."\n";
 
 my $sourceInfoPath = $dir."/../sources/sourceInfo.js";
-my $sourceInfoLink = $dir."/thingy-build-system/website/sourceInfo.js"; 
+my $sourceInfoLink = $dir."/thingy-build-system/pwa/sourceInfo.js"; 
 
 $result = symlink($sourceInfoPath, $sourceInfoLink);
 print $result."\n";
