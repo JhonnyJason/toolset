@@ -6,7 +6,7 @@ print "prepareThingyForWebsite has been called!";
 print "Here cwd is: $dir\n";
 #should be toolset path
 #system "cp thingy-base-files/website/* ../"
-my $specificThingyBasePath = $dir."/thingy-build-system/website/specificThingyInfo.js";
+my $specificThingyBasePath = $dir."/thingy-build-system/pwa/specificThingyInfo.js";
 my $specificThingyBaseLink = $dir."/thingy-build-system/specificThingyInfo.js"; 
 
 my $result = symlink($specificThingyBasePath, $specificThingyBaseLink);

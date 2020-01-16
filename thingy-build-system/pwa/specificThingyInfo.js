@@ -37,7 +37,7 @@ const linkIncludesForDeploymentScript = toolsetPwaBase + "link-for-deployment.js
 const linkDevWorkerScript = toolsetPwaBase + "link-dev-worker.js"
 const linkDevHtmlScript = toolsetPwaBase + "link-test-html.js"
 const createBuildHeadsScript = toolsetPwaBase + "create-build-heads.js"
-const createBuildDirsScript = toolsetPwaBase + "create-build-directories.sh" 
+const createBuildDirectoriesScript = toolsetPwaBase + "create-build-directories.sh" 
 const copyMinifiedHTMLScript = toolsetPwaBase + "copy-minified-html.sh"
 const copyDeployWorkerScript = toolsetPwaBase + "copy-deploy-worker.sh"
 const releaseScript = toolsetPwaBase + "release-script.sh"
@@ -57,7 +57,7 @@ module.exports = {
         return {
     
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns create-build-dirs inject-css-scripts cert-setup patch-stuff prepare-for-test",
+            "initialize-thingy": "run-s -ns create-build-directories inject-css-scripts cert-setup patch-stuff prepare-for-test",
             
             //our most called scripts
             "test": "run-s -ns prepare-for-test watch-for-test",
@@ -114,7 +114,7 @@ module.exports = {
             // external scripts
             //general preparation scripts
             "patch-stuff": patchScript,
-            "create-build-dirs": createBuildDirsScript,
+            "create-build-directories": createBuildDirectoriesScript,
             "create-build-heads": createBuildHeadsScript,
             "create-certs": createCertsScript,
             "inject-css-scripts": injectCssScriptsScript,

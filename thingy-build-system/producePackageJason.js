@@ -2,8 +2,8 @@
 const fs = require("fs")
 const pathModule = require("path")
 
-const generalThingyBase = require("./generalThingyBase")
-const specificThingyInfo = require("./specificThingyInfo")
+const generalThingyBase = require("./generalThingyBase.js")
+const specificThingyInfo = require("./specificThingyInfo.js")
 
 const projectRoot = pathModule.resolve(process.cwd(), "..")
 const packageJasonPath = pathModule.resolve(projectRoot, "package.json")
