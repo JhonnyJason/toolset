@@ -68,7 +68,7 @@ module.exports = {
             
             //for deployment
             "check-deployment": "run-s -ns deployment-build expose-deployment",
-            "deployment-build": "run-s -ns create-deployment-bundles create-build-heads create-deplyoment-css create-deployment-html copy-for-deployment",
+            "deployment-build": "run-s -ns create-deployment-bundles create-build-heads create-deployment-css create-deployment-html copy-for-deployment",
             "create-deployment-html": "run-s -ns link-for-deployment build-pug minify-html",
             "create-deployment-css": "run-s -ns build-style clean-css purge-css",
             "create-deployment-bundles": "run-s -ns build-coffee prepare-webpack deploy-bundle deploy-worker-bundle",
