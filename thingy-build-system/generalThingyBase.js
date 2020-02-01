@@ -100,7 +100,7 @@ const getBaseDependencies = ()  => {
         "npm-check-updates": "^4.0.1",
         "npm-run-all": "^4.1.5",
         "thingy-allmodules-sync": "^0.1.1",
-        "thingy-module-gen": "^0.1.1",
+        "thingy-module-gen": "^0.1.2",
         "thingymodulecreate": "^0.1.1",
         "thingysync": "^0.1.1"
     }
