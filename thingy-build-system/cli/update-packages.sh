@@ -8,6 +8,5 @@ npm install
 cd ..
 
 cp output/package.json sources/ressources/package.json
-cp output/package-lock.json sources/ressources/package-lock.json
 
 echo 0

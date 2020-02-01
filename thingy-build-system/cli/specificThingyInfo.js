@@ -10,8 +10,6 @@ const copyScript = "sources/ressources/copyscript.sh"
 const toolsetCliBase = "toolset/thingy-build-system/cli/"
 const updatePackagesScript = toolsetCliBase + "update-packages.sh"
 const publishScript = toolsetCliBase + "publish-on-npm.sh"
-const pushScript = toolsetCliBase + "add-commit-and-push-all-repos.sh"
-const pullScript = toolsetCliBase + "pull-all.sh" 
 const cleanPackageScript = toolsetCliBase + "clean-package.sh"
 const installNodeModulesScript = toolsetCliBase + "install-node-modules.sh"
 const prependShebangScript = toolsetCliBase + "prepend-shebang-to-output-index.sh"
@@ -50,9 +48,7 @@ module.exports = {
             "publish-script": publishScript,
             "clean-package": cleanPackageScript,
             "install-node-modules": installNodeModulesScript,
-            "copyscript": copyScript,
-            "push": pushScript,
-            "pull": pullScript    
+            "copyscript": copyScript
         }
     },
     getDependencies: () => {

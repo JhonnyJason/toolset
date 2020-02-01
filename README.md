@@ -239,12 +239,12 @@ This will build and watch all files up until the complete bundled html is ready 
 
 ## cli specific commands
 ### $ npm run test
-
-For a service it is run as nodemo service. (should be done better running testcases - WIP)
-
 For the cli it is reasonable to run through all testcases.
 
-For machines any automated testing is very difficult (WIP).
+### $ npm-run update-cli-packages
+Here we deal with the dependencies of the resulting output package. The relevant files {`package.json`, `package-lock.json`} here are usually kept in `sources/ressources/` directory.
+
+So the result will be upgraded dependencies of the resulting cli in `output/` plus the upgrades being reflected in `sources/ressources/package.json`.
 
 ## machine specific commands
 ### $ npm run test
