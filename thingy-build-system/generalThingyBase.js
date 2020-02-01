@@ -69,7 +69,7 @@ const getBaseScripts = (name) => {
         "sourcemodule-to-sub": "run-s \"sourcemodulecreate submodule,{1}\" --",
         "sourcemodule-to-dir": "run-s \"sourcemodulecreate directory,{1}\" --",
 
-        "push": "thingysync push --message --",
+        "push": "thingysync push --message",
         "pull": "thingysync pull",
 
         "postinstall": "npm run initialize-thingy"
