@@ -33,7 +33,8 @@ module.exports = {
             // overwrite the general base stuff
             "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
             "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
-    
+            "sync-allmodules": "thingy-allmodules-sync --style require",
+
             //For testing and building
             // "test": "run-s -ns build watch",
             "build": "run-s -ns clean-package build-coffee copyscript install-node-modules prepend-shebang",
