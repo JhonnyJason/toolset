@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 const pathModule = require("path")
 const fs = require("fs")
 
