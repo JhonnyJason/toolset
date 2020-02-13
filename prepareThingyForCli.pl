@@ -15,7 +15,7 @@ $result = symlink($sourceInfoPath, $sourceInfoLink);
 $result  = `node thingy-build-system/producePackageJason.js`;
 
 if($result == 0) {
-    print "package.json for cli is ready to go!\n";
+    print "package.json for cli is ready to go :-)\n";
 } else {
     print "An error occured!\nReturned: ".$result."\n";
 }
