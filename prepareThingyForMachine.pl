@@ -2,23 +2,20 @@
 use Cwd qw(cwd);
 my $dir = cwd;
 
-print "prepareThingyForMachine has been called!";
-print "Here cwd is: $dir\n";
-#should be toolset path
-#system "cp thingy-base-files/website/* ../"
 my $specificThingyBasePath = $dir."/thingy-build-system/machine/specificThingyInfo.js";
 my $specificThingyBaseLink = $dir."/thingy-build-system/specificThingyInfo.js"; 
 
 my $result = symlink($specificThingyBasePath, $specificThingyBaseLink);
-print $result."\n";
 
 my $sourceInfoPath = $dir."/../sources/sourceInfo.js";
 my $sourceInfoLink = $dir."/thingy-build-system/machine/sourceInfo.js"; 
 
 $result = symlink($sourceInfoPath, $sourceInfoLink);
-print $result."\n";
 
 $result  = `node thingy-build-system/producePackageJason.js`;
-print $result."\n";
-#TODO automatically apply some obvious configuration (name, git repository readme website)
-#TODO add specific dependencies off sources
+
+if($result == 0) {
+    print "package.json for machine is ready to go :-)\n";
+} else {
+    print "An error occured!\nReturned: ".$result."\n";
+}
