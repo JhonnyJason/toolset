@@ -82,7 +82,7 @@ module.exports = {
             "webpack": "^4.41.6",
             "webpack-cli": "^3.3.11",
             "generate-nginx-config-for-thingies": "^0.1.6",
-            "generate-service-files-for-thingies": "^0.1.2",
+            "generate-service-files-for-thingies": "^0.1.3",
             "prepare-machine-thingy-deployment": "^0.1.3"
         }
 

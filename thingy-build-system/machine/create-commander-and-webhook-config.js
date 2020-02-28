@@ -218,7 +218,7 @@ function installerUpdateCommands(thingy) {
     var cmd = ""
     cmd += "cd /root/"+thingy.repository+";"
     cmd += "git pull origin "+thingy.branch+";"
-    cmd += "/usr/bin/node installer.js update;"
+    cmd += "systemctl start installer;"
     return [cmd]
 }
 
