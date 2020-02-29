@@ -1,66 +1,69 @@
+//############################################################
 const fs = require("fs")
 const pathModule = require("path")
 
+//############################################################
+//#region pathDefinitions
 const servicePath = "output/service.js"
 
-const webpackConfig = "webpack.config.js"
-const webpackWatchConfig = "webpack-watch.config.js"
+const webpackDevConfig = ".build-config/webpack-dev.config.js"
+const webpackWatchConfig = ".build-config/webpack-watch.config.js"
+const webpackDeployConfig = ".build-config/webpack-deploy.config.js"
 
 //shellscrip paths
 const patchScript = "sources/patches/patch-stuff.sh"
 const copyScript = "sources/ressources/copyscript.sh"
 
-const toolsetServiceBase = "toolset/thingy-build-system/service/"
-const releaseScript = toolsetServiceBase + "release-script.sh"
-const createFoldersScript = toolsetServiceBase + "create-compile-folders.sh" 
-const pushScript = toolsetServiceBase + "add-commit-and-push-all-repos.sh"
-const pullScript = toolsetServiceBase + "pull-all.sh" 
+const base = "toolset/thingy-build-system/service/"
+const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
+const releaseScript = base + "release-script.sh"
+const createBuildDirectoriesScript = base + "create-build-directories.sh"
+//#endregion
 
-
+//############################################################
+//#region getSourceInfo
 var sourceInfo = null
 try {
     sourceInfo = require("./sourceInfo")
 } catch(err) { 
     console.log(err.message)
 }
+//#endregion
 
-// console.log("sourceInfo is: " + sourceInfo)
-
+//############################################################
 module.exports = {
     type: "service",
+    //############################################################
     getScripts: () => {
         return {
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns patch-stuff create-compile-folders copyscript build",
+            "initialize-thingy": "run-s -ns create-build-directories patch-stuff copy-ressources build",
 
-            
-            "bundle": "webpack-cli --config " + webpackConfig,
-            "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
+            //webpack Stuff
+            "prepare-webpack": "run-s rebuild-webpack-config",
+            "bundle": "webpack-cli --config " + webpackDeployConfig,
 
-            "watch-service": "nodemon " + servicePath,
             "release": "run-s -ns initialize-thingy release-script",
 
             //For testing and building
-            "test": "run-s -ns build watch",
-            "build": "run-s -ns build-coffee bundle",
-            "build-watch": "run-p -nsr watch-coffee watch-bundle",
-            "watch": "run-p -nsr watch-coffee watch-bundle watch-service",
+            "test": "run-s -ns build test-run",
+            "build": "run-s -ns prepare-webpack build-coffee bundle",
+            "test-run": "cd output && node service.js",
             
-            // shellscripts to be called
+            //helper scripts
+            "rebuild-webpack-config": buildWebpackConfigScript,
             "release-script": releaseScript,
-            "create-compile-folders": createFoldersScript,            
+            "create-build-directories": createBuildDirectoriesScript,
             "patch-stuff": patchScript,
-            "copyscript": copyScript,
-            "push": pushScript,
-            "pull": pullScript    
+            "copy-ressources": copyScript
         }
     },
+    //############################################################
     getDependencies: () => {
         
         var thingyDeps = {
-            "nodemon": "^2.0.2",
-            "webpack": "^4.41.3",
-            "webpack-cli": "^3.3.10"
+            "webpack": "^4.41.5",
+            "webpack-cli": "^3.3.10"    
         }
 
         if(sourceInfo) {
@@ -68,34 +71,5 @@ module.exports = {
         }
         return thingyDeps
 
-    },
-    produceConfigFiles: (projectRoot) => {
-        const exportsString = "module.exports = "
-        
-
-        const webpackConfigObject = {
-            mode: "production",
-            devtool: "none",
-            target: "node",
-            entry: pathModule.resolve(projectRoot, "toolset/compiled/js/index.js"),
-            output: {
-                filename: 'service.js',
-                path: pathModule.resolve(projectRoot, 'output/')
-            }
-        }
-        
-        const configString = exportsString + JSON.stringify(webpackConfigObject, null, 4)
-        webpackConfigObject.watch = true
-
-        const watchConfigString = exportsString + JSON.stringify(webpackConfigObject, null, 4)
-        const configPath = pathModule.resolve(projectRoot, webpackConfig)
-        const watchConfigPath = pathModule.resolve(projectRoot, webpackWatchConfig)
-
-        // console.log("\nWebpack config path: " + configPath)
-        // console.log(configString)
-        // console.log("\nWebpack watch config path: " + watchConfigPath)
-        // console.log(watchConfigString)
-        fs.writeFileSync(configPath, configString)
-        fs.writeFileSync(watchConfigPath, watchConfigString)
     }
 }

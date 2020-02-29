@@ -1,14 +1,18 @@
+//############################################################
 const pathModule = require("path")
 const fs = require("fs")
 
+//############################################################
 const stdAuthor = "Lenard Frommelt"
 const stdInitialVersion = "0.0.1"
 const stdLicense = "Unlicense"
 
+//############################################################
 const coffeeSource = "sources/source/*/*.coffee"
 const jsDest = "toolset/build/js/"
 
-
+//############################################################
+//#region 
 const getThingyName = () => {
     var cwd = process.cwd()
     // console.log("getBase in cwd: " + cwd)
@@ -110,7 +114,9 @@ const getDescription = () => {
     return "This is the shit!"
 }
 
+//#endregion
 
+//############################################################
 module.exports = {
     getBase: () => {
         const name = getThingyName()

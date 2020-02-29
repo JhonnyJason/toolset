@@ -17,19 +17,19 @@ const webpackWatchConfig = "webpack-watch.config.js"
 const patchScript = "sources/patches/patch-stuff.sh"
 const copyScript = "sources/ressources/copyscript.sh"
 
-const toolsetAppBase = "toolset/thingy-build-system/app/"
+const base = "toolset/thingy-build-system/app/"
 
-const createFoldersScript = toolsetAppBase + "create-compile-folders.sh"
+const createFoldersScript = base + "create-compile-folders.sh"
 
-const createLocalBuildScript = toolsetAppBase + "phonegap-create-build.sh"
-const prepareCordovaScript = toolsetAppBase + "phonegap-prepare.sh"
+const createLocalBuildScript = base + "phonegap-create-build.sh"
+const prepareCordovaScript = base + "phonegap-prepare.sh"
 
-const iosReleaseScript = toolsetAppBase + "push-ios-release.sh"
-const androidReleaseScript = toolsetAppBase + "push-android-release.sh"
+const iosReleaseScript = base + "push-ios-release.sh"
+const androidReleaseScript = base + "push-android-release.sh"
 
-const gitSetupScript = toolsetAppBase + "git-setup.sh"
-const pushScript = toolsetAppBase + "add-commit-and-push-all-repos.sh"
-const pullScript = toolsetAppBase + "pull-all.sh" 
+const gitSetupScript = base + "git-setup.sh"
+const pushScript = base + "add-commit-and-push-all-repos.sh"
+const pullScript = base + "pull-all.sh" 
 
 
 var sourceInfo = null

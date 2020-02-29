@@ -7,12 +7,12 @@ const coffeeSource = "sources/source/*/*.coffee"
 //shellscrip paths
 const copyScript = "sources/ressources/copyscript.sh"
 
-const toolsetCliBase = "toolset/thingy-build-system/cli/"
-const updatePackagesScript = toolsetCliBase + "update-packages.sh"
-const publishScript = toolsetCliBase + "publish-on-npm.sh"
-const cleanPackageScript = toolsetCliBase + "clean-package.sh"
-const installNodeModulesScript = toolsetCliBase + "install-node-modules.sh"
-const prependShebangScript = toolsetCliBase + "prepend-shebang-to-output-index.sh"
+const base = "toolset/thingy-build-system/cli/"
+const updatePackagesScript = base + "update-packages.sh"
+const publishScript = base + "publish-on-npm.sh"
+const cleanPackageScript = base + "clean-package.sh"
+const installNodeModulesScript = base + "install-node-modules.sh"
+const prependShebangScript = base + "prepend-shebang-to-output-index.sh"
 
 var sourceInfo = null
 try {

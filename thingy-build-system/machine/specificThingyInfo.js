@@ -13,13 +13,13 @@ const webpackDeployConfig = ".build-config/webpack-deploy.config.js"
 //shellscrip paths
 const copyScript = "sources/ressources/copyscript.sh"
 
-const toolsetMachineBase = "toolset/thingy-build-system/machine/"
-const releaseScript = toolsetMachineBase + "release-script.sh"
-const buildWebpackConfigScript = toolsetMachineBase + "rebuild-webpack-config.js"
-const inspectInstallScript = toolsetMachineBase + "build-and-inspect.sh"
-const createFoldersScript = toolsetMachineBase + "create-folders.sh"
+const base = "toolset/thingy-build-system/machine/"
+const releaseScript = base + "release-script.sh"
+const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
+const inspectInstallScript = base + "build-and-inspect.sh"
+const createFoldersScript = base + "create-folders.sh"
 
-const createCommanderAndWebhookConfigScript = toolsetMachineBase + "create-commander-and-webhook-config.js"
+const createCommanderAndWebhookConfigScript = base + "create-commander-and-webhook-config.js"
 
 var sourceInfo = null
 try {
