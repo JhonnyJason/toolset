@@ -45,15 +45,15 @@ config = {
 }
 
 //############################################################
-devConfig = Object.assign({}, config)
+devConfig = Object.assign(devConfig, config)
 devConfig.mode = "development" 
 
 //############################################################
-watchConfig = Object.assign({}, devConfig)
+watchConfig = Object.assign(watchConfig, devConfig)
 watchConfig.watch = true
 
 //############################################################
-deployConfig = Object.assign({}, config)
+deployConfig = Object.assign(deployConfig, config)
 deployConfig.mode = "production" 
 
 //#endregion
