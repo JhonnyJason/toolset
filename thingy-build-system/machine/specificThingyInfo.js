@@ -19,7 +19,7 @@ const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
 const inspectInstallScript = base + "build-and-inspect.sh"
 const createFoldersScript = base + "create-folders.sh"
 
-const createCommanderAndWebhookConfigScript = base + "create-commander-and-webhook-config.js"
+const createexecutorAndWebhookConfigScript = base + "create-executor-and-webhook-config.js"
 
 var sourceInfo = null
 try {
@@ -49,7 +49,7 @@ module.exports = {
             "build-installer": "run-s -ns build-coffee deploy-bundle copy-deployment-bundle",
             "watch-installer": "run-p -nsr watch-coffee watch-bundle",
             "inspect-new-build": "run-s -ns build-dev-installer inspect-install",
-            //TODO watch machine config to rebuild commander and webhandlerconfig
+            //TODO watch machine config to rebuild executor and webhandlerconfig
             //"watch": ...
 
             "prepare-deployment": "prepare-machine-thingy-deployment -k " + keysPath + " -c " + configPath + " -m prepare",
@@ -61,7 +61,7 @@ module.exports = {
             "generate-service-files": "generate-service-files-for-thingies " + configPath + " " + serviceFilesPath,
 
 
-            "prepare": "run-s -ns create-commander-and-webhook-config prepare-deployment generate-files rebuild-webpack-config copyscript build-installer",
+            "prepare": "run-s -ns create-executor-and-webhook-config prepare-deployment generate-files rebuild-webpack-config copyscript build-installer",
             "release": "run-s -ns prepare release-script",
             // testing convenience
 
@@ -69,7 +69,7 @@ module.exports = {
             "copy-deployment-bundle": "cp toolset/build/bundles/deploy/installer.js output/installer.js",
             "release-script": releaseScript,
             "inspect-install": inspectInstallScript,
-            "create-commander-and-webhook-config": createCommanderAndWebhookConfigScript,
+            "create-executor-and-webhook-config": createexecutorAndWebhookConfigScript,
             "rebuild-webpack-config": buildWebpackConfigScript,
             "create-folders": createFoldersScript,            
             "copyscript": copyScript

@@ -13,8 +13,8 @@ var machineConfig = require("../../../sources/machine-config");
 //#region variables
 var webhookHandlerConfigContent = {}
 var branchMap = {}
-var commanderScriptContent = {}
-commanderScriptContent.commands = []
+var executorScriptContent = {}
+executorScriptContent.commands = []
 //#endregion
 
 //############################################################
@@ -42,7 +42,7 @@ function extractConfig() {
         var thingy = thingies[index - 1]
         // console.log(JSON.stringify(thingy, null, 2))
         addWebhookHandlerConfigEntry(thingy, index)
-        addCommanderSection(thingy, index)
+        addexecutorSection(thingy, index)
     }
     generateWebhookHandlerConfigContent()
 }
@@ -50,25 +50,25 @@ function extractConfig() {
 function writeTemplateFiles() {
     // console.log("writeTemplateFiles")
     // console.log(JSON.stringify(webhookHandlerConfigContent))
-    // console.log(JSON.stringify(commanderScriptContent))
+    // console.log(JSON.stringify(executorScriptContent))
     configTemplate = fs.readFileSync("sources/templates/config-template.mustache", {encoding:"utf-8"});
     // console.log("config template:")
     // console.log(configTemplate);
     // console.log("- - - - - ")
-    commanderTemplate = fs.readFileSync("sources/templates/commander-template.mustache", {encoding:"utf-8"});
-    // console.log("commander template:")
-    // console.log(commanderTemplate);
+    executorTemplate = fs.readFileSync("sources/templates/executor-template.mustache", {encoding:"utf-8"});
+    // console.log("executor template:")
+    // console.log(executorTemplate);
     // console.log("- - - - - ")
     configFile = mustache.render(configTemplate, webhookHandlerConfigContent);
     // console.log("config.js")
     // console.log(configFile)
     // console.log("- - - - - ")
-    commanderFile = mustache.render(commanderTemplate, commanderScriptContent);
-    // console.log("commander.pl")
-    // console.log(commanderFile)
+    executorFile = mustache.render(executorTemplate, executorScriptContent);
+    // console.log("executor.pl")
+    // console.log(executorFile)
     // console.log("- - - - - ")
     fs.writeFileSync("output/webhook-config.json", configFile)
-    fs.writeFileSync("output/commander.pl", commanderFile)
+    fs.writeFileSync("output/executor.pl", executorFile)
 }
 
 //############################################################
@@ -119,9 +119,9 @@ function generateWebhookHandlerConfigLine(key, contentObject) {
 //#endregion
 
 //############################################################
-//#region forCommander
-function addCommanderSection(thingy, index) {
-    // console.log("addCommanderSection")
+//#region forexecutor
+function addexecutorSection(thingy, index) {
+    // console.log("addexecutorSection")
     updateCode = retrieveUpdateCode(thingy)
 
     command = {};
@@ -130,7 +130,7 @@ function addCommanderSection(thingy, index) {
     for(var i = 0; i < updateCode.length; i++) {
         command.codeLines.push({codeLine: updateCode[i]})
     }
-    commanderScriptContent.commands.push(command)
+    executorScriptContent.commands.push(command)
 }
 
 function retrieveUpdateCode(thingy) {
