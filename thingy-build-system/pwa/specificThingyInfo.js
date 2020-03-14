@@ -1,6 +1,7 @@
 const fs = require("fs")
 const pathModule = require("path")
 
+//#region stringDefinitions 
 const testDir = "testing/document-root/"
 const deployDir = "output/"
 
@@ -29,6 +30,7 @@ const linkerScript = "sources/ressources/linkerscript.sh"
 const base = "toolset/thingy-build-system/pwa/"
 const createCertsScript = base + "create-certificates.sh"
 const injectCssScriptsScript = base + "inject-css-scripts.js"
+const injectDOMConnectScriptsScript = base + "inject-dom-connect-scripts.js"
 const buildBrowserSyncConfigScript = base + "rebuild-browser-sync-config.js"
 const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
 const buildWebpackWorkerConfigScript = base + "rebuild-webpack-worker-config.js"
@@ -41,6 +43,7 @@ const createBuildDirectoriesScript = base + "create-build-directories.sh"
 const copyMinifiedHTMLScript = base + "copy-minified-html.sh"
 const copyDeployWorkerScript = base + "copy-deploy-worker.sh"
 const releaseScript = base + "release-script.sh"
+//#endregion
 
 var sourceInfo = null
 try {
@@ -57,18 +60,18 @@ module.exports = {
         return {
     
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns create-build-directories inject-css-scripts cert-setup patch-stuff prepare-for-test",
+            "initialize-thingy": "run-s -ns create-build-directories inject-css-scripts inject-dom-connect-scripts cert-setup patch-stuff prepare-for-test",
             
             //our most called scripts
             "test": "run-s -ns prepare-for-test watch-for-test",
-            "prepare-for-test": "run-s -ns create-dev-bundles create-build-heads build-style link-for-test build-pug dev-linkage",
+            "prepare-for-test": "run-s -ns connect-dom create-dev-bundles create-build-heads build-style link-for-test build-pug dev-linkage",
             "dev-linkage": "run-s -ns link-dev-worker link-test-html link-ressources",
             "create-dev-bundles": "run-s -ns build-coffee prepare-webpack dev-bundle dev-worker-bundle", 
-            "watch-for-test": "run-p watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
+            "watch-for-test": "run-p watch-connect-dom watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
             
             //for deployment
             "check-deployment": "run-s -ns deployment-build expose-deployment",
-            "deployment-build": "run-s -ns create-deployment-bundles create-build-heads create-deployment-css create-deployment-html copy-for-deployment",
+            "deployment-build": "run-s -ns connect-dom create-deployment-bundles create-build-heads create-deployment-css create-deployment-html copy-for-deployment",
             "create-deployment-html": "run-s -ns link-for-deployment build-pug minify-html",
             "create-deployment-css": "run-s -ns build-style clean-css purge-css",
             "create-deployment-bundles": "run-s -ns build-coffee prepare-webpack deploy-bundle deploy-worker-bundle",
@@ -95,7 +98,7 @@ module.exports = {
             "watch-worker-bundle": "webpack-cli --config " + webpackWatchWorkerConfig,
             "deploy-bundle": "webpack-cli --config " + webpackDeployConfig,
             "deploy-worker-bundle": "webpack-cli --config " + webpackDeployWorkerConfig,
-            
+
             //style stuff
             "build-style": "stylus "+stylusHeads+" -o "+dirtyCssDest+" --include-css",
             "watch-style": "stylus -w "+stylusHeads+" -o "+dirtyCssDest+" --include-css",
@@ -118,6 +121,7 @@ module.exports = {
             "create-build-heads": createBuildHeadsScript,
             "create-certs": createCertsScript,
             "inject-css-scripts": injectCssScriptsScript,
+            "inject-dom-connect-scripts": injectDOMConnectScriptsScript,
             
             //scropts for building config files
             "rebuild-browser-sync-config": buildBrowserSyncConfigScript,
@@ -146,8 +150,9 @@ module.exports = {
             "browser-sync": "^2.26.7",
             "clean-css-cli": "^4.3.0",
             "html-minifier": "^4.0.0",
+            "implicit-dom-connect": "^0.2.1",
             "pug-cli": "^1.0.0-alpha6",
-            "purgecss": "^1.4.2",
+            "purgecss": "^2.1.0",
             "stylus": "^0.54.7",
             "webpack": "^4.42.0",
             "webpack-cli": "^3.3.11",
