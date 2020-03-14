@@ -150,7 +150,7 @@ module.exports = {
             "browser-sync": "^2.26.7",
             "clean-css-cli": "^4.3.0",
             "html-minifier": "^4.0.0",
-            "implicit-dom-connect": "^0.2.1",
+            "implicit-dom-connect": "^0.2.2",
             "pug-cli": "^1.0.0-alpha6",
             "purgecss": "^2.1.0",
             "stylus": "^0.54.7",
