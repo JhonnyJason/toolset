@@ -5,4 +5,5 @@ cd toolset
 cd ..
 toolset/thingy-build-system/cli/sync-versions.js
 npm install
+
 echo 0

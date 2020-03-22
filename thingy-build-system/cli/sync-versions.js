@@ -4,11 +4,18 @@ const fs = require("fs")
 const pathModule = require("path")
 
 //############################################################
-function incrementVersion(version) {
-    versionNumbers = version.split(".")
-    versionNumbers[2] = parseInt(versionNumbers[2]) + 1
-    version = versionNumbers.join(".")
-    return version
+function synchronizeVersions(versions) {
+    versionNumbers = versions.map((version) => version.split("."))
+    // console.log(JSON.stringify(versionNumbers, null, 4))
+    maxMajor = 0
+    maxMinor = 0
+    maxPatch = 0
+    versionNumbers.forEach(numbers => {
+        if(numbers[0] > maxMajor) maxMajor = numbers[0]
+        if(numbers[1] > maxMinor) maxMinor = numbers[1]
+        if(numbers[2] > maxPatch) maxPatch = numbers[2]
+    });
+    return ""+maxMajor+"."+maxMinor+"."+maxPatch
 } 
 
 //############################################################
@@ -20,17 +27,14 @@ const basePackageJason = require(basePackageJasonPath)
 const sourcePackageJason = require(sourcePackageJasonPath)
 const outputPackageJason = require(outputPackageJasonPath)
 
-baseVersion = incrementVersion(basePackageJason.version)
-sourceVersion = incrementVersion(sourcePackageJason.version)
-outputVersion = incrementVersion(outputPackageJason.version)
+allVersions = [basePackageJason.version, sourcePackageJason.version, outputPackageJason.version]
+version = synchronizeVersions(allVersions)
 
-// console.log("base-version: " + baseVersion)
-// console.log("source-version: " + sourceVersion)
-// console.log("output-version: " + outputVersion)
+// console.log(version)
 
-basePackageJason.version = baseVersion
-sourcePackageJason.version = sourceVersion
-outputPackageJason.version = outputVersion
+basePackageJason.version = version
+sourcePackageJason.version = version
+outputPackageJason.version = version
 
 //############################################################
 const basePackageJasonString = JSON.stringify(basePackageJason, null, 4)
@@ -41,4 +45,3 @@ const outputPackageJasonString = JSON.stringify(outputPackageJason, null, 4)
 fs.writeFileSync(basePackageJasonPath, basePackageJasonString)
 fs.writeFileSync(sourcePackageJasonPath, sourcePackageJasonString)
 fs.writeFileSync(outputPackageJasonPath, outputPackageJasonString)
-
