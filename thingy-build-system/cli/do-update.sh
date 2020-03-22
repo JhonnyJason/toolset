@@ -1,9 +1,11 @@
 #!/bin/bash
 npm run pull
 cd toolset
+./prepareThingyForCli.pl
 cd ..
-
-cp output/package.json sources/ressources/package.json
-
+## adjust and increment version?
+npm install
+npm update-cli-packages
+npm run push "updated packages"
 
 echo 0
