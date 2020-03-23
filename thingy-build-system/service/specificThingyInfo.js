@@ -18,6 +18,8 @@ const base = "toolset/thingy-build-system/service/"
 const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
 const releaseScript = base + "release-script.sh"
 const createBuildDirectoriesScript = base + "create-build-directories.sh"
+const updateToolsScript = base + "update-tools.sh"
+
 //#endregion
 
 //############################################################
@@ -51,6 +53,7 @@ module.exports = {
             "test-run": "cd output && node service.js",
             
             //helper scripts
+            "update-tools": updateToolsScript,
             "rebuild-webpack-config": buildWebpackConfigScript,
             "release-script": releaseScript,
             "create-build-directories": createBuildDirectoriesScript,
