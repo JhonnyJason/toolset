@@ -11,39 +11,42 @@ const coffeeExpression = "sources/source/*/*.coffee"
 const packageJSONPath = pathModule.resolve(process.cwd(), "package.json") 
 const headsPath = pathModule.resolve("sources/page-heads")
 
+//#region usedVariables
 var heads = fs.readdirSync(headsPath)
 var packageJSON = require(packageJSONPath)
 
 const connectScriptName = "connect-dom"
-const watchScriptName = "watch-connect-dom"
-var allConnectingLine = "run-p"
-var allWatchingLine = "run-p"
+const watchConnectScriptName = "watch-connect-dom"
+
+var allConnectLine = "run-p"
+var allWatchConnectLine = "run-p"
+
+//#endregion
 
 if(heads.length == 1) {
     packageJSON.scripts[connectScriptName] = getConnectLine(heads[0])
-    packageJSON.scripts[watchScriptName] = getWatchLine(heads[0])
+    packageJSON.scripts[watchConnectScriptName] = getWatchConnectLine(heads[0])
 } else if(heads.length > 1) {
     heads.forEach(injectScripts)
-    packageJSON.scripts[connectScriptName] = allConnectingLine
-    packageJSON.scripts[watchScriptName] = allWatchingLine
+    packageJSON.scripts[connectScriptName] = allConnectLine
+    packageJSON.scripts[watchConnectScriptName] = allWatchConnectLine
 }
 
 //#region injectionFunctions
 function injectScripts(head) {
     injectConnectScript(head)
-    injectWatchScript(head)
+    injectWatchConnectScript(head)
 }
 
 function injectConnectScript(head) {
     const scriptName = "connect-" + head + "-dom"
     packageJSON.scripts[scriptName] = getConnectLine(head)
-    allConnectingLine += " " + scriptName
+    allConnectLine += " " + scriptName
 }
-
-function injectWatchScript(head) {
+function injectWatchConnectScript(head) {
     const scriptName = "watch-connect-" + head + "-dom"
-    packageJSON.scripts[scriptName] = getWatchLine(head)
-    allWatchingLine += " " + scriptName
+    packageJSON.scripts[scriptName] = getWatchConnectLine(head)
+    allWatchConnectLine += " " + scriptName
 }
 
 function getConnectLine(head) {
@@ -54,8 +57,7 @@ function getConnectLine(head) {
     const scriptLine = "implicit-dom-connect "+headPath+" '"+coffeeExpression+"' "+resultPath
     return scriptLine
 }
-
-function getWatchLine(head) {
+function getWatchConnectLine(head) {
     const pugName = "document-head.pug"
     const resultName = head + "domconnect.coffee"
     const headPath = pathModule.resolve(headsPath, head, pugName)

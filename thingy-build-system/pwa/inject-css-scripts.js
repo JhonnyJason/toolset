@@ -10,15 +10,22 @@ const dirtyCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/dirty"
 const cleanCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/clean")
 const purgedCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/purged")
 
+
 const packageJSONPath = pathModule.resolve(process.cwd(), "package.json") 
 const headsPath = pathModule.resolve("sources/page-heads")
-var heads = fs.readdirSync(headsPath)
 
+
+//#region usedVariables
+var heads = fs.readdirSync(headsPath)
 var packageJSON = require(packageJSONPath)
+
 const cleanScriptName = "clean-css"
 const purgeScriptName = "purge-css"
+
 var allCleaningLine = "run-p"
 var allPurgingLine = "run-p"
+
+//#endregion
 
 if(heads.length == 1) {
     packageJSON.scripts[cleanScriptName] = getCleanCSSLine(heads[0])
@@ -40,7 +47,6 @@ function injectCleanCSSScript(head) {
     packageJSON.scripts[scriptName] = getCleanCSSLine(head)
     allCleaningLine += " " + scriptName
 }
-
 function injectPurgeCSSScript(head) {
     const scriptName = "purge-" + head + "-css"
     packageJSON.scripts[scriptName] = getPurgeCSSLine(head)
@@ -54,7 +60,6 @@ function getCleanCSSLine(head) {
     const scriptLine = "cleancss -O2 'specialComments:0' " + sourcePath +  " --output " + destPath 
     return scriptLine
 }
-
 function getPurgeCSSLine(head) {
     const cssName = head + ".css"
     const sourcePath = pathModule.resolve(cleanCSSPath, cssName)

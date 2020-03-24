@@ -29,8 +29,12 @@ const linkerScript = "sources/ressources/linkerscript.sh"
 
 const base = "toolset/thingy-build-system/pwa/"
 const createCertsScript = base + "create-certificates.sh"
+const injectAllScriptsScript = base + "inject-all-scripts.js"
 const injectCssScriptsScript = base + "inject-css-scripts.js"
 const injectDOMConnectScriptsScript = base + "inject-dom-connect-scripts.js"
+const injectBundleScriptsScript = base + "inject-bundle-scripts.js"
+const injectPugScriptsScript = base + "inject-pug-scripts.js"
+const injectStylusScriptsScript = base + "inject-stylus-scripts.js"
 const buildBrowserSyncConfigScript = base + "rebuild-browser-sync-config.js"
 const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
 const buildWebpackWorkerConfigScript = base + "rebuild-webpack-worker-config.js"
@@ -43,6 +47,8 @@ const createBuildDirectoriesScript = base + "create-build-directories.sh"
 const copyMinifiedHTMLScript = base + "copy-minified-html.sh"
 const copyDeployWorkerScript = base + "copy-deploy-worker.sh"
 const releaseScript = base + "release-script.sh"
+const updateToolsScript = base + "update-tools.sh"
+
 //#endregion
 
 var sourceInfo = null
@@ -60,10 +66,10 @@ module.exports = {
         return {
     
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns create-build-directories inject-css-scripts inject-dom-connect-scripts cert-setup patch-stuff prepare-for-test",
+            "initialize-thingy": "run-s -ns create-build-directories cert-setup patch-stuff inject-scripts prepare-for-test",
             
             //our most called scripts
-            "test": "run-s -ns prepare-for-test watch-for-test",
+            "test": "run-s -ns inject-scripts prepare-for-test watch-for-test",
             "prepare-for-test": "run-s -ns connect-dom create-dev-bundles create-build-heads build-style link-for-test build-pug dev-linkage",
             "dev-linkage": "run-s -ns link-dev-worker link-test-html link-ressources",
             "create-dev-bundles": "run-s -ns build-coffee prepare-webpack dev-bundle dev-worker-bundle", 
@@ -71,7 +77,8 @@ module.exports = {
             
             //for deployment
             "check-deployment": "run-s -ns deployment-build expose-deployment",
-            "deployment-build": "run-s -ns connect-dom create-deployment-bundles create-build-heads create-deployment-css create-deployment-html copy-for-deployment",
+            "deployment-build": "run-s -ns inject-scripts create-deployment-stuff",
+            "create-deployment-stuff": "run-s -ns connect-dom create-deployment-bundles create-build-heads create-deployment-css create-deployment-html copy-for-deployment",
             "create-deployment-html": "run-s -ns link-for-deployment build-pug minify-html",
             "create-deployment-css": "run-s -ns build-style clean-css purge-css",
             "create-deployment-bundles": "run-s -ns build-coffee prepare-webpack deploy-bundle deploy-worker-bundle",
@@ -115,11 +122,19 @@ module.exports = {
             "create-subapp": "run-s -ns \"create-dir-pagehead {1}\" \"create-dir-pageheadsourcemodule {1}\" --",
             
             // external scripts
+            "update-tools": updateToolsScript,
+            
             //general preparation scripts
             "patch-stuff": patchScript,
             "create-build-directories": createBuildDirectoriesScript,
             "create-build-heads": createBuildHeadsScript,
             "create-certs": createCertsScript,
+        
+            //the injection Scripts
+            "inject-scripts": injectAllScriptsScript,
+            "inject-bundle-scripts": injectBundleScriptsScript,
+            "inject-pug-scripts": injectPugScriptsScript,
+            "inject-stylus-scripts": injectStylusScriptsScript,
             "inject-css-scripts": injectCssScriptsScript,
             "inject-dom-connect-scripts": injectDOMConnectScriptsScript,
             
