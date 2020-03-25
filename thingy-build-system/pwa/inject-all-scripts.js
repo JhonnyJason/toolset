@@ -11,7 +11,8 @@ const coffeeExpression = "sources/source/*/*.coffee"
 //#region pathDefinitions
 const configBasePath = pathModule.resolve(process.cwd(), ".build-config/")
 
-
+const contentPath = pathModule.resolve(process.cwd(), "content")
+    
 const pugHeadsBasePath = pathModule.resolve(process.cwd(), "toolset/build/heads/pug/")
 const pugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/html/pretty/")
 
@@ -37,7 +38,8 @@ var heads = fs.readdirSync(headsPath)
 var packageJSON = require(packageJSONPath)
 
 noWorkers = true
-headsWithContent = {}
+noContent = true
+languages = []
 
 //#region scriptNames
 const devBundleScriptName = "dev-bundle"
@@ -90,8 +92,8 @@ if(heads.length == 1) {
     packageJSON.scripts[devBundleScriptName] = getDevBundleLine(heads[0])    
     packageJSON.scripts[watchBundleScriptName] = getWatchBundleLine(heads[0])
 
-    packageJSON.scripts[pugBuildScriptName] = getPugBuildLine(heads[0])
-    packageJSON.scripts[pugWatchScriptName] = getPugWatchLine(heads[0])
+    packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent(heads[0])
+    packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent(heads[0])
 
     packageJSON.scripts[stylusBuildScriptName] = getStylusBuildLine(heads[0])
     packageJSON.scripts[stylusWatchScriptName] = getStylusWatchLine(heads[0])
@@ -170,7 +172,14 @@ function checkWorkers() {
 }
 
 function checkContent() {
-
+    try {
+        fs.accessSync(contentPath, fs.constants.R_OK)
+        noContent = false
+        languages = fs.readdirSync(contentPath).filter((option) => option.charAt(0) != "." )
+        // console.log(languages)
+    } catch (err) {
+        // console.error('No Content');
+    }
 }
 
 //#region injectionFunctions
@@ -222,15 +231,55 @@ function injectWatchWorkerBundleScript(head) {
 }
 
 function injectBuildPugScript(head) {
-    const scriptName = "build-" + head + "-pug"
-    packageJSON.scripts[scriptName] = getPugBuildLine(head)
-    allPugBuildLine += " " + scriptName
+    if(noContent) {
+        injectBuildPugScriptsNoContent(head)
+    } else {
+        injectBuildPugScriptsWithContent(head)
+    }
 }
 function injectWatchPugScript(head) {
+    if(noContent) {
+        injectWatchPugScriptsNoContent(head)
+    } else {
+        injectWatchPugScriptsWithContent(head)
+    }
+}
+function injectBuildPugScriptsWithContent(head) {
+    const scriptName = "build-"+head+"-"+languages[0]+"-pug"
+    packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[0])
+    allPugBuildLine += " " + scriptName    
+
+    //for now we only build one language
+    // for(var i = 0; i < languages.length; i++) {
+    //     let scriptName = "build-"+head+"-"+languages[i]+"-pug"
+    //     packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[i])
+    //     allPugBuildLine += " " + scriptName    
+    // }
+}
+function injectWatchPugScriptsWithContent(head) {
+
+    const scriptName = "watch-"+head+"-"+languages[0]+"-pug"
+    packageJSON.scripts[scriptName] = getPugWatchLineWithContent(head, languages[0])
+    allPugWatchLine += " " + scriptName    
+    
+    //watching is for development only - so we donot need all languages
+    // for(var i = 0; i < languages.length; i++) {
+    //     let scriptName = "watch-"+head+"-"+languages[i]+"-pug"
+    //     packageJSON.scripts[scriptName] = getPugWatchLineWithContent(head, languages[i])
+    //     allPugWatchLine += " " + scriptName    
+    // }
+}
+function injectBuildPugScriptsNoContent(head) {
+    const scriptName = "build-" + head + "-pug"
+    packageJSON.scripts[scriptName] = getPugBuildLineNoContent(head)
+    allPugBuildLine += " " + scriptName
+}
+function injectWatchPugScriptsNoContent(head) {
     const scriptName = "watch-" + head + "-pug"
-    packageJSON.scripts[scriptName] = getPugWatchLine(head)
+    packageJSON.scripts[scriptName] = getPugWatchLineNoContent(head)
     allPugWatchLine += " " + scriptName
 }
+
 
 function injectBuildStyleScript(head) {
     const scriptName = "build-" + head + "-style"
@@ -275,7 +324,11 @@ function getTestLine(head) {
     line += " watch-worker-bundle"
     line += " watch-" + head + "-bundle"
     line += " watch-" + head + "-style"
-    line += " watch-" + head + "-pug"
+    if(noContent) {
+        line += " watch-" + head + "-pug"
+    } else {
+        line += " watch-"+head+"-"+languages[0]+"-pug"
+    }
     line += " expose"
     return line
 }
@@ -305,13 +358,29 @@ function getWatchWorkerBundleLine(head) {
     return scriptLine
 }
 
-function getPugBuildLine(head) {
+function getPugBuildLineWithContent(head, langTag) {
+    const headFileName = head+".pug"
+    const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
+    const contentFileName = head+".json"
+    const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
+    const scriptLine = "pug "+headFilePath+" -o "+pugOutputBasePath+" --pretty --obj "+contentFilePath 
+    return scriptLine
+}
+function getPugWatchLineWithContent(head, langTag) {
+    const headFileName = head+".pug"
+    const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
+    const contentFileName = head+".json"
+    const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
+    const scriptLine = "pug -w "+headFilePath+" -o "+pugOutputBasePath+" --pretty --obj "+contentFilePath 
+    return scriptLine
+}
+function getPugBuildLineNoContent(head) {
     const headFileName = head+".pug"
     const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
     const scriptLine = "pug "+headFilePath+" -o "+pugOutputBasePath+" --pretty" 
     return scriptLine
 }
-function getPugWatchLine(head) {
+function getPugWatchLineNoContent(head) {
     const headFileName = head+".pug"
     const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
     const scriptLine = "pug -w "+headFilePath+" -o "+pugOutputBasePath+" --pretty" 
