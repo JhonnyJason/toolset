@@ -27,7 +27,7 @@ languages = []
 checkContent()
 heads.forEach(generateTemplatizedViews)
 
-
+//#region sideFunctions
 function checkContent() {
     try {
         fs.accessSync(contentPath, fs.constants.R_OK)
@@ -39,7 +39,6 @@ function checkContent() {
     }
 }
 
-//#region injectionFunctions
 function generateTemplatizedViews(head) {
     const pugFileName = head+".pug"
     const pugHeadPath = pathModule.resolve(pugHeadsBasePath, pugFileName)
@@ -65,7 +64,7 @@ function generateTemplatizedViews(head) {
     }
 
 
-    const outputFileName = head+".mustache"
+    const outputFileName = head+"-mustache-keys.json"
     const outputFilePath = pathModule.resolve(pugOutputBasePath, outputFileName)
     const outputFileString = JSON.stringify(mustacheObject, null, 4) 
     fs.writeFile(outputFilePath, outputFileString, () => 0)
@@ -77,6 +76,7 @@ function generateTemplatizedViews(head) {
 
     // throw("death on purpose")
 }
+
 
 function createNextLevelObject(pageContentObject) {
     if(Array.isArray(pageContentObject)){
@@ -91,12 +91,15 @@ function handleNextLevel(prefix, mustacheObject, thisContent) {
     var nextPrefix = ""
     
     for(var i = 0; i < nextLevelKeys.length; i++) {
-        
-        if(Array.isArray(thisContent)) {
-             nextPrefix = prefix+"["+nextLevelKeys[i]+"]"
-        } else {
-            nextPrefix = prefix+"."+nextLevelKeys[i]
-        }
+
+        //mustache needs the keys in this way xD
+        nextPrefix = prefix+"."+nextLevelKeys[i]
+
+        // if(Array.isArray(thisContent)) {
+        //      nextPrefix = prefix+"["+nextLevelKeys[i]+"]"
+        // } else {
+        //     nextPrefix = prefix+"."+nextLevelKeys[i]
+        // }
 
         if(typeof thisContent[nextLevelKeys[i]] == "string") {
             mustacheObject[nextLevelKeys[i]] = "{{{"+nextPrefix+"}}}"
@@ -106,3 +109,4 @@ function handleNextLevel(prefix, mustacheObject, thisContent) {
         }
     }
 }
+//#endregion
