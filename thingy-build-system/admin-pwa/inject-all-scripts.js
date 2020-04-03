@@ -11,17 +11,25 @@ const coffeeExpression = "sources/source/*/*.coffee"
 //#region pathDefinitions
 const configBasePath = pathModule.resolve(process.cwd(), ".build-config/")
 
-const contentPath = pathModule.resolve(process.cwd(), "content")
+const contentPath = pathModule.resolve(process.cwd(), "pwa-content")
     
-const pugHeadsBasePath = pathModule.resolve(process.cwd(), "toolset/build/heads/pug/")
-const pugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/html/pretty/")
+const adminPugHeadsPath = pathModule.resolve(process.cwd(), "toolset/build/heads/admin-pug/")
+const adminPugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/html/pretty/")
+const pwaPugHeadsPath = pathModule.resolve(process.cwd(), "toolset/build/heads/pwa-pug/")
+const pwaPugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/html/pwa/")
 
-const stylusHeadsBasePath = pathModule.resolve(process.cwd(), "toolset/build/heads/styl/")
-const stylusOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/css/dirty/")
 
-const dirtyCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/dirty")
-const cleanCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/clean")
-const purgedCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/purged")
+const stylusAdminHeadsBasePath = pathModule.resolve(process.cwd(), "toolset/build/heads/admin-styl/")
+const stylusAdminOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/css/admin-dirty/")
+const stylusPWAHeadsBasePath = pathModule.resolve(process.cwd(), "toolset/build/heads/pwa-styl/")
+const stylusPWAOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/css/pwa-dirty/")
+
+const dirtyAdminCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/admin-dirty")
+const cleanAdminCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/admin-clean")
+const purgedAdminCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/admin-purged")
+const dirtyPWACSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/pwa-dirty")
+const cleanPWACSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/pwa-clean")
+const purgedPWACSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/pwa-purged")
 
 const jsPath = pathModule.resolve(process.cwd(), "toolset/build/js")
 
@@ -30,11 +38,13 @@ const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js
 
 const packageJSONPath = pathModule.resolve(process.cwd(), "package.json") 
 const headsPath = pathModule.resolve("sources/page-heads")
+const pwaHeadsPath = pathModule.resolve("pwa-sources/page-heads")
 
 //#endregion 
 
 //#region usedVariables
 var heads = fs.readdirSync(headsPath)
+var pwaHeads = fs.readdirSync(pwaHeadsPath)
 var packageJSON = require(packageJSONPath)
 
 noWorkers = true
@@ -49,15 +59,21 @@ const watchWorkerBundleScriptName = "watch-worker-bundle"
 
 const pugBuildScriptName = "build-pug"
 const pugWatchScriptName = "watch-pug"
+const pugPWABuildScriptName = "build-pwa-pug"
 
 const stylusBuildScriptName = "build-style"
 const stylusWatchScriptName = "watch-style"
+
+const stylusPWABuildScriptName = "build-pwa-style"
 
 const connectScriptName = "connect-dom"
 const watchConnectScriptName = "watch-connect-dom"
 
 const cleanScriptName = "clean-css"
 const purgeScriptName = "purge-css"
+
+const cleanPWAScriptName = "clean-pwa-css"
+const purgePWAScriptName = "purge-pwa-css"
 
 //#endregion
 
@@ -69,16 +85,19 @@ var allWatchWorkerBundleLine = "run-p"
 
 var allPugBuildLine = "run-p"
 var allPugWatchLine = "run-p"
+var allPugPWABuildLine = "run-p"
 
 var allStylusBuildLine = "run-p"
 var allStylusWatchLine = "run-p"
+var allStylusPWABuildLine = "run-p"
 
 var allConnectLine = "run-p"
 var allWatchConnectLine = "run-p"
 
 var allCleaningLine = "run-p"
 var allPurgingLine = "run-p"
-
+var allPWACleaningLine = "run-p"
+var allPWAPurgingLine = "run-p"
 //#endregion
 
 //#endregion
@@ -92,8 +111,13 @@ if(heads.length == 1) {
     packageJSON.scripts[devBundleScriptName] = getDevBundleLine(heads[0])    
     packageJSON.scripts[watchBundleScriptName] = getWatchBundleLine(heads[0])
 
-    packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent(heads[0])
-    packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent(heads[0])
+    if(noContent) {
+        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent(heads[0])
+        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent(heads[0])    
+    } else {
+        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent(heads[0], languages[0])
+        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent(heads[0], languages[0])    
+    }
 
     packageJSON.scripts[stylusBuildScriptName] = getStylusBuildLine(heads[0])
     packageJSON.scripts[stylusWatchScriptName] = getStylusWatchLine(heads[0])
@@ -123,6 +147,32 @@ if(heads.length == 1) {
     packageJSON.scripts[purgeScriptName] = allPurgingLine    
 
 }
+
+
+if(pwaHeads.length == 1) {
+    packageJSON.scripts[stylusPWABuildScriptName] = getStylusPWABuildLine(pwaHeads[0])
+
+    packageJSON.scripts[cleanPWAScriptName] = getCleanPWACSSLine(pwaHeads[0])
+    packageJSON.scripts[purgePWAScriptName] = getPurgePWACSSLine(pwaHeads[0])    
+
+    if(noContent) {
+        packageJSON.scripts[pugPWABuildScriptName] = getPugPWABuildLineNoContent(pwaHeads[0])
+    } else {
+        packageJSON.scripts[pugPWABuildScriptName] = getPugPWABuildLineWithContent(pwaHeads[0], languages[0])
+    }
+
+} else if(pwaHeads.length > 1) {
+    pwaHeads.forEach(injectPWAScripts)
+
+    packageJSON.scripts[stylusPWABuildScriptName] = allStylusPWABuildLine
+    
+    packageJSON.scripts[cleanPWAScriptName] = allPWACleaningLine
+    packageJSON.scripts[purgePWAScriptName] = allPWAPurgingLine    
+
+    packageJSON.scripts[pugPWABuildScriptName] = allPugPWABuildLine
+
+}
+
 
 //#region handleWorkerBundles
 //TODO handle worker bundles somehow...
@@ -203,6 +253,16 @@ function injectScripts(head) {
 
 }
 
+function injectPWAScripts(head) {
+
+    injectBuildPWAStyleScript(head)
+
+    injectCleanPWACSSScript(head)
+    injectPurgePWACSSScript(head)
+
+    injectBuildPWAPugScript(head)
+}
+
 function injectTestScripts(head) {
     const scriptName = head + "-test"
     packageJSON.scripts[scriptName] = getTestLine(head)
@@ -244,6 +304,13 @@ function injectWatchPugScript(head) {
         injectWatchPugScriptsWithContent(head)
     }
 }
+function injectBuildPWAPugScript(head) {
+    if(noContent) {
+        injectBuildPWAPugScriptsNoContent(head)
+    } else {
+        injectBuildPWAPugScriptsWithContent(head)
+    }
+}
 function injectBuildPugScriptsWithContent(head) {
     const scriptName = "build-"+head+"-"+languages[0]+"-pug"
     packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[0])
@@ -269,6 +336,18 @@ function injectWatchPugScriptsWithContent(head) {
     //     allPugWatchLine += " " + scriptName    
     // }
 }
+function injectBuildPWAPugScriptsWithContent(head) {
+    const scriptName = "build-pwa-"+head+"-"+languages[0]+"-pug"
+    packageJSON.scripts[scriptName] = getPugPWABuildLineWithContent(head, languages[0])
+    allPugPWABuildLine += " " + scriptName    
+
+    //for now we only build one language
+    // for(var i = 0; i < languages.length; i++) {
+    //     let scriptName = "build-"+head+"-"+languages[i]+"-pug"
+    //     packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[i])
+    //     allPugBuildLine += " " + scriptName    
+    // }
+}
 function injectBuildPugScriptsNoContent(head) {
     const scriptName = "build-" + head + "-pug"
     packageJSON.scripts[scriptName] = getPugBuildLineNoContent(head)
@@ -279,7 +358,11 @@ function injectWatchPugScriptsNoContent(head) {
     packageJSON.scripts[scriptName] = getPugWatchLineNoContent(head)
     allPugWatchLine += " " + scriptName
 }
-
+function injectBuildPWAPugScriptsNoContent(head) {
+    const scriptName = "build-pwa-" + head + "-pug"
+    packageJSON.scripts[scriptName] = getPugPWABuildLineNoContent(head)
+    allPugPWABuildLine += " " + scriptName
+}
 
 function injectBuildStyleScript(head) {
     const scriptName = "build-" + head + "-style"
@@ -290,6 +373,11 @@ function injectWatchStyleScript(head) {
     const scriptName = "watch-" + head + "-style"
     packageJSON.scripts[scriptName] = getStylusWatchLine(head)
     allStylusWatchLine += " " + scriptName
+}
+function injectBuildPWAStyleScript(head) {
+    const scriptName = "build-pwa-" + head + "-style"
+    packageJSON.scripts[scriptName] = getStylusPWABuildLine(head)
+    allStylusPWABuildLine += " " + scriptName
 }
 
 function injectConnectScript(head) {
@@ -312,6 +400,16 @@ function injectPurgeCSSScript(head) {
     const scriptName = "purge-" + head + "-css"
     packageJSON.scripts[scriptName] = getPurgeCSSLine(head)
     allPurgingLine += " " + scriptName
+}
+function injectCleanPWACSSScript(head) {
+    const scriptName = "clean-pwa-" + head + "-css"
+    packageJSON.scripts[scriptName] = getCleanPWACSSLine(head)
+    allPWACleaningLine += " " + scriptName
+}
+function injectPurgePWACSSScript(head) {
+    const scriptName = "purge-pwa-" + head + "-css"
+    packageJSON.scripts[scriptName] = getPurgePWACSSLine(head)
+    allPWAPurgingLine += " " + scriptName
 }
 
 //#endregion
@@ -360,43 +458,63 @@ function getWatchWorkerBundleLine(head) {
 
 function getPugBuildLineWithContent(head, langTag) {
     const headFileName = head+".pug"
-    const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
+    const headFilePath = pathModule.resolve(adminPugHeadsPath, headFileName)
     const contentFileName = head+".json"
     const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
-    const scriptLine = "pug "+headFilePath+" -o "+pugOutputBasePath+" --pretty --obj "+contentFilePath 
+    const scriptLine = "pug "+headFilePath+" -o "+adminPugOutputBasePath+" --pretty --obj "+contentFilePath 
     return scriptLine
 }
 function getPugWatchLineWithContent(head, langTag) {
     const headFileName = head+".pug"
-    const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
+    const headFilePath = pathModule.resolve(adminPugHeadsPath, headFileName)
     const contentFileName = head+".json"
     const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
-    const scriptLine = "pug -w "+headFilePath+" -o "+pugOutputBasePath+" --pretty --obj "+contentFilePath 
+    const scriptLine = "pug -w "+headFilePath+" -o "+adminPugOutputBasePath+" --pretty --obj "+contentFilePath 
+    return scriptLine
+}
+function getPugPWABuildLineWithContent(head, langTag) {
+    const headFileName = head+".pug"
+    const headFilePath = pathModule.resolve(pwaPugHeadsPath, headFileName)
+    const contentFileName = head+".json"
+    const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
+    const scriptLine = "pug "+headFilePath+" -o "+pwaPugOutputBasePath+" --pretty --obj "+contentFilePath 
     return scriptLine
 }
 function getPugBuildLineNoContent(head) {
     const headFileName = head+".pug"
-    const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
-    const scriptLine = "pug "+headFilePath+" -o "+pugOutputBasePath+" --pretty" 
+    const headFilePath = pathModule.resolve(adminPugHeadsPath, headFileName)
+    const scriptLine = "pug "+headFilePath+" -o "+adminPugOutputBasePath+" --pretty" 
     return scriptLine
 }
 function getPugWatchLineNoContent(head) {
     const headFileName = head+".pug"
-    const headFilePath = pathModule.resolve(pugHeadsBasePath, headFileName)
-    const scriptLine = "pug -w "+headFilePath+" -o "+pugOutputBasePath+" --pretty" 
+    const headFilePath = pathModule.resolve(adminPugHeadsPath, headFileName)
+    const scriptLine = "pug -w "+headFilePath+" -o "+adminPugOutputBasePath+" --pretty" 
+    return scriptLine
+}
+function getPugBuildLineNoContent(head) {
+    const headFileName = head+".pug"
+    const headFilePath = pathModule.resolve(pwaPugHeadsPath, headFileName)
+    const scriptLine = "pug "+headFilePath+" -o "+pwaPugOutputBasePath+" --pretty" 
     return scriptLine
 }
 
 function getStylusBuildLine(head) {
     const headFileName = head+".styl"
-    const headFilePath = pathModule.resolve(stylusHeadsBasePath, headFileName)
-    const scriptLine = "stylus "+headFilePath+" -o "+stylusOutputBasePath+" --include-css" 
+    const headFilePath = pathModule.resolve(stylusAdminHeadsBasePath, headFileName)
+    const scriptLine = "stylus "+headFilePath+" -o "+stylusAdminOutputBasePath+" --include-css" 
     return scriptLine
 }
 function getStylusWatchLine(head) {
     const headFileName = head+".styl"
-    const headFilePath = pathModule.resolve(stylusHeadsBasePath, headFileName)
-    const scriptLine = "stylus -w "+headFilePath+" -o "+stylusOutputBasePath+" --include-css" 
+    const headFilePath = pathModule.resolve(stylusAdminHeadsBasePath, headFileName)
+    const scriptLine = "stylus -w "+headFilePath+" -o "+stylusAdminOutputBasePath+" --include-css" 
+    return scriptLine
+}
+function getStylusPWABuildLine(head) {
+    const headFileName = head+".styl"
+    const headFilePath = pathModule.resolve(stylusPWAHeadsBasePath, headFileName)
+    const scriptLine = "stylus "+headFilePath+" -o "+stylusPWAOutputBasePath+" --include-css" 
     return scriptLine
 }
 
@@ -419,17 +537,32 @@ function getWatchConnectLine(head) {
 
 function getCleanCSSLine(head) {
     const cssName = head + ".css"
-    const sourcePath = pathModule.resolve(dirtyCSSPath, cssName)
-    const destPath = pathModule.resolve(cleanCSSPath, cssName)
+    const sourcePath = pathModule.resolve(dirtyAdminCSSPath, cssName)
+    const destPath = pathModule.resolve(cleanAdminCSSPath, cssName)
     const scriptLine = "cleancss -O2 'specialComments:0' " + sourcePath +  " --output " + destPath 
     return scriptLine
 }
 function getPurgeCSSLine(head) {
     const cssName = head + ".css"
-    const sourcePath = pathModule.resolve(cleanCSSPath, cssName)
+    const sourcePath = pathModule.resolve(cleanAdminCSSPath, cssName)
     const htmlName = head + ".html"
     const contentPath = pathModule.resolve(process.cwd(), "toolset/build/html/pretty", htmlName)
-    const scriptLine = "purgecss --css " + sourcePath + " --content " + contentPath + " --output " + purgedCSSPath 
+    const scriptLine = "purgecss --css " + sourcePath + " --content " + contentPath + " --output " + purgedAdminCSSPath 
+    return scriptLine
+}
+function getCleanPWACSSLine(head) {
+    const cssName = head + ".css"
+    const sourcePath = pathModule.resolve(dirtyPWACSSPath, cssName)
+    const destPath = pathModule.resolve(cleanPWACSSPath, cssName)
+    const scriptLine = "cleancss -O2 'specialComments:0' " + sourcePath +  " --output " + destPath 
+    return scriptLine
+}
+function getPurgePWACSSLine(head) {
+    const cssName = head + ".css"
+    const sourcePath = pathModule.resolve(cleanPWACSSPath, cssName)
+    const htmlName = head + ".html"
+    const contentPath = pathModule.resolve(process.cwd(), "toolset/build/html/pwa", htmlName)
+    const scriptLine = "purgecss --css " + sourcePath + " --content " + contentPath + " --output " + purgedPWACSSPath 
     return scriptLine
 }
 

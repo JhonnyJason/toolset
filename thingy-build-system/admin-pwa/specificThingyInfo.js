@@ -18,6 +18,11 @@ const webpackWatchWorkerConfig = ".build-config/webpack-watch-worker.config.js"
 const webpackDeployConfig = ".build-config/webpack-deploy.config.js"
 const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js"
 
+//pwa paths
+const jsDestPWA = "toolset/build/pwa-js"
+const coffeeSourcePWA = "pwa-sources/source/*/*.coffee"
+const webpackPWAConfig = ".build-config/webpack-pwa.config.js"
+
 const stylusHeads = "toolset/build/heads/styl/*"
 const dirtyCssDest = "toolset/build/css/dirty/"
 
@@ -27,19 +32,15 @@ const copyScript = "sources/ressources/copyscript.sh"
 const linkerScript = "sources/ressources/linkerscript.sh"
 
 
-const base = "toolset/thingy-build-system/pwa/"
+const base = "toolset/thingy-build-system/admin-pwa/"
 const createCertsScript = base + "create-certificates.sh"
 const injectAllScriptsScript = base + "inject-all-scripts.js"
-const injectCssScriptsScript = base + "inject-css-scripts.js"
-const injectDOMConnectScriptsScript = base + "inject-dom-connect-scripts.js"
-const injectBundleScriptsScript = base + "inject-bundle-scripts.js"
-const injectPugScriptsScript = base + "inject-pug-scripts.js"
-const injectStylusScriptsScript = base + "inject-stylus-scripts.js"
 const buildBrowserSyncConfigScript = base + "rebuild-browser-sync-config.js"
 const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
 const buildWebpackWorkerConfigScript = base + "rebuild-webpack-worker-config.js"
 const linkIncludesForTestingScript = base + "link-for-testing.js"
 const linkIncludesForDeploymentScript = base + "link-for-deployment.js"
+const linkIncludesForPWAScript = base + "link-for-pwa.js"
 const linkDevWorkerScript = base + "link-dev-worker.js"
 const linkDevHtmlScript = base + "link-test-html.js"
 const createBuildHeadsScript = base + "create-build-heads.js"
@@ -61,12 +62,16 @@ try {
 // console.log("sourceInfo is: " + sourceInfo)
 
 module.exports = {
-    type: "pwa",
+    type: "admin-pwa",
     getScripts: () => {
         return {
-    
+            
+            "build-pwa-coffee": "coffee -o " + jsDestPWA + " -c " + coffeeSourcePWA,
+            "pwa-bundle": "webpack-cli --config " + webpackPWAConfig,
+            "build-pwa": "run-s -ns build-pwa-coffee pwa-bundle build-pwa-style link-for-pwa build-pwa-pug clean-pwa-css purge-pwa-css",
+
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns create-build-directories cert-setup patch-stuff inject-scripts prepare-for-test",
+            "initialize-thingy": "run-s -ns create-build-directories cert-setup patch-stuff inject-scripts prepare-for-test build-pwa",
             
             //our most called scripts
             "test": "run-s -ns inject-scripts prepare-for-test watch-for-test",
@@ -132,11 +137,6 @@ module.exports = {
         
             //the injection Scripts
             "inject-scripts": injectAllScriptsScript,
-            "inject-bundle-scripts": injectBundleScriptsScript,
-            "inject-pug-scripts": injectPugScriptsScript,
-            "inject-stylus-scripts": injectStylusScriptsScript,
-            "inject-css-scripts": injectCssScriptsScript,
-            "inject-dom-connect-scripts": injectDOMConnectScriptsScript,
             
             //scropts for building config files
             "rebuild-browser-sync-config": buildBrowserSyncConfigScript,
@@ -149,6 +149,7 @@ module.exports = {
             "link-test-html": linkDevHtmlScript,
             "link-ressources": linkerScript,
             
+            "link-for-pwa": linkIncludesForPWAScript,
             //deployment scripts
             "link-for-deployment": linkIncludesForDeploymentScript,
             "copy-minified-html": copyMinifiedHTMLScript,
