@@ -11,7 +11,8 @@ const coffeeExpression = "sources/source/*/*.coffee"
 //#region pathDefinitions
 const configBasePath = pathModule.resolve(process.cwd(), ".build-config/")
 
-const contentPath = pathModule.resolve(process.cwd(), "pwa-content")
+const adminContentPath = pathModule.resolve(process.cwd(), "content")
+const pwaContentPath = pathModule.resolve(process.cwd(), "pwa-content")
     
 const adminPugHeadsPath = pathModule.resolve(process.cwd(), "toolset/build/heads/admin-pug/")
 const adminPugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/html/pretty/")
@@ -50,6 +51,7 @@ var packageJSON = require(packageJSONPath)
 noWorkers = true
 noContent = true
 languages = []
+pwaLanguages = []
 
 //#region scriptNames
 const devBundleScriptName = "dev-bundle"
@@ -155,11 +157,7 @@ if(pwaHeads.length == 1) {
     packageJSON.scripts[cleanPWAScriptName] = getCleanPWACSSLine(pwaHeads[0])
     packageJSON.scripts[purgePWAScriptName] = getPurgePWACSSLine(pwaHeads[0])    
 
-    if(noContent) {
-        packageJSON.scripts[pugPWABuildScriptName] = getPugPWABuildLineNoContent(pwaHeads[0])
-    } else {
-        packageJSON.scripts[pugPWABuildScriptName] = getPugPWABuildLineWithContent(pwaHeads[0], languages[0])
-    }
+    packageJSON.scripts[pugPWABuildScriptName] = getPugPWABuildLineWithContent(pwaHeads[0], pwaLanguages[0])
 
 } else if(pwaHeads.length > 1) {
     pwaHeads.forEach(injectPWAScripts)
@@ -223,13 +221,15 @@ function checkWorkers() {
 
 function checkContent() {
     try {
-        fs.accessSync(contentPath, fs.constants.R_OK)
+        fs.accessSync(adminContentPath, fs.constants.R_OK)
         noContent = false
-        languages = fs.readdirSync(contentPath).filter((option) => option.charAt(0) != "." )
+        languages = fs.readdirSync(adminContentPath).filter((option) => option.charAt(0) != "." )
         // console.log(languages)
     } catch (err) {
         // console.error('No Content');
     }
+    fs.accessSync(pwaContentPath, fs.constants.R_OK)
+    pwaLanguages = fs.readdirSync(pwaContentPath).filter((option) => option.charAt(0) != "." )
 }
 
 //#region injectionFunctions
@@ -260,7 +260,7 @@ function injectPWAScripts(head) {
     injectCleanPWACSSScript(head)
     injectPurgePWACSSScript(head)
 
-    injectBuildPWAPugScript(head)
+    injectBuildPWAPugScriptsWithContent(head)
 }
 
 function injectTestScripts(head) {
@@ -274,7 +274,7 @@ function injectDevBundleScript(head) {
     packageJSON.scripts[scriptName] = getDevBundleLine(head)
     allDevBundleLine += " " + scriptName
 }
-function injectDevWorkerBunldeScript(head) {
+function injectDevWorkerBundleScript(head) {
     const scriptName = "dev-worker-" + head + "-bundle"
     packageJSON.scripts[scriptName] = getDevWorkerBundleLine(head)
     allDevWorkerBundleLine += " " + scriptName
@@ -304,13 +304,6 @@ function injectWatchPugScript(head) {
         injectWatchPugScriptsWithContent(head)
     }
 }
-function injectBuildPWAPugScript(head) {
-    if(noContent) {
-        injectBuildPWAPugScriptsNoContent(head)
-    } else {
-        injectBuildPWAPugScriptsWithContent(head)
-    }
-}
 function injectBuildPugScriptsWithContent(head) {
     const scriptName = "build-"+head+"-"+languages[0]+"-pug"
     packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[0])
@@ -337,8 +330,8 @@ function injectWatchPugScriptsWithContent(head) {
     // }
 }
 function injectBuildPWAPugScriptsWithContent(head) {
-    const scriptName = "build-pwa-"+head+"-"+languages[0]+"-pug"
-    packageJSON.scripts[scriptName] = getPugPWABuildLineWithContent(head, languages[0])
+    const scriptName = "build-pwa-"+head+"-"+pwaLanguages[0]+"-pug"
+    packageJSON.scripts[scriptName] = getPugPWABuildLineWithContent(head, pwaLanguages[0])
     allPugPWABuildLine += " " + scriptName    
 
     //for now we only build one language
@@ -357,11 +350,6 @@ function injectWatchPugScriptsNoContent(head) {
     const scriptName = "watch-" + head + "-pug"
     packageJSON.scripts[scriptName] = getPugWatchLineNoContent(head)
     allPugWatchLine += " " + scriptName
-}
-function injectBuildPWAPugScriptsNoContent(head) {
-    const scriptName = "build-pwa-" + head + "-pug"
-    packageJSON.scripts[scriptName] = getPugPWABuildLineNoContent(head)
-    allPugPWABuildLine += " " + scriptName
 }
 
 function injectBuildStyleScript(head) {
@@ -460,7 +448,7 @@ function getPugBuildLineWithContent(head, langTag) {
     const headFileName = head+".pug"
     const headFilePath = pathModule.resolve(adminPugHeadsPath, headFileName)
     const contentFileName = head+".json"
-    const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
+    const contentFilePath = pathModule.resolve(adminContentPath, langTag, contentFileName)
     const scriptLine = "pug "+headFilePath+" -o "+adminPugOutputBasePath+" --pretty --obj "+contentFilePath 
     return scriptLine
 }
@@ -468,7 +456,7 @@ function getPugWatchLineWithContent(head, langTag) {
     const headFileName = head+".pug"
     const headFilePath = pathModule.resolve(adminPugHeadsPath, headFileName)
     const contentFileName = head+".json"
-    const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
+    const contentFilePath = pathModule.resolve(adminContentPath, langTag, contentFileName)
     const scriptLine = "pug -w "+headFilePath+" -o "+adminPugOutputBasePath+" --pretty --obj "+contentFilePath 
     return scriptLine
 }
@@ -476,7 +464,7 @@ function getPugPWABuildLineWithContent(head, langTag) {
     const headFileName = head+".pug"
     const headFilePath = pathModule.resolve(pwaPugHeadsPath, headFileName)
     const contentFileName = head+".json"
-    const contentFilePath = pathModule.resolve(contentPath, langTag, contentFileName)
+    const contentFilePath = pathModule.resolve(pwaContentPath, langTag, contentFileName)
     const scriptLine = "pug "+headFilePath+" -o "+pwaPugOutputBasePath+" --pretty --obj "+contentFilePath 
     return scriptLine
 }
@@ -490,12 +478,6 @@ function getPugWatchLineNoContent(head) {
     const headFileName = head+".pug"
     const headFilePath = pathModule.resolve(adminPugHeadsPath, headFileName)
     const scriptLine = "pug -w "+headFilePath+" -o "+adminPugOutputBasePath+" --pretty" 
-    return scriptLine
-}
-function getPugBuildLineNoContent(head) {
-    const headFileName = head+".pug"
-    const headFilePath = pathModule.resolve(pwaPugHeadsPath, headFileName)
-    const scriptLine = "pug "+headFilePath+" -o "+pwaPugOutputBasePath+" --pretty" 
     return scriptLine
 }
 
