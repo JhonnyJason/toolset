@@ -15,6 +15,7 @@ const patchScript = "sources/patches/patch-stuff.sh"
 const copyScript = "sources/ressources/copyscript.sh"
 
 const base = "toolset/thingy-build-system/service/"
+const createCertificatesScript = base + "create-certificates.sh"
 const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
 const releaseScript = base + "release-script.sh"
 const createBuildDirectoriesScript = base + "create-build-directories.sh"
@@ -39,7 +40,7 @@ module.exports = {
     getScripts: () => {
         return {
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns create-build-directories patch-stuff copy-ressources build",
+            "initialize-thingy": "run-s -ns create-build-directories patch-stuff copy-ressources create-cert build",
 
             //webpack Stuff
             "prepare-webpack": "run-s rebuild-webpack-config",
@@ -53,6 +54,7 @@ module.exports = {
             "test-run": "cd output && node service.js",
             
             //helper scripts
+            "create-cert": createCertificatesScript,
             "update-tools": updateToolsScript,
             "rebuild-webpack-config": buildWebpackConfigScript,
             "release-script": releaseScript,
