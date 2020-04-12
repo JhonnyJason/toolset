@@ -229,7 +229,7 @@ function websiteSyncCommands(thingy) {
     rsyncCmd += '--delete --recursive --exclude=".git";'
 
     var gzipCmd = "gzip -rfk "
-    gzipCmd += "/home/"+thingy.homeUser+"/document-root/*;"
+    gzipCmd += "/home/"+thingy.homeUser+"/document-root/*.html;"
 
     return [rsyncCmd, gzipCmd]
 }
