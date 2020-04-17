@@ -71,7 +71,7 @@ module.exports = {
             "build-pwa": "run-s -ns build-pwa-coffee pwa-bundle build-pwa-style link-for-pwa build-pwa-pug clean-pwa-css purge-pwa-css",
 
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns create-build-directories cert-setup patch-stuff inject-scripts prepare-for-test build-pwa",
+            "initialize-thingy": "run-s -ns create-build-directories cert-setup patch-stuff inject-scripts build-pwa prepare-for-test",
             
             //our most called scripts
             "test": "run-s -ns inject-scripts prepare-for-test watch-for-test",

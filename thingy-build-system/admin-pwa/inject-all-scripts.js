@@ -17,7 +17,7 @@ const pwaContentPath = pathModule.resolve(process.cwd(), "pwa-content")
 const adminPugHeadsPath = pathModule.resolve(process.cwd(), "toolset/build/heads/admin-pug/")
 const adminPugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/html/pretty/")
 const pwaPugHeadsPath = pathModule.resolve(process.cwd(), "toolset/build/heads/pwa-pug/")
-const pwaPugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/html/pwa/")
+const pwaPugOutputBasePath = pathModule.resolve(process.cwd(), "toolset/build/js/")
 
 
 const stylusAdminHeadsBasePath = pathModule.resolve(process.cwd(), "toolset/build/heads/admin-styl/")
@@ -133,20 +133,33 @@ if(heads.length == 1) {
 } else if(heads.length > 1) {
     heads.forEach(injectScripts)
 
-    packageJSON.scripts[devBundleScriptName] = allDevBundleLine
-    packageJSON.scripts[watchBundleScriptName] = allWatchBundleLine
+    // packageJSON.scripts[devBundleScriptName] = allDevBundleLine
+    // packageJSON.scripts[watchBundleScriptName] = allWatchBundleLine
+    if(noContent) {
+        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent("index")
+        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent("index")    
+    } else {
+        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent("index", languages[0])
+        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent("index", languages[0])    
+    }
 
     packageJSON.scripts[pugBuildScriptName] = allPugBuildLine
     packageJSON.scripts[pugWatchScriptName] = allPugWatchLine
 
-    packageJSON.scripts[stylusBuildScriptName] = allStylusBuildLine
-    packageJSON.scripts[stylusWatchScriptName] = allStylusWatchLine
+    // packageJSON.scripts[stylusBuildScriptName] = allStylusBuildLine
+    // packageJSON.scripts[stylusWatchScriptName] = allStylusWatchLine
+    packageJSON.scripts[stylusBuildScriptName] = getStylusBuildLine("index")
+    packageJSON.scripts[stylusWatchScriptName] = getStylusWatchLine("index")
 
-    packageJSON.scripts[connectScriptName] = allConnectLine
-    packageJSON.scripts[watchConnectScriptName] = allWatchConnectLine
+    // packageJSON.scripts[connectScriptName] = allConnectLine
+    // packageJSON.scripts[watchConnectScriptName] = allWatchConnectLine
+    packageJSON.scripts[connectScriptName] = getConnectLine("index")
+    packageJSON.scripts[watchConnectScriptName] = getWatchConnectLine("index")
 
-    packageJSON.scripts[cleanScriptName] = allCleaningLine
-    packageJSON.scripts[purgeScriptName] = allPurgingLine    
+    // packageJSON.scripts[cleanScriptName] = allCleaningLine
+    // packageJSON.scripts[purgeScriptName] = allPurgingLine    
+    packageJSON.scripts[cleanScriptName] = getCleanCSSLine("index")
+    packageJSON.scripts[purgeScriptName] = getPurgeCSSLine("index")    
 
 }
 
@@ -236,20 +249,20 @@ function checkContent() {
 function injectScripts(head) {
     injectTestScripts(head)
 
-    injectDevBundleScript(head)
-    injectWatchBundleScript(head)
+    // injectDevBundleScript(head)
+    // injectWatchBundleScript(head)
 
     injectBuildPugScript(head)
     injectWatchPugScript(head)
 
-    injectBuildStyleScript(head)
-    injectWatchStyleScript(head)
+    // injectBuildStyleScript(head)
+    // injectWatchStyleScript(head)
 
-    injectConnectScript(head)
-    injectWatchConnectScript(head)
+    // injectConnectScript(head)
+    // injectWatchConnectScript(head)
 
-    injectCleanCSSScript(head)
-    injectPurgeCSSScript(head)
+    // injectCleanCSSScript(head)
+    // injectPurgeCSSScript(head)
 
 }
 
@@ -461,11 +474,11 @@ function getPugWatchLineWithContent(head, langTag) {
     return scriptLine
 }
 function getPugPWABuildLineWithContent(head, langTag) {
-    const headFileName = head+".pug"
+    const headFileName = head+"body.pug"
     const headFilePath = pathModule.resolve(pwaPugHeadsPath, headFileName)
     const contentFileName = head+".json"
     const contentFilePath = pathModule.resolve(pwaContentPath, langTag, contentFileName)
-    const scriptLine = "pug "+headFilePath+" -o "+pwaPugOutputBasePath+" --pretty --obj "+contentFilePath 
+    const scriptLine = "pug "+headFilePath+" -o "+pwaPugOutputBasePath+" --client"
     return scriptLine
 }
 function getPugBuildLineNoContent(head) {

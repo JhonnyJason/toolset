@@ -4,6 +4,7 @@ const fs = require("fs")
 
 const headsPath = pathModule.resolve("sources/page-heads")
 const pwaHeadsPath = pathModule.resolve("pwa-sources/page-heads")
+const pwaSourcePath = pathModule.resolve("pwa-sources/source")
 const adminPugHeadsPath = pathModule.resolve("toolset/build/heads/admin-pug")
 const pwaPugHeadsPath = pathModule.resolve("toolset/build/heads/pwa-pug")
 
@@ -32,10 +33,10 @@ function writeAdminPugHeadFile(headName)  {
 }
 
 function writePWAPugHeadFile(headName)  {
-    const headPath = pathModule.resolve(pwaHeadsPath, headName, pugHeadFileName)
-    const headsPugHeadFileName = headName + ".pug"
-    const headsHeadPath = pathModule.resolve(pwaPugHeadsPath, headsPugHeadFileName)
-    const relativePath = pathModule.relative(pwaPugHeadsPath, headPath)
+    const pugBodyFileName = headName+"body.pug"
+    const bodyPath = pathModule.resolve(pwaSourcePath, headName, pugBodyFileName)
+    const headsHeadPath = pathModule.resolve(pwaPugHeadsPath, pugBodyFileName)
+    const relativePath = pathModule.relative(pwaPugHeadsPath, bodyPath)
     const includeString = "include " + relativePath
     fs.writeFileSync(headsHeadPath, includeString)
 }
