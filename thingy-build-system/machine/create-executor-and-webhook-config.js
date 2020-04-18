@@ -226,7 +226,7 @@ function websiteSyncCommands(thingy) {
     var rsyncCmd = "rsync "
     rsyncCmd += "/home/"+thingy.homeUser+"/"+thingy.repository+"/ "
     rsyncCmd += "/home/"+thingy.homeUser+"/document-root/ "
-    rsyncCmd += '--delete --recursive --exclude=".git";'
+    rsyncCmd += '--delete --links --recursive --exclude=".git";'
 
     var gzipCmd = "gzip -rfk "
     gzipCmd += "/home/"+thingy.homeUser+"/document-root/*.html;"
