@@ -2,7 +2,7 @@
 const pathModule = require("path")
 const fs = require("fs")
 
-const purgedCssBase = pathModule.resolve("toolset/build/css/pwa-purged")
+const purgedCssBase = pathModule.resolve("toolset/build/css/pwa-clean")
 const pwaBundlesBase = pathModule.resolve("toolset/build/bundles/pwa")
 const includesPath = pathModule.resolve("toolset/build/pwa-includes")
 const pwaIncludesPath = pathModule.resolve("toolset/build/includes")

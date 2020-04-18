@@ -58,6 +58,7 @@ const devBundleScriptName = "dev-bundle"
 const devWorkerBundleScriptName = "dev-worker-bundle"
 const watchBundleScriptName = "watch-bundle"
 const watchWorkerBundleScriptName = "watch-worker-bundle"
+const deployWorkerBundleScriptName = "deploy-worker-bundle"
 
 const pugBuildScriptName = "build-pug"
 const pugWatchScriptName = "watch-pug"
@@ -189,6 +190,7 @@ if(pwaHeads.length == 1) {
 //TODO handle worker bundles somehow...
 packageJSON.scripts[watchWorkerBundleScriptName] = "echo 'no worker support yet!'"    
 packageJSON.scripts[devWorkerBundleScriptName] = "echo 'no worker support yet!'"
+packageJSON.scripts[deployWorkerBundleScriptName] = "echo 'no worker support yet!'"
 
 // injectDevWorkerBunldeScript(head)
 // injectWatchWorkerBundleScript(head)
