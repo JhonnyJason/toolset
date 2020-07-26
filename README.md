@@ -42,14 +42,13 @@ The `specificThingyInfo.js` introduces the type, scripts and dependencies specif
 
 Then `thingy-build-system/<thingyType>/` carries all the helper scripts having too much complexity for our `package.json` and where we donot need it to be a cli used as an npm module.
 
-This way my toolset is currently producing the corresponding `package.json` for 6 `thingyTypes`
+This way my toolset is currently producing the corresponding `package.json` for 5 `thingyTypes`
 
-- app
-- cli
-- machine
 - pwa
+- admin-pwa
+- machine
+- cli
 - service
-- website
 
 # How?
 
