@@ -74,7 +74,6 @@ function generateTemplatizedViews(head) {
     // console.log(contentFilePath)
     // console.log(outputFilePath)
 
-    // throw("death on purpose")
 }
 
 
