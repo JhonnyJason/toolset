@@ -1,6 +1,9 @@
 const fs = require("fs")
 const pathModule = require("path")
 
+//############################################################
+//#region pathDefinitions
+
 const configPath = "sources/machine-config.js"
 const keysPath = "output/keys"
 const serviceFilesPath = "output/service-files"
@@ -20,6 +23,10 @@ const inspectInstallScript = base + "build-and-inspect.sh"
 const createFoldersScript = base + "create-folders.sh"
 
 const createexecutorAndWebhookConfigScript = base + "create-executor-and-webhook-config.js"
+
+const updateToolsScript = base + "update-tools.sh"
+
+//#endregion
 
 var sourceInfo = null
 try {
@@ -63,6 +70,8 @@ module.exports = {
 
             "prepare": "run-s -ns create-executor-and-webhook-config prepare-deployment generate-files rebuild-webpack-config copyscript build-installer",
             "release": "run-s -ns prepare release-script",
+            "update-tools": updateToolsScript,
+            
             // testing convenience
 
             // shellscripts to be called
