@@ -69,8 +69,8 @@ module.exports = {
     getDependencies: () => {
         
         var thingyDeps = {
-            "webpack": "^4.44.2",
-            "webpack-cli": "^3.3.12",
+            "webpack": "^5.1.0",
+            "webpack-cli": "^4.0.0",    
         }
 
         if(sourceInfo) {

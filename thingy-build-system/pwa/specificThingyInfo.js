@@ -169,8 +169,8 @@ module.exports = {
             "pug-cli": "^1.0.0-alpha6",
             "purgecss": "^3.0.0",
             "stylus": "^0.54.8",
-            "webpack": "^4.44.2",
-            "webpack-cli": "^3.3.12",
+            "webpack": "^5.1.0",
+            "webpack-cli": "^4.0.0",    
         }
 
         if(sourceInfo) {

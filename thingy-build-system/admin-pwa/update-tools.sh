@@ -1,7 +1,7 @@
 #!/bin/bash
 npm run pull
 cd toolset
-./prepareThingyForPwa.pl
+./prepareThingyForAdminPwa.pl
 cd ..
 npm install
 
