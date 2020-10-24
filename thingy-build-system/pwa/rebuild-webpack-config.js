@@ -38,7 +38,6 @@ for(var i = 0; i < heads.length; i++) {
 //#region defineConfigFiles
 //#region adjustDevConfig
 devConfig.mode = "development" 
-devConfig.devtool = "none"
 devConfig.context = process.cwd()
 devConfig.entry = entries
 if(!devConfig.output) devConfig.output = {}
@@ -48,7 +47,6 @@ devConfig.output.path = pathModule.resolve(bundlePath, "dev")
 
 //#region adjustWatchConfig
 watchConfig.mode = "development"
-watchConfig.devtool = "none"
 watchConfig.context = process.cwd()
 watchConfig.watch = true
 watchConfig.entry = entries
