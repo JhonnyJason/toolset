@@ -34,7 +34,6 @@ try {watchConfig = require(watchConfigPath)} catch(error) {}
 //############################################################
 //#region defineConfigFiles
 config = {
-    devtool: "none",
     target: "node",
     entry: entryPath,
     context: process.cwd(),
