@@ -27,7 +27,7 @@ try {
 // console.log("sourceInfo is: " + sourceInfo)
 
 module.exports = {
-    type: "cli",
+    type: "package",
     getScripts: () => {
         return {
             //general Base expects this script and calls it on postinstall
@@ -53,7 +53,6 @@ module.exports = {
             "sync-versions": syncVersionsScript,
             "update-tools": updateToolsScript,
             "update-cli-packages": updatePackagesScript,
-            "prepend-shebang": prependShebangScript,
             "publish-script": publishScript,
             "clean-package": cleanPackageScript,
             "install-node-modules": installNodeModulesScript,
