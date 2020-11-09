@@ -3,7 +3,7 @@ rm -r output/node_modules
 rm output/package-lock.json
 
 cd output
-../node_modules/npm-check-updates/bin/ncu -u
+../node_modules/npm-check-updates/bin/cli.js -u
 npm install
 cd ..
 

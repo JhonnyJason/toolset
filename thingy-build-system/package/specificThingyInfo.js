@@ -52,7 +52,7 @@ module.exports = {
             "inc-versions": incVersionsScript,
             "sync-versions": syncVersionsScript,
             "update-tools": updateToolsScript,
-            "update-cli-packages": updatePackagesScript,
+            "update-package-packages": updatePackagesScript,
             "publish-script": publishScript,
             "clean-package": cleanPackageScript,
             "install-node-modules": installNodeModulesScript,
