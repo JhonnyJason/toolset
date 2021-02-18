@@ -56,6 +56,17 @@ devConfig.entry = entries
 if(!devConfig.output) devConfig.output = {}
 devConfig.output.filename = "[name].js"
 devConfig.output.path = pathModule.resolve(bundlePath, "dev")
+devConfig.fallback = {
+    "fs": false,
+    "tls": false,
+    "net": false,
+    "path": false,
+    "zlib": false,
+    "http": false,
+    "https": false,
+    "stream": false,
+    "crypto": false 
+}
 //#endregion
 
 //#region adjustWatchConfig
@@ -66,6 +77,17 @@ watchConfig.entry = entries
 if(!watchConfig.output) watchConfig.output = {}
 watchConfig.output.filename = "[name].js"
 watchConfig.output.path = pathModule.resolve(bundlePath, "dev")
+watchConfig.fallback = {
+    "fs": false,
+    "tls": false,
+    "net": false,
+    "path": false,
+    "zlib": false,
+    "http": false,
+    "https": false,
+    "stream": false,
+    "crypto": false 
+}
 //#endregion
 
 //#region adjustDeployConfig
@@ -75,6 +97,17 @@ deployConfig.entry = entries
 if(!deployConfig.output) deployConfig.output = {}
 deployConfig.output.filename = "[name].js"
 deployConfig.output.path = pathModule.resolve(bundlePath, "deploy")
+deployConfig.fallback = {
+    "fs": false,
+    "tls": false,
+    "net": false,
+    "path": false,
+    "zlib": false,
+    "http": false,
+    "https": false,
+    "stream": false,
+    "crypto": false 
+}
 //#endregion
 
 //#region adjustPWAConfig
@@ -84,6 +117,17 @@ pwaConfig.entry = pwaJSEntries
 if(!pwaConfig.output) pwaConfig.output = {}
 pwaConfig.output.filename = "[name].js"
 pwaConfig.output.path = pathModule.resolve(bundlePath, "pwa")
+pwaConfig.fallback = {
+    "fs": false,
+    "tls": false,
+    "net": false,
+    "path": false,
+    "zlib": false,
+    "http": false,
+    "https": false,
+    "stream": false,
+    "crypto": false 
+}
 //#endregion
 
 //#endregion
