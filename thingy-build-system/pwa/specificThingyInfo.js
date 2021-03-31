@@ -163,14 +163,14 @@ module.exports = {
         
         var thingyDeps = {
             "browser-sync": "^2.26.14",
-            "clean-css-cli": "^5.2.1",
+            "clean-css-cli": "^5.2.2",
             "html-minifier": "^4.0.0",
             "implicit-dom-connect": "^0.2.3",
             "pug-cli": "^1.0.0-alpha6",
-            "purgecss": "^4.0.2",
+            "purgecss": "^4.0.3",
             "stylus": "^0.54.8",
-            "webpack": "^5.24.4",
-            "webpack-cli": "^4.5.0",    
+            "webpack": "^5.28.0",
+            "webpack-cli": "^4.6.0",    
         }
 
         if(sourceInfo) {

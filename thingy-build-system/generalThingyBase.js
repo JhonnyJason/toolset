@@ -101,7 +101,7 @@ const getHomepage = (remoteURL) => {
 const getBaseDependencies = ()  => {
     return {
         "coffeescript": "^2.5.1",
-        "npm-check-updates": "^11.2.0",
+        "npm-check-updates": "^11.3.0",
         "npm-run-all": "^4.1.5",
         "thingy-allmodules-sync": "^0.1.3",
         "thingy-module-gen": "^0.1.4",
