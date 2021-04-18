@@ -45,6 +45,7 @@ devConfig.output.filename = "[name].js"
 devConfig.output.path = pathModule.resolve(bundlePath, "dev")
 devConfig.resolve = { 
     "fallback": {
+        "buffer": false,
         "fs": false,
         "tls": false,
         "net": false,
@@ -68,6 +69,7 @@ watchConfig.output.filename = "[name].js"
 watchConfig.output.path = pathModule.resolve(bundlePath, "dev")
 watchConfig.resolve = { 
     "fallback": {
+        "buffer": false,
         "fs": false,
         "tls": false,
         "net": false,
@@ -90,6 +92,7 @@ deployConfig.output.filename = "[name].js"
 deployConfig.output.path = pathModule.resolve(bundlePath, "deploy")
 deployConfig.resolve = { 
     "fallback": {
+        "buffer": false,
         "fs": false,
         "tls": false,
         "net": false,
