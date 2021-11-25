@@ -40,10 +40,10 @@ module.exports = {
     getScripts: () => {
         return {
             //general Base expects this script and calls it on postinstall
-            "initialize-thingy": "run-s -ns create-build-directories patch-stuff copy-ressources create-cert build",
+            "initialize-thingy": "run-s -ns create-build-directories copy-ressources create-cert build",
 
             //webpack Stuff
-            "prepare-webpack": "run-s rebuild-webpack-config",
+            "prepare-webpack": "run-s rebuild-webpack-config patch-stuff",
             "bundle": "webpack-cli --config " + webpackDeployConfig,
             "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
 
