@@ -88,7 +88,7 @@ module.exports = {
         
         var thingyDeps = {
             "mustache": "^4.2.0",
-            "webpack": "^5.64.4",
+            "webpack": "^5.66.0",
             "webpack-cli": "^4.9.1",    
             "generate-nginx-config-for-thingies": "^0.1.9",
             "generate-service-files-for-thingies": "^0.1.4",
