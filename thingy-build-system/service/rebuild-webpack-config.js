@@ -39,7 +39,7 @@ config = {
     context: process.cwd(),
     output: {
         filename: 'service.js',
-        path: bundlePath
+        path: bundlePath,
     }
 }
 
