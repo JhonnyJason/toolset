@@ -103,10 +103,11 @@ const getBaseDependencies = ()  => {
         "coffeescript": "^2.6.1",
         "npm-check-updates": "^12.5.9",
         "npm-run-all": "^4.1.5",
-        "thingy-allmodules-sync": "^0.1.4",
+        "thingy-allmodules-sync": "^0.2.0",
         "thingy-module-gen": "^0.1.5",
         "thingymodulecreate": "^0.1.8",
-        "thingysync": "^0.1.2"
+        "thingysync": "^0.1.2",
+        "thingy-debug": "^0.0.1"
     }
 }
 
