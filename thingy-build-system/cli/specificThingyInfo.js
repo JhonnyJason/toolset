@@ -37,7 +37,7 @@ module.exports = {
             // overwrite the general base stuff
             "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
             "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
-            "sync-allmodules": "thingy-allmodules-sync --style require",
+            "sync-allmodules": "thingy-allmodules-sync",
 
             //For testing and building
             // "test": "run-s -ns build watch",
