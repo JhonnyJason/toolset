@@ -37,6 +37,7 @@ const headsPath = pathModule.resolve("sources/page-heads")
 var heads = fs.readdirSync(headsPath)
 var packageJSON = require(packageJSONPath)
 
+language = packageJSON.language
 noWorkers = true
 noContent = true
 languages = []
@@ -96,8 +97,12 @@ if(heads.length == 1) {
         packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent(heads[0])
         packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent(heads[0])    
     } else {
-        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent(heads[0], languages[0])
-        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent(heads[0], languages[0])    
+        if(!language) {
+            language = languages[0]
+        }
+
+        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent(heads[0], language)
+        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent(heads[0], language)    
     }
 
     packageJSON.scripts[stylusBuildScriptName] = getStylusBuildLine(heads[0])
