@@ -37,7 +37,7 @@ const headsPath = pathModule.resolve("sources/page-heads")
 var heads = fs.readdirSync(headsPath)
 var packageJSON = require(packageJSONPath)
 
-language = packageJSON.language
+var language = packageJSON.language
 noWorkers = true
 noContent = true
 languages = []
@@ -86,6 +86,11 @@ var allPurgingLine = "run-p"
 
 // checkWorkers()
 checkContent()
+if(!noContent) {
+    if(!language) {
+        language = languages[0]
+    }
+}
 
 if(heads.length == 1) {
     injectTestScripts(heads[0])
@@ -97,10 +102,6 @@ if(heads.length == 1) {
         packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent(heads[0])
         packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent(heads[0])    
     } else {
-        if(!language) {
-            language = languages[0]
-        }
-
         packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent(heads[0], language)
         packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent(heads[0], language)    
     }
@@ -255,8 +256,8 @@ function injectWatchPugScript(head) {
     }
 }
 function injectBuildPugScriptsWithContent(head) {
-    const scriptName = "build-"+head+"-"+languages[0]+"-pug"
-    packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[0])
+    const scriptName = "build-"+head+"-"+language+"-pug"
+    packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, language)
     allPugBuildLine += " " + scriptName    
 
     //for now we only build one language
@@ -268,8 +269,8 @@ function injectBuildPugScriptsWithContent(head) {
 }
 function injectWatchPugScriptsWithContent(head) {
 
-    const scriptName = "watch-"+head+"-"+languages[0]+"-pug"
-    packageJSON.scripts[scriptName] = getPugWatchLineWithContent(head, languages[0])
+    const scriptName = "watch-"+head+"-"+language+"-pug"
+    packageJSON.scripts[scriptName] = getPugWatchLineWithContent(head, language)
     allPugWatchLine += " " + scriptName    
     
     //watching is for development only - so we donot need all languages
@@ -337,7 +338,7 @@ function getTestLine(head) {
     if(noContent) {
         line += " watch-" + head + "-pug"
     } else {
-        line += " watch-"+head+"-"+languages[0]+"-pug"
+        line += " watch-"+head+"-"+language+"-pug"
     }
     line += " expose"
     return line
