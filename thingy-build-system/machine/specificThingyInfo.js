@@ -38,7 +38,7 @@ try {
 // console.log("sourceInfo is: " + sourceInfo)
 
 module.exports = {
-    type: "machine",
+    thingytype: "machine",
     getScripts: () => {
         return {
             //general Base expects this script and calls it on postinstall

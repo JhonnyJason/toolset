@@ -68,7 +68,7 @@ try {
 // console.log("sourceInfo is: " + sourceInfo)
 
 module.exports = {
-    type: "admin-pwa",
+    thingytype: "admin-pwa",
     getScripts: () => {
         return {
             
