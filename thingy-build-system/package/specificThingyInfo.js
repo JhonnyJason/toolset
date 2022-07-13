@@ -3,6 +3,7 @@ const pathModule = require("path")
 
 const jsDest = "output/"
 const coffeeSource = "sources/source/*/*.coffee"
+const liveSource = "sources/source/*/*.live"
 
 //#region shellscrip paths
 const copyScript = "sources/ressources/copyscript.sh"
@@ -36,12 +37,18 @@ module.exports = {
             // overwrite the general base stuff
             "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
             "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
+
+            "build-live": "lsc -o " + jsDest + " -c " + liveSource,
+            "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
+
+            "copy-all-js": "cp sources/source/*/*.js output/",
+
             "sync-allmodules": "thingy-allmodules-sync",
 
             //For testing and building
             // "test": "run-s -ns build watch",
-            "build": "run-s -ns clean-package build-coffee copyscript install-node-modules",
-            "watch": "run-p -nsr watch-coffee",
+            "build": "run-s -ns clean-package copy-all-js build-live build-coffee copyscript install-node-modules",
+            "watch": "run-p -nsr copy-all-js watch-live watch-coffee",
             
             //for release
             "release": "run-s -ns build publish-script",

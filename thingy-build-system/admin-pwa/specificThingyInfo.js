@@ -21,6 +21,8 @@ const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js
 //pwa paths
 const jsDestPWA = "toolset/build/pwa-js"
 const coffeeSourcePWA = "pwa-sources/source/*/*.coffee"
+const liveSourcePWA = "pwa-sources/source/*/*.live"
+const jsSourcePWA = "pwa-sources/source/*/*.js"
 const webpackPWAConfig = ".build-config/webpack-pwa.config.js"
 
 const stylusHeads = "toolset/build/heads/styl/*"
@@ -73,6 +75,8 @@ module.exports = {
         return {
             
             "build-pwa-coffee": "coffee -o " + jsDestPWA + " -c " + coffeeSourcePWA,
+            "build-pwa-live": "lsc -o " + jsDestPWA + " -c " + liveSourcePWA,
+            "copy-pwa-js": "cp "+jsSourcePWA+" "+jsDestPWA,
             "pwa-bundle": "webpack-cli --config " + webpackPWAConfig,
             "build-pwa": "run-s -ns build-pwa-coffee pwa-bundle build-pwa-style link-for-pwa build-pwa-pug clean-pwa-css purge-pwa-css",
 
@@ -83,8 +87,8 @@ module.exports = {
             "test": "run-s -ns inject-scripts prepare-for-test watch-for-test",
             "prepare-for-test": "run-s -ns connect-dom create-dev-bundles create-build-heads build-style link-for-test build-pug dev-linkage",
             "dev-linkage": "run-s -ns link-dev-worker link-test-html link-ressources",
-            "create-dev-bundles": "run-s -ns build-coffee prepare-webpack dev-bundle dev-worker-bundle", 
-            "watch-for-test": "run-p watch-connect-dom watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
+            "create-dev-bundles": "run-s -ns link-all-js build-live build-coffee prepare-webpack dev-bundle dev-worker-bundle", 
+            "watch-for-test": "run-p watch-connect-dom link-all-js watch-live watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
             
             //for deployment
             "check-deployment": "run-s -ns deployment-build expose-deployment",
@@ -92,7 +96,7 @@ module.exports = {
             "create-deployment-stuff": "run-s -ns connect-dom create-deployment-bundles create-build-heads create-deployment-css create-deployment-html copy-for-deployment",
             "create-deployment-html": "run-s -ns link-for-deployment build-pug minify-html",
             "create-deployment-css": "run-s -ns build-style clean-css purge-css",
-            "create-deployment-bundles": "run-s -ns build-coffee prepare-webpack deploy-bundle deploy-worker-bundle",
+            "create-deployment-bundles": "run-s -ns link-all-js build-live build-coffee prepare-webpack deploy-bundle deploy-worker-bundle",
             "copy-for-deployment": "run-s -ns copy-minified-html copy-deploy-worker copy-ressources",
             
 

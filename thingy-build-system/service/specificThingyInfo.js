@@ -50,9 +50,9 @@ module.exports = {
             "release": "run-s -ns initialize-thingy release-script",
 
             //For testing and building
-            "watch": "run-p -rns watch-coffee watch-bundle",
+            "watch": "run-p -rns link-all-js watch-live watch-coffee watch-bundle",
             "test": "run-s -ns build test-run",
-            "build": "run-s -ns prepare-webpack build-coffee bundle",
+            "build": "run-s -ns prepare-webpack link-all-js build-live build-coffee bundle",
             "test-run": "cd output && node service.js",
             
             //helper scripts

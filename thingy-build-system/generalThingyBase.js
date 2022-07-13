@@ -9,7 +9,12 @@ const stdLicense = "Unlicense"
 
 //############################################################
 const coffeeSource = "sources/source/*/*.coffee"
+const liveSource = "sources/source/*/*.live"
 const jsDest = "toolset/build/js/"
+
+//############################################################
+const base = "toolset/thingy-build-system/"
+const linkAllJSSCript = base + "link-all-js.js"
 
 //############################################################
 //#region 
@@ -57,7 +62,12 @@ const getBaseScripts = (name) => {
     return {
         "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
         "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
+    
+        "build-live": "lsc -o " + jsDest + " -c " + liveSource,
+        "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
         
+        "link-all-js": linkAllJSSCript,
+
         "ncu-update": "ncu -u",
         "reinstall": "npm install",
         "update-packages":"run-s -ns ncu-update reinstall",
@@ -101,6 +111,7 @@ const getHomepage = (remoteURL) => {
 const getBaseDependencies = ()  => {
     return {
         "coffeescript": "^2.7.0",
+        "livescript": "^1.6.0",
         "npm-check-updates": "^15.0.1",
         "npm-run-all": "^4.1.5",
         "thingy-allmodules-sync": "^0.2.0",
