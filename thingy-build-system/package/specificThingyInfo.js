@@ -3,7 +3,7 @@ const pathModule = require("path")
 
 const jsDest = "output/"
 const coffeeSource = "sources/source/*/*.coffee"
-const liveSource = "sources/source/*/*.live"
+const liveSource = "sources/source/*/*.ls"
 
 //#region shellscrip paths
 const copyScript = "sources/ressources/copyscript.sh"

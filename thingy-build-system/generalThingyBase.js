@@ -9,7 +9,7 @@ const stdLicense = "Unlicense"
 
 //############################################################
 const coffeeSource = "sources/source/*/*.coffee"
-const liveSource = "sources/source/*/*.live"
+const liveSource = "sources/source/*/*.ls"
 const jsDest = "toolset/build/js/"
 
 //############################################################

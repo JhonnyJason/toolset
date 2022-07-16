@@ -21,7 +21,7 @@ const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js
 //pwa paths
 const jsDestPWA = "toolset/build/pwa-js"
 const coffeeSourcePWA = "pwa-sources/source/*/*.coffee"
-const liveSourcePWA = "pwa-sources/source/*/*.live"
+const liveSourcePWA = "pwa-sources/source/*/*.ls"
 const jsSourcePWA = "pwa-sources/source/*/*.js"
 const webpackPWAConfig = ".build-config/webpack-pwa.config.js"
 
