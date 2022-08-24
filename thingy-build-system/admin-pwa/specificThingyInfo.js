@@ -88,7 +88,7 @@ module.exports = {
             "prepare-for-test": "run-s -ns connect-dom create-dev-bundles create-build-heads build-style link-for-test build-pug dev-linkage",
             "dev-linkage": "run-s -ns link-dev-worker link-test-html link-ressources",
             "create-dev-bundles": "run-s -ns link-all-js build-live build-coffee prepare-webpack dev-bundle dev-worker-bundle", 
-            "watch-for-test": "run-p watch-connect-dom link-all-js watch-live watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
+            "watch-for-test": "run-p watch-connect-dom watch-live watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
             
             //for deployment
             "check-deployment": "run-s -ns deployment-build expose-deployment",
