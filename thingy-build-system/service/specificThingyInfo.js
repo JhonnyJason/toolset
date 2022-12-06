@@ -70,7 +70,7 @@ module.exports = {
         
         var thingyDeps = {
             "webpack": "^5.75.0",
-            "webpack-cli": "^5.0.0"
+            "webpack-cli": "^5.0.1"
         }
 
         if(sourceInfo) {
