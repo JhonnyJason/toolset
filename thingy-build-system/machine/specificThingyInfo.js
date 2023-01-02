@@ -52,8 +52,8 @@ module.exports = {
             "deploy-bundle": "webpack-cli --config " + webpackDeployConfig,
 
             //For testing and building
-            "build-dev-installer": "run-s -ns link-all-js build-live build-coffee dev-bundle",
-            "build-installer": "run-s -ns link-all-js build-live build-coffee deploy-bundle copy-deployment-bundle",
+            "build-dev-installer": "run-s -ns link-all-js-and-json build-live build-coffee dev-bundle",
+            "build-installer": "run-s -ns link-all-js-and-json build-live build-coffee deploy-bundle copy-deployment-bundle",
             "watch-installer": "run-p -nsr watch-live watch-coffee watch-bundle",
             "inspect-new-build": "run-s -ns build-dev-installer inspect-install",
             //TODO watch machine config to rebuild executor and webhandlerconfig

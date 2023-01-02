@@ -14,7 +14,7 @@ const jsDest = "toolset/build/js/"
 
 //############################################################
 const base = "toolset/thingy-build-system/"
-const linkAllJSSCript = base + "link-all-js.js"
+const linkAllJSSCript = base + "link-all-js-and-json.js"
 
 //############################################################
 //#region 
@@ -66,7 +66,7 @@ const getBaseScripts = (name) => {
         "build-live": "lsc -o " + jsDest + " -c " + liveSource,
         "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
         
-        "link-all-js": linkAllJSSCript,
+        "link-all-js-and-json": linkAllJSSCript,
 
         "ncu-update": "ncu -u",
         "reinstall": "npm install",

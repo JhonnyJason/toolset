@@ -10,18 +10,18 @@ const f = require('fs')
 const jsPath = "toolset/build/js/"
 const sourcePath = "sources/source"
 
-const allJSFiles = []
+const allJSAndJSONFiles = []
 
 //############################################################
 // find all js files in source dir
 // 1. list all subdirectories of source dir
 const allDirectoryNames = getDirectoryNames(sourcePath)
 // 2.check each subdirectory for js files
-allDirectoryNames.forEach(checkForJS)
+allDirectoryNames.forEach(checkForJSAndJSON)
 
 //############################################################
-// create symlinks for allJSFiles
-allJSFiles.forEach(createSymlink)
+// create symlinks for allJSAndJSONFiles
+allJSAndJSONFiles.forEach(createSymlink)
 
 //############################################################
 // helper functions
@@ -36,12 +36,18 @@ function getJSNames(source) {
     jsNames = allNodes.filter(el => el.name.endsWith(".js") ).map(el => el.name)
     return jsNames
 }
+function getJSONNames(source) {
+    allNodes = f.readdirSync(source, { withFileTypes: true })
+    jsonNames = allNodes.filter(el => el.name.endsWith(".json") ).map(el => el.name)
+    return jsonNames
+}
 
-function checkForJS(dirName) {
+function checkForJSAndJSON(dirName) {
     basePath = p.resolve(sourcePath, dirName)
     jsNames = getJSNames(basePath)
-    jsNames.forEach((name) => allJSFiles.push(p.resolve(basePath, name)))
-}
+    jsonNames = getJSONNames(basePath)
+    jsNames.forEach((name) => allJSAndJSONFiles.push(p.resolve(basePath, name)))
+    jsonNames.forEach((name) => allJSAndJSONFiles.push(p.resolve(basePath, name)))}
 
 function createSymlink(jsFilePath) {
     const jsFileName = p.parse(jsFilePath).base
