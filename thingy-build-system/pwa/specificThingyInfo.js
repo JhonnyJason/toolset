@@ -162,7 +162,7 @@ module.exports = {
     getDependencies: () => {
         
         var thingyDeps = {
-            "browser-sync": "^2.28.3",
+            "browser-sync": "^2.29.0",
             "clean-css-cli": "^5.6.2",
             "html-minifier": "^4.0.0",
             "implicit-dom-connect": "^0.2.3",
