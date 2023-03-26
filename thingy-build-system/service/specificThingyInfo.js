@@ -69,7 +69,7 @@ module.exports = {
     getDependencies: () => {
         
         var thingyDeps = {
-            "webpack": "^5.76.2",
+            "webpack": "^5.76.3",
             "webpack-cli": "^5.0.1"
         }
 
