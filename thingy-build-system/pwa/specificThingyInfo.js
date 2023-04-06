@@ -132,7 +132,7 @@ module.exports = {
         
             //the injection Scripts
             "inject-scripts": injectAllScriptsScript,
-            "inject-bundle-scripts": injectBundleScriptsScript,
+            // "inject-bundle-scripts": injectBundleScriptsScript,
             "inject-pug-scripts": injectPugScriptsScript,
             "inject-stylus-scripts": injectStylusScriptsScript,
             "inject-css-scripts": injectCssScriptsScript,
