@@ -37,8 +37,7 @@ commonConfig = {
 
 //#region adjustDevConfig
 Object.assign(devConfig, commonConfig)
-devConfig.mode = "development" 
-devConfig.devtool = "none"
+devConfig.mode = "development"
 if(!devConfig.output) devConfig.output = {}
 devConfig.output.filename = "installer.js"
 devConfig.output.path = pathModule.resolve(bundlePath, "dev")
@@ -47,7 +46,6 @@ devConfig.output.path = pathModule.resolve(bundlePath, "dev")
 //#region adjustWatchConfig
 Object.assign(watchConfig, commonConfig)
 watchConfig.mode = "development"
-watchConfig.devtool = "none"
 watchConfig.watch = true
 if(!watchConfig.output) watchConfig.output = {}
 watchConfig.output.filename = "installer.js"

@@ -25,9 +25,6 @@ const purgedCSSPath = pathModule.resolve(process.cwd(), "toolset/build/css/purge
 
 const jsPath = pathModule.resolve(process.cwd(), "toolset/build/js")
 
-const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js"
-
-
 const packageJSONPath = pathModule.resolve(process.cwd(), "package.json") 
 const headsPath = pathModule.resolve("sources/page-heads")
 
@@ -44,9 +41,9 @@ languages = []
 
 //#region scriptNames
 const devBundleScriptName = "dev-bundle"
-const devWorkerBundleScriptName = "dev-worker-bundle"
+// const devWorkerBundleScriptName = "dev-worker-bundle"
 const watchBundleScriptName = "watch-bundle"
-const watchWorkerBundleScriptName = "watch-worker-bundle"
+// const watchWorkerBundleScriptName = "watch-worker-bundle"
 
 const pugBuildScriptName = "build-pug"
 const pugWatchScriptName = "watch-pug"
@@ -64,9 +61,7 @@ const purgeScriptName = "purge-css"
 
 //#region lineOfAll
 var allDevBundleLine = "run-p"
-var allDevWorkerBundleLine = "run-p"
 var allWatchBundleLine = "run-p"
-var allWatchWorkerBundleLine = "run-p"
 
 var allPugBuildLine = "run-p"
 var allPugWatchLine = "run-p"
@@ -136,12 +131,11 @@ if(heads.length == 1) {
 }
 
 //#region handleWorkerBundles
-//TODO handle worker bundles somehow...
-packageJSON.scripts[watchWorkerBundleScriptName] = "echo 'no worker support yet!'"    
-packageJSON.scripts[devWorkerBundleScriptName] = "echo 'no worker support yet!'"
+// probably we donot need to bundle the workers separatedly
+// this means all this could go away ;-)
 
-// injectDevWorkerBunldeScript(head)
-// injectWatchWorkerBundleScript(head)
+// packageJSON.scripts[watchWorkerBundleScriptName] = "echo 'no worker support yet!'"    
+// packageJSON.scripts[devWorkerBundleScriptName] = "echo 'no worker support yet!'"
 
 // if(noWorkers) {
 //     packageJSON.scripts[devWorkerBundleScriptName] = "echo 'no workers'"
@@ -171,16 +165,16 @@ packageJSON.scripts[devWorkerBundleScriptName] = "echo 'no worker support yet!'"
 
 //#endregion
 
-function checkWorkers() {
-    const jss = fs.readdirSync(jsPath)
-    var entries = {}
-    for(var i = 0; i < jss.length; i++) {
-        if(jss[i].endsWith("worker.js")) {
-            noWorkers = false
-            return
-        }
-    }
-}
+// function checkWorkers() {
+//     const jss = fs.readdirSync(jsPath)
+//     var entries = {}
+//     for(var i = 0; i < jss.length; i++) {
+//         if(jss[i].endsWith("worker.js")) {
+//             noWorkers = false
+//             return
+//         }
+//     }
+// }
 
 function checkContent() {
     try {
@@ -225,21 +219,21 @@ function injectDevBundleScript(head) {
     packageJSON.scripts[scriptName] = getDevBundleLine(head)
     allDevBundleLine += " " + scriptName
 }
-function injectDevWorkerBunldeScript(head) {
-    const scriptName = "dev-worker-" + head + "-bundle"
-    packageJSON.scripts[scriptName] = getDevWorkerBundleLine(head)
-    allDevWorkerBundleLine += " " + scriptName
-}
+// function injectDevWorkerBundleScript(head) {
+//     const scriptName = "dev-worker-" + head + "-bundle"
+//     packageJSON.scripts[scriptName] = getDevWorkerBundleLine(head)
+//     allDevWorkerBundleLine += " " + scriptName
+// }
 function injectWatchBundleScript(head) {
     const scriptName = "watch-" + head + "-bundle"
     packageJSON.scripts[scriptName] = getWatchBundleLine(head)
     allWatchBundleLine += " " + scriptName
 }
-function injectWatchWorkerBundleScript(head) {
-    const scriptName = "watch-worker-" + head + "-bundle"
-    packageJSON.scripts[scriptName] = getWatchWorkerBundleLine(head)
-    allWatchWorkerBundleLine += " " + scriptName
-}
+// function injectWatchWorkerBundleScript(head) {
+//     const scriptName = "watch-worker-" + head + "-bundle"
+//     packageJSON.scripts[scriptName] = getWatchWorkerBundleLine(head)
+//     allWatchWorkerBundleLine += " " + scriptName
+// }
 
 function injectBuildPugScript(head) {
     if(noContent) {
@@ -350,24 +344,24 @@ function getDevBundleLine(head) {
     const scriptLine = "webpack-cli --config "+configFilePath 
     return scriptLine
 }
-function getDevWorkerBundleLine(head) {
-    const configFileName = "webpack-dev-worker-"+head+".config.js"
-    const configFilePath = pathModule.resolve(configBasePath, configFileName)
-    const scriptLine = "webpack-cli --config "+configFilePath 
-    return scriptLine
-}
+// function getDevWorkerBundleLine(head) {
+//     const configFileName = "webpack-dev-worker-"+head+".config.js"
+//     const configFilePath = pathModule.resolve(configBasePath, configFileName)
+//     const scriptLine = "webpack-cli --config "+configFilePath 
+//     return scriptLine
+// }
 function getWatchBundleLine(head) {
     const configFileName = "webpack-watch-"+head+".config.js"
     const configFilePath = pathModule.resolve(configBasePath, configFileName)
     const scriptLine = "webpack-cli --config "+configFilePath 
     return scriptLine
 }
-function getWatchWorkerBundleLine(head) {
-    const configFileName = "webpack-watch-worker-"+head+".config.js"
-    const configFilePath = pathModule.resolve(configBasePath, configFileName)
-    const scriptLine = "webpack-cli --config "+configFilePath 
-    return scriptLine
-}
+// function getWatchWorkerBundleLine(head) {
+//     const configFileName = "webpack-watch-worker-"+head+".config.js"
+//     const configFilePath = pathModule.resolve(configBasePath, configFileName)
+//     const scriptLine = "webpack-cli --config "+configFilePath 
+//     return scriptLine
+// }
 
 function getPugBuildLineWithContent(head, langTag) {
     const headFileName = head+".pug"
