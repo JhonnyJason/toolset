@@ -62,8 +62,7 @@ for(var i = 0; i < jss.length; i++) {
 
 //============================================================
 //#region adjustDevConfig
-devConfig.mode = "development" 
-devConfig.devtool = "none"
+devConfig.mode = "development"
 devConfig.context = process.cwd()
 devConfig.entry = entries
 if(!devConfig.output) devConfig.output = {}
@@ -88,7 +87,6 @@ devConfig.resolve = {
 //============================================================
 //#region adjustWatchConfig
 watchConfig.mode = "development"
-watchConfig.devtool = "none"
 watchConfig.context = process.cwd()
 watchConfig.watch = true
 watchConfig.entry = entries
@@ -139,47 +137,47 @@ deployConfig.resolve = {
 
 //============================================================
 //#region writeConfigFiles
-function writeIndividualConfigFiles() {
-    let heads = Object.keys(entries)
-    for(let i = 0; i < heads.length; i++) {
-        writeIndividualDevConfig(heads[i], entries[heads[i]])
-        writeIndividualWatchConfig(heads[i], entries[heads[i]])
-    }
-}
+// function writeIndividualConfigFiles() {
+//     let heads = Object.keys(entries)
+//     for(let i = 0; i < heads.length; i++) {
+//         writeIndividualDevConfig(heads[i], entries[heads[i]])
+//         writeIndividualWatchConfig(heads[i], entries[heads[i]])
+//     }
+// }
 
-function writeIndividualDevConfig(head, entry) {
-    let config = Object.assign({}, devConfig)
-    config.entry = {}
-    config.entry[head] = entry
+// function writeIndividualDevConfig(head, entry) {
+//     let config = Object.assign({}, devConfig)
+//     config.entry = {}
+//     config.entry[head] = entry
 
-    const configString = exportsString + JSON.stringify(config, null, 4)
+//     const configString = exportsString + JSON.stringify(config, null, 4)
 
-    const filename = "webpack-dev-worker-"+head+".config.js"
-    const configPath = pathModule.resolve(process.cwd(), ".build-config", filename)
+//     const filename = "webpack-dev-worker-"+head+".config.js"
+//     const configPath = pathModule.resolve(process.cwd(), ".build-config", filename)
 
-    fs.writeFileSync(configPath, configString)    
+//     fs.writeFileSync(configPath, configString)    
 
-}
+// }
 
-function writeIndividualWatchConfig(head, entry) {
-    let config = Object.assign({}, watchConfig)
-    config.entry = {}
-    config.entry[head] = entry
+// function writeIndividualWatchConfig(head, entry) {
+//     let config = Object.assign({}, watchConfig)
+//     config.entry = {}
+//     config.entry[head] = entry
 
-    const configString = exportsString + JSON.stringify(config, null, 4)
+//     const configString = exportsString + JSON.stringify(config, null, 4)
 
-    const filename = "webpack-watch-worker-"+head+".config.js"
-    const configPath = pathModule.resolve(process.cwd(), ".build-config", filename)
+//     const filename = "webpack-watch-worker-"+head+".config.js"
+//     const configPath = pathModule.resolve(process.cwd(), ".build-config", filename)
 
-    fs.writeFileSync(configPath, configString)    
+//     fs.writeFileSync(configPath, configString)    
 
-}
+// }
 
 const devConfigString = exportsString + JSON.stringify(devConfig, null, 4)
 const watchConfigString = exportsString + JSON.stringify(watchConfig, null, 4)
 const deployConfigString = exportsString + JSON.stringify(deployConfig, null, 4)
 
-writeIndividualConfigFiles()
+// writeIndividualConfigFiles()
 
 fs.writeFileSync(devConfigPath, devConfigString)
 fs.writeFileSync(watchConfigPath, watchConfigString)
