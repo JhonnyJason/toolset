@@ -1,0 +1,54 @@
+/*==============================================================================
+RESET
+==============================================================================*/
+@import '../stylereset/reset.styl'
+
+/*==============================================================================
+Global Styles
+==============================================================================*/
+@import '../globalstyles/styles.styl'
+
+/*==============================================================================
+Including other components
+==============================================================================*/
+@import '../allmodules/allstyles.styl'
+
+.max-content
+    margin auto
+    max-width: max-content-width
+    width calc(100% - 30px)
+    padding-left 15px
+    padding-right 15px 
+    
+
+main
+    padding-top 90px
+    padding-bottom 170px
+    color cd-dark
+    text-align: left
+
+    img
+        max-height: 100vh
+        max-width: 100%
+
+    h1
+        @extends .max-content
+        font-size: 32pt
+        font-weight bold
+        margin-top 50px
+        margin-bottom 50px
+        padding-bottom 15px
+        border-bottom solid 1px #eee
+
+    h2
+        @extends .max-content
+        font-size 24pt
+        font-weight bold
+        margin-top 40px
+        margin-bottom 20px
+
+    p
+        @extends .max-content
+        margin-top: 20px
+        margin-bottom 20px
+        line-height: 120%

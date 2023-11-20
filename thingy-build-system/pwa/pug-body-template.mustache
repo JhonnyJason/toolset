@@ -1,0 +1,10 @@
+include ../svgiconsmodule/svgicons.pug
+include ../upbuttonmodule/upbutton.pug
+
+header
+    include ../menumodule/menu.pug
+    include herosection.pug
+
+header: include ../headermodule/header.pug
+main: #content: include:markdown-it(html) ../../ressources/md-content/{{{name}}}.md
+footer: include ../footermodule/footer.pug
