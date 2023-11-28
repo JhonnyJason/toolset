@@ -168,7 +168,7 @@ module.exports = {
             "implicit-dom-connect": "^0.2.3",
             "pug-cli": "^1.0.0-alpha6",
             "purgecss": "^5.0.0",
-            "stylus": "^0.61.0",
+            "stylus": "^0.62.0",
             "webpack": "^5.89.0",
             "webpack-cli": "^5.1.4"
         }
