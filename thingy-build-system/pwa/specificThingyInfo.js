@@ -169,7 +169,7 @@ module.exports = {
             "pug-cli": "^1.0.0-alpha6",
             "purgecss": "^5.0.0",
             "stylus": "^0.62.0",
-            "webpack": "^5.90.0",
+            "webpack": "^5.90.1",
             "webpack-cli": "^5.1.4"
         }
 
