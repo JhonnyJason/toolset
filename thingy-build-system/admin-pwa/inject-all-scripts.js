@@ -48,10 +48,10 @@ var heads = fs.readdirSync(headsPath)
 var pwaHeads = fs.readdirSync(pwaHeadsPath)
 var packageJSON = require(packageJSONPath)
 
-noWorkers = true
-noContent = true
-languages = []
-pwaLanguages = []
+var noWorkers = true
+var noContent = true
+var languages = []
+var pwaLanguages = []
 
 //#region scriptNames
 const devBundleScriptName = "dev-bundle"
@@ -118,8 +118,8 @@ if(heads.length == 1) {
         packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent(heads[0])
         packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent(heads[0])    
     } else {
-        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent(heads[0], languages[0])
-        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent(heads[0], languages[0])    
+        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent(heads[0], language)
+        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent(heads[0], language)    
     }
 
     packageJSON.scripts[stylusBuildScriptName] = getStylusBuildLine(heads[0])
@@ -140,8 +140,8 @@ if(heads.length == 1) {
         packageJSON.scripts[pugBuildScriptName] = getPugBuildLineNoContent("index")
         packageJSON.scripts[pugWatchScriptName] = getPugWatchLineNoContent("index")    
     } else {
-        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent("index", languages[0])
-        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent("index", languages[0])    
+        packageJSON.scripts[pugBuildScriptName] = getPugBuildLineWithContent("index", language)
+        packageJSON.scripts[pugWatchScriptName] = getPugWatchLineWithContent("index", language)    
     }
 
     packageJSON.scripts[pugBuildScriptName] = allPugBuildLine
@@ -171,7 +171,7 @@ if(pwaHeads.length == 1) {
     packageJSON.scripts[cleanPWAScriptName] = getCleanPWACSSLine(pwaHeads[0])
     packageJSON.scripts[purgePWAScriptName] = getPurgePWACSSLine(pwaHeads[0])    
 
-    packageJSON.scripts[pugPWABuildScriptName] = getPugPWABuildLineWithContent(pwaHeads[0], pwaLanguages[0])
+    packageJSON.scripts[pugPWABuildScriptName] = getPugPWABuildLineWithContent(pwaHeads[0], language)
 
 } else if(pwaHeads.length > 1) {
     pwaHeads.forEach(injectPWAScripts)
@@ -238,13 +238,33 @@ function checkContent() {
     try {
         fs.accessSync(adminContentPath, fs.constants.R_OK)
         noContent = false
+        if()
         languages = fs.readdirSync(adminContentPath).filter((option) => option.charAt(0) != "." )
-        // console.log(languages)
+
+        if (typeof packageJSON.lang == "string") {
+            language = packageJSON.lang
+        } else {
+            language = languages[0]
+        }
+        // console.log(language)
     } catch (err) {
         // console.error('No Content');
     }
-    fs.accessSync(pwaContentPath, fs.constants.R_OK)
-    pwaLanguages = fs.readdirSync(pwaContentPath).filter((option) => option.charAt(0) != "." )
+    try {
+        fs.accessSync(pwaContentPath, fs.constants.R_OK)
+        noContent = false
+        pwaLanguages = fs.readdirSync(pwaContentPath).filter((option) => option.charAt(0) != "." )
+    
+        if (typeof packageJSON.lang == "string") {
+            language = packageJSON.lang
+        } else {
+            language = pwaLanguages[0]
+        }
+        // console.log(language)
+    } catch (err) {
+        // console.error('No Content');
+    }
+
 }
 
 //#region injectionFunctions
@@ -312,6 +332,7 @@ function injectBuildPugScript(head) {
         injectBuildPugScriptsWithContent(head)
     }
 }
+
 function injectWatchPugScript(head) {
     if(noContent) {
         injectWatchPugScriptsNoContent(head)
@@ -319,42 +340,23 @@ function injectWatchPugScript(head) {
         injectWatchPugScriptsWithContent(head)
     }
 }
+
 function injectBuildPugScriptsWithContent(head) {
-    const scriptName = "build-"+head+"-"+languages[0]+"-pug"
-    packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[0])
+    const scriptName = "build-"+head+"-"+language+"-pug"
+    packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, language)
     allPugBuildLine += " " + scriptName    
-
-    //for now we only build one language
-    // for(var i = 0; i < languages.length; i++) {
-    //     let scriptName = "build-"+head+"-"+languages[i]+"-pug"
-    //     packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[i])
-    //     allPugBuildLine += " " + scriptName    
-    // }
 }
+
 function injectWatchPugScriptsWithContent(head) {
-
-    const scriptName = "watch-"+head+"-"+languages[0]+"-pug"
-    packageJSON.scripts[scriptName] = getPugWatchLineWithContent(head, languages[0])
-    allPugWatchLine += " " + scriptName    
-    
-    //watching is for development only - so we donot need all languages
-    // for(var i = 0; i < languages.length; i++) {
-    //     let scriptName = "watch-"+head+"-"+languages[i]+"-pug"
-    //     packageJSON.scripts[scriptName] = getPugWatchLineWithContent(head, languages[i])
-    //     allPugWatchLine += " " + scriptName    
-    // }
+    const scriptName = "watch-"+head+"-"+language+"-pug"
+    packageJSON.scripts[scriptName] = getPugWatchLineWithContent(head, language)
+    allPugWatchLine += " " + scriptName        
 }
-function injectBuildPWAPugScriptsWithContent(head) {
-    const scriptName = "build-pwa-"+head+"-"+pwaLanguages[0]+"-pug"
-    packageJSON.scripts[scriptName] = getPugPWABuildLineWithContent(head, pwaLanguages[0])
-    allPugPWABuildLine += " " + scriptName    
 
-    //for now we only build one language
-    // for(var i = 0; i < languages.length; i++) {
-    //     let scriptName = "build-"+head+"-"+languages[i]+"-pug"
-    //     packageJSON.scripts[scriptName] = getPugBuildLineWithContent(head, languages[i])
-    //     allPugBuildLine += " " + scriptName    
-    // }
+function injectBuildPWAPugScriptsWithContent(head) {
+    const scriptName = "build-pwa-"+head+"-"+language+"-pug"
+    packageJSON.scripts[scriptName] = getPugPWABuildLineWithContent(head, language)
+    allPugPWABuildLine += " " + scriptName    
 }
 function injectBuildPugScriptsNoContent(head) {
     const scriptName = "build-" + head + "-pug"
@@ -428,7 +430,7 @@ function getTestLine(head) {
     if(noContent) {
         line += " watch-" + head + "-pug"
     } else {
-        line += " watch-"+head+"-"+languages[0]+"-pug"
+        line += " watch-"+head+"-"+language+"-pug"
     }
     line += " expose"
     return line

@@ -34,7 +34,7 @@ const headsPath = pathModule.resolve("sources/page-heads")
 var heads = fs.readdirSync(headsPath)
 var packageJSON = require(packageJSONPath)
 
-var language = packageJSON.language
+var language = packageJSON.lang
 noWorkers = true
 noContent = true
 languages = []
