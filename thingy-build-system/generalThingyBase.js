@@ -64,7 +64,8 @@ const getBaseScripts = (name) => {
         "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
     
         "build-live": "lsc -o " + jsDest + " -c " + liveSource,
-        "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
+        // "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
+        "watch-live": "",
         
         "link-all-js-and-json": linkAllJSSCript,
 

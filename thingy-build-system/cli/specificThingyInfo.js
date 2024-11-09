@@ -41,8 +41,9 @@ module.exports = {
 
 
             "build-live": "lsc -o " + jsDest + " -c " + liveSource,
-            "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
-
+            // "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
+            "watch-live": "",
+    
             "copy-all-js": "cp sources/source/*/*.js output/",
 
 
