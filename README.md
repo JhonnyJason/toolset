@@ -24,7 +24,7 @@ So that for all the why it makes sense to create your own toolset xD
 
 # What?
 The current version is producing a specific `package.json` for each `thingy` we might want to develop.
-There we have the npm scripts available to build and test our `thingy`. `thingy-build-system/producePackageJason.js` is responsible for this.
+There we have the pnpm scripts available to build and test our `thingy`. `thingy-build-system/producePackageJason.js` is responsible for this.
 
 Therefore we have 4 major parts to consider.
 
@@ -160,93 +160,93 @@ Only for the cli I skip the bundling part. As the cli will be published on npm I
 Usage
 ---
 
-Here there is a documentation on the specific capabilities which are thought to be used in the process of development of the produced `package.json` and are run by `$ npm run <name>`.
+Here there is a documentation on the specific capabilities which are thought to be used in the process of development of the produced `package.json` and are run by `$ pnpm run <name>`.
 
-All starts off by calling `$ npm install` in the thingy root.
+All starts off by calling `$ pnpm install` in the thingy root.
 This will trigger the initialization of the build-system on `postinstall`.
 
 ## general commands
-### $ npm run add-module `<moduleName>`
+### $ pnpm run add-module `<moduleName>`
 Convenience tool to create a new module `<moduleName>` at
 `sources/source/<moduleName>/`.
 Here [thingy-module-gen](https://www.npmjs.com/package/thingy-module-gen) is used to create the files. It carries it's own templates for a .pug, .styl and .coffee file.
 
 It will ask which files you want in your module and instantly create it then call `sync-allmodules` to have the updates available in the files of `sources/source/allmodules/`.
 
-### $ npm run use-thingysourcemodule
+### $ pnpm run use-thingysourcemodule
 # To be done!
 
 
 
-### $ npm run create-thingysourcemodule
+### $ pnpm run create-thingysourcemodule
 # To be done!
 
 
 
-### $ npm run sync-allmodules
+### $ pnpm run sync-allmodules
 This will trigger the scan for all relevant in `sources/source/*module/` and create the new `sources/source/allmodules/allmodules.coffee` and `sources/source/allmodules/allstyles.styl` files.
 
 Usually this is only necessary when you manually introduced a new module.
 
 
-### $ npm run to-sub `<moduleName>`
+### $ pnpm run to-sub `<moduleName>`
 # To be done!
 
-### $ npm run to-dir `<moduleName>`
+### $ pnpm run to-dir `<moduleName>`
 # To be done!
 
-### $ npm run deployment-build
+### $ pnpm run deployment-build
 This will trigger the production build with all it's optimization and the copying of the ressources to have the deployment version ready in the `output/` submodule.
 
-### $ npm run check-deployment
+### $ pnpm run check-deployment
 This will first trigger the `deployment-build` and then link everything in a way that we may test the optimized version too if we want to make sure that the optimization does not yield any side-effects.
 
 Finally it triggers the testing similar to what we have on the `test` command.
 
 
-### $ npm run push
+### $ pnpm run push
 This will recursively push everything to the current `origin master` - also for every submodule.
 
 Be sure that you have your ssh-key to your `cloudService` ready to be used silently in your terminal.
 
 Here I use [thingysync](https://www.npmjs.com/package/thingysync).
 
-### $ npm run pull
+### $ pnpm run pull
 This will recursively pull everything from the current `origin master` - also for every submodule.
 
 Be sure that you have your ssh-key to your `cloudService` ready to be used silently in your terminal.
 
 Here I use [thingysync](https://www.npmjs.com/package/thingysync).
 
-### $ npm run release
+### $ pnpm run release
 This will merge the current `origin master` of the `output/` submodule to `origin release` then also push it. Usually this will trigger the webhooks to further automated deployment steps.
 
 For the cli however it will publish it to npm - so be sure to be logged into npm on your terminal where you call this command.
 
 Be sure you have prepared the correct production build in the `output/` submodule before and have pushed everything to `origin master` first.
 
-### $ npm run update-packages
+### $ pnpm run update-packages
 This will check npm if any package has a newer version available. Then install the newer versions.
 
-Here [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) is used followed by an immediate call of `$ npm install`.
+Here [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) is used followed by an immediate call of `$ pnpm install`.
 
 ## app specific commands
-### $ npm run test
+### $ pnpm run test
 
 This will build and watch all files up until the complete bundled html is ready - then it is running the UI in browser-sync. For App specific behaviour I usually create mocks in the `testing/` directory to be used for specific testing context.
 
 
 ## cli specific commands
-### $ npm run test
+### $ pnpm run test
 For the cli it is reasonable to run through all testcases.
 
-### $ npm-run update-cli-packages
+### $ pnpm-run update-cli-packages
 Here we deal with the dependencies of the resulting output package. The relevant files {`package.json`, `package-lock.json`} here are usually kept in `sources/ressources/` directory.
 
 So the result will be upgraded dependencies of the resulting cli in `output/` plus the upgrades being reflected in `sources/ressources/package.json`.
 
 ## machine specific commands
-### $ npm run test
+### $ pnpm run test
 
 For a service it is run as nodemo service. (should be done better running testcases - WIP)
 
@@ -256,22 +256,22 @@ For machines any automated testing is very difficult (WIP).
 
 
 ## pwa specific commands
-### $ npm run test
+### $ pnpm run test
 This will build and watch all files - then is running the UI in browser-sync.
 
-### $ npm run create-subapp
+### $ pnpm run create-subapp
 # To be done!
 
-### $ npm run create-thingypagehead
+### $ pnpm run create-thingypagehead
 # To be done!
 
 
 
 ## service specific commands
-### $ npm run test
+### $ pnpm run test
 # To be done!
 
 ## website specific commands
-### $ npm run test
+### $ pnpm run test
 # To be done!
 

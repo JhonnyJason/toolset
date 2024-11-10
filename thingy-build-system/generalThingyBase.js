@@ -71,7 +71,7 @@ const getBaseScripts = (name) => {
         "link-all-js-and-json": linkAllJSSCript,
 
         "ncu-update": "ncu -u",
-        "reinstall": "npm install",
+        "reinstall": "pnpm install",
         "update-packages":"run-s -ns ncu-update reinstall",
         
         "module-gen": "thingy-module-gen --",
@@ -88,7 +88,7 @@ const getBaseScripts = (name) => {
         "push": "thingysync push --message",
         "pull": "thingysync pull",
 
-        "postinstall": "npm run initialize-thingy"
+        "postinstall": "pnpm run initialize-thingy"
 
     }
 }

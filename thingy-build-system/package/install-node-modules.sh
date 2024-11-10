@@ -1,5 +1,5 @@
 #!/bin/bash
 cd output/
-npm install
+pnpm install
 
 echo 0

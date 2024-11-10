@@ -1,9 +1,9 @@
 #!/bin/bash
-npm run pull
+pnpm run pull
 cd toolset
 ./prepareThingyForPackage.pl
 cd ..
 toolset/thingy-build-system/package/sync-versions.js
-npm install
+pnpm install
 
 echo 0

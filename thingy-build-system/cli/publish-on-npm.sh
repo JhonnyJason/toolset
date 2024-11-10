@@ -1,5 +1,5 @@
 #!/bin/bash
 cd output
-npm publish
+pnpm publish
 
 echo 0

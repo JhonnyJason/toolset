@@ -1,8 +1,8 @@
 #!/bin/bash
-npm run pull
+pnpm run pull
 cd toolset
 ./prepareThingyForAdminPwa.pl
 cd ..
-npm install
+pnpm install
 
 echo 0

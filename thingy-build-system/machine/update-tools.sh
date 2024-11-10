@@ -1,8 +1,8 @@
 #!/bin/bash
-npm run pull
+pnpm run pull
 cd toolset
 ./prepareThingyForMachine.pl
 cd ..
-npm install
+pnpm install
 
 echo 0
