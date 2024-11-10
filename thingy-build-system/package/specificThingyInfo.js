@@ -38,7 +38,8 @@ module.exports = {
             "build-coffee": "coffee -o " + jsDest + " -c " + coffeeSource,
             "watch-coffee": "coffee -o " + jsDest + " -cw " + coffeeSource,
 
-            "build-live": "lsc -o " + jsDest + " -c " + liveSource,
+            // "build-live": "lsc -o " + jsDest + " -c " + liveSource,
+            "build-live": "",
             // "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
             "watch-live": "",
 
