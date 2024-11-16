@@ -4,10 +4,9 @@ rm output/package-lock.json
 
 ncu -u --cwd output
 
-# cd output
-# ../node_modules/npm-check-updates/build/src/bin/cli.js -u
-# pnpm install
-# cd ..
+cd output
+pnpm install
+cd ..
 
 cp output/package.json sources/ressources/package.json
 
