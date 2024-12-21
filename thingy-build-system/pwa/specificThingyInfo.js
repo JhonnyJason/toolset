@@ -170,7 +170,7 @@ module.exports = {
             "purgecss": "^7.0.2",
             "stylus": "^0.64.0",
             "webpack": "^5.97.1",
-            "webpack-cli": "^6.0.0"
+            "webpack-cli": "^6.0.1"
         }
 
         if(sourceInfo) {
