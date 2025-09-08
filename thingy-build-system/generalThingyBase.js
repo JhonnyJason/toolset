@@ -125,7 +125,7 @@ const getBaseDependencies = ()  => {
 }
 
 const getDescription = () => {
-    return "This is the shit!"
+    return "This is the description :-)"
 }
 
 //#endregion
