@@ -43,7 +43,7 @@ module.exports = {
             // "watch-live": "lsc -o " + jsDest + " -cw " + liveSource,
             "watch-live": "echo 0",
 
-            "copy-all-js": "cp sources/source/*/*.js output/",
+            "copy-all-js": "cp sources/source/*/*.js output/ 2>/dev/null || :",
 
             "sync-allmodules": "thingy-allmodules-sync",
 
