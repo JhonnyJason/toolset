@@ -70,6 +70,8 @@ const getBaseScripts = (name) => {
         
         "link-all-js-and-json": linkAllJSSCript,
 
+        "finish-task": "plan/finish-task.sh",
+        
         "ncu-update": "ncu -u",
         "reinstall": "pnpm install",
         "update-packages":"run-s -ns ncu-update reinstall",
