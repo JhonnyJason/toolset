@@ -167,7 +167,7 @@ module.exports = {
             "html-minifier": "^4.0.0",
             "implicit-dom-connect": "^0.2.3",
             "pug-cli": "^1.0.0-alpha6",
-            "purgecss": "^7.0.2",
+            "purgecss": "^8.0.0",
             "stylus": "^0.64.0",
             "webpack": "^5.104.1",
             "webpack-cli": "^6.0.1"
