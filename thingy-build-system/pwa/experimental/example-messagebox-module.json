@@ -1,0 +1,13 @@
+{
+  "name": "messageboxmodule",
+  "description": "Component to provide user-feedback by short lived messages",
+  "assets": {
+    "structure": {
+      "file": "messagebox.pug",
+      "placement": "top"
+    },
+    "styles": "styles.styl",
+    "code": "messageboxmodule.coffee"
+  },
+  "dependencies": ["configmodule"]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "qrreadermodule",
+  "description": "Component to read specific information from a QR-Code",
+  "assets": {
+    "structure": {
+      "file": "qrreader.pug",
+      "placement": "top"
+    },
+    "styles": "styles.styl",
+    "code": "qrreadermodule.coffee",
+    "workers": [
+      {
+        "npm": "qr-scanner/qr-scanner-worker.min.js",
+        "dest": "/scannerworker.js"
+      }
+    ]
+  },
+  "dependencies": ["messageboxmodule", "utilsmodule", "configmodule"]
+}
