@@ -180,7 +180,7 @@ module.exports = {
             "pug-cli": "^1.0.0-alpha6",
             "purgecss": "^8.0.0",
             "stylus": "^0.64.0",
-            "webpack": "^5.104.1",
+            "webpack": "^5.105.4",
             "webpack-cli": "^6.0.1"
         }
 
