@@ -1,0 +1,7 @@
+{
+    "outdir": "toolset/build/bundles/dev",
+    "sourcemap": "inline",
+    "legalComments": "none",
+    "minifyWhitespace": true,
+    "minifySynthax": true
+}

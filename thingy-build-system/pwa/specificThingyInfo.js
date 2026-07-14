@@ -11,12 +11,21 @@ const pugHeads = "toolset/build/heads/pug/*"
 const prettyHtml = "toolset/build/html/pretty/"
 const minifiedHTML = "toolset/build/html/minified/"
 
-const webpackDevConfig = ".build-config/webpack-dev.config.js"
-const webpackDevWorkerConfig = ".build-config/webpack-dev-worker.config.js"
-const webpackWatchConfig = ".build-config/webpack-watch.config.js"
-const webpackWatchWorkerConfig = ".build-config/webpack-watch-worker.config.js"
-const webpackDeployConfig = ".build-config/webpack-deploy.config.js"
-const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js"
+const esbuildWatchBundle = ".build-config/esbuild-watch-all.mjs"
+const esbuildWatchWorkerBundle = ".build-config/esbuild-watch-worker.mjs"
+const esbuildDevBundle = ".build-config/esbuild-dev.mjs"
+const esbuildDevWorkerBundle = ".build-config/esbuild-dev-worker.mjs"
+const esbuildProductionBundle = ".build-config/esbuild-production.mjs"
+const esbuildProductionWorkerBundle = ".build-config/esbuild-worker.mjs"
+// TODO esbuild for workers
+// const esbuildProductionScript = ".build-config/esbuild-production.mjs"
+
+// const webpackDevConfig = ".build-config/webpack-dev.config.js"
+// const webpackDevWorkerConfig = ".build-config/webpack-dev-worker.config.js"
+// const webpackWatchConfig = ".build-config/webpack-watch.config.js"
+// const webpackWatchWorkerConfig = ".build-config/webpack-watch-worker.config.js"
+// const webpackDeployConfig = ".build-config/webpack-deploy.config.js"
+// const webpackDeployWorkerConfig = ".build-config/webpack-deploy-worker.config.js"
 
 const stylusHeads = "toolset/build/heads/styl/*"
 const dirtyCssDest = "toolset/build/css/dirty/"
@@ -30,14 +39,14 @@ const linkerScript = "sources/ressources/linkerscript.sh"
 const base = "toolset/thingy-build-system/pwa/"
 const createCertsScript = base + "create-certificates.sh"
 const injectAllScriptsScript = base + "inject-all-scripts.js"
-const injectCssScriptsScript = base + "inject-css-scripts.js"
-const injectDOMConnectScriptsScript = base + "inject-dom-connect-scripts.js"
+// const injectCssScriptsScript = base + "inject-css-scripts.js"
+// const injectDOMConnectScriptsScript = base + "inject-dom-connect-scripts.js"
 // const injectBundleScriptsScript = base + "inject-bundle-scripts.js"
-const injectPugScriptsScript = base + "inject-pug-scripts.js"
-const injectStylusScriptsScript = base + "inject-stylus-scripts.js"
+// const injectPugScriptsScript = base + "inject-pug-scripts.js"
+// const injectStylusScriptsScript = base + "inject-stylus-scripts.js"
 const buildBrowserSyncConfigScript = base + "rebuild-browser-sync-config.js"
-const buildWebpackConfigScript = base + "rebuild-webpack-config.js"
-const buildWebpackWorkerConfigScript = base + "rebuild-webpack-worker-config.js"
+const esbuildConfigScriptSetup = base + "esbuild-config-setup.js"
+// const buildWebpackWorkerConfigScript = base + "rebuild-webpack-worker-config.js"
 const linkIncludesForTestingScript = base + "link-for-testing.js"
 const linkIncludesForDeploymentScript = base + "link-for-deployment.js"
 const linkDevWorkerScript = base + "link-dev-worker.js"
@@ -72,7 +81,7 @@ module.exports = {
             "test": "run-s -ns inject-scripts prepare-for-test watch-for-test",
             "prepare-for-test": "run-s -ns connect-dom create-dev-bundles create-build-heads build-style link-for-test build-pug dev-linkage",
             "dev-linkage": "run-s -ns link-dev-worker link-test-html link-ressources",
-            "create-dev-bundles": "run-s -ns link-all-js-and-json build-live build-coffee prepare-webpack dev-bundle dev-worker-bundle", 
+            "create-dev-bundles": "run-s -ns link-all-js-and-json build-live build-coffee prepare-esbuild dev-bundle dev-worker-bundle", 
             "watch-for-test": "run-p watch-connect-dom watch-live watch-coffee watch-bundle watch-worker-bundle watch-style watch-pug expose",
             
             //for deployment
@@ -81,7 +90,7 @@ module.exports = {
             "create-deployment-stuff": "run-s -ns connect-dom create-deployment-bundles create-build-heads create-deployment-css create-deployment-html copy-for-deployment",
             "create-deployment-html": "run-s -ns link-for-deployment build-pug minify-html",
             "create-deployment-css": "run-s -ns build-style clean-css purge-css",
-            "create-deployment-bundles": "run-s -ns link-all-js-and-json build-live build-coffee prepare-webpack deploy-bundle deploy-worker-bundle",
+            "create-deployment-bundles": "run-s -ns link-all-js-and-json build-live build-coffee prepare-esbuild deploy-bundle deploy-worker-bundle",
             "copy-for-deployment": "run-s -ns copy-minified-html copy-deploy-worker copy-ressources",
             
 
@@ -96,15 +105,13 @@ module.exports = {
             "minify-html": "html-minifier --input-dir "+prettyHtml+" --output-dir "+minifiedHTML+" --file-ext html --collapse-whitespace --remove-comments --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-js true --minify-css true",
             
 
-            //webpack Stuff            
-            "prepare-webpack": "run-s rebuild-webpack-worker-config rebuild-webpack-config",
             // the Bundling
-            "dev-bundle": "webpack-cli --config " + webpackDevConfig,
-            "dev-worker-bundle": "webpack-cli --config " + webpackDevWorkerConfig,
-            "watch-bundle": "webpack-cli --config " + webpackWatchConfig,
-            "watch-worker-bundle": "webpack-cli --config " + webpackWatchWorkerConfig,
-            "deploy-bundle": "webpack-cli --config " + webpackDeployConfig,
-            "deploy-worker-bundle": "webpack-cli --config " + webpackDeployWorkerConfig,
+            "dev-bundle": "node "+esbuildDevBundle,
+            "dev-worker-bundle": "node "+esbuildDevWorkerBundle,
+            "watch-bundle": "node "+esbuildWatchBundle,
+            "watch-worker-bundle": "node "+esbuildWatchWorkerBundle,
+            "deploy-bundle": "node "+esbuildProductionBundle,
+            "deploy-worker-bundle": "node "+esbuildProductionWorkerBundle,
 
             //style stuff
             "build-style": "stylus "+stylusHeads+" -o "+dirtyCssDest+" --include-css",
@@ -133,15 +140,14 @@ module.exports = {
             //the injection Scripts
             "inject-scripts": injectAllScriptsScript,
             // "inject-bundle-scripts": injectBundleScriptsScript,
-            "inject-pug-scripts": injectPugScriptsScript,
-            "inject-stylus-scripts": injectStylusScriptsScript,
-            "inject-css-scripts": injectCssScriptsScript,
-            "inject-dom-connect-scripts": injectDOMConnectScriptsScript,
+            // "inject-pug-scripts": injectPugScriptsScript,
+            // "inject-stylus-scripts": injectStylusScriptsScript,
+            // "inject-css-scripts": injectCssScriptsScript,
+            // "inject-dom-connect-scripts": injectDOMConnectScriptsScript,
             
-            //scropts for building config files
+            //scripts for building config files
             "rebuild-browser-sync-config": buildBrowserSyncConfigScript,
-            "rebuild-webpack-config": buildWebpackConfigScript,
-            "rebuild-webpack-worker-config": buildWebpackWorkerConfigScript,
+            "prepare-esbuild": esbuildConfigScriptSetup,
             
             //linkage for testing
             "link-for-test": linkIncludesForTestingScript,
@@ -164,13 +170,12 @@ module.exports = {
         var thingyDeps = {
             "browser-sync": "^3.0.4",
             "clean-css-cli": "^5.6.3",
+            "esbuild": "^0.28.1",
             "html-minifier": "^4.0.0",
             "implicit-dom-connect": "^0.2.3",
             "pug-cli": "^1.0.0-alpha6",
             "purgecss": "^8.0.0",
-            "stylus": "^0.64.0",
-            "webpack": "^5.106.2",
-            "webpack-cli": "^7.0.2"
+            "stylus": "^0.64.0"
         }
 
         if(sourceInfo) {

@@ -69,8 +69,6 @@ const getBaseScripts = (name) => {
         "watch-live": "echo 0",
         
         "link-all-js-and-json": linkAllJSSCript,
-
-        "finish-task": "plan/finish-task.sh",
         
         "ncu-update": "ncu -u",
         "reinstall": "pnpm install",
@@ -116,7 +114,7 @@ const getBaseDependencies = ()  => {
     return {
         "coffeescript": "^2.7.0",
         "livescript": "^1.6.0",
-        "npm-check-updates": "^22.2.0",
+        "npm-check-updates": "^22.2.9",
         "npm-run-all": "^4.1.5",
         "thingy-allmodules-sync": "^0.2.0",
         "thingy-module-gen": "^0.1.6",

@@ -339,9 +339,9 @@ function getTestLine(head) {
 }
 
 function getDevBundleLine(head) {
-    const configFileName = "webpack-dev-"+head+".config.js"
-    const configFilePath = pathModule.resolve(configBasePath, configFileName)
-    const scriptLine = "webpack-cli --config "+configFilePath 
+    const scriptFileName = "esbuild-dev-"+head+".mjs"
+    const scriptFilePath = pathModule.resolve(configBasePath, scriptFileName)
+    const scriptLine = "node "+scriptFilePath 
     return scriptLine
 }
 // function getDevWorkerBundleLine(head) {
@@ -351,9 +351,9 @@ function getDevBundleLine(head) {
 //     return scriptLine
 // }
 function getWatchBundleLine(head) {
-    const configFileName = "webpack-watch-"+head+".config.js"
-    const configFilePath = pathModule.resolve(configBasePath, configFileName)
-    const scriptLine = "webpack-cli --config "+configFilePath 
+    const scriptFileName = "esbuild-watch-"+head+".mjs"
+    const scriptFilePath = pathModule.resolve(configBasePath, scriptFileName)
+    const scriptLine = "node "+scriptFilePath 
     return scriptLine
 }
 // function getWatchWorkerBundleLine(head) {

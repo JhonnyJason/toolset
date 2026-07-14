@@ -1,0 +1,8 @@
+{
+    "outdir": "toolset/build/bundles/deploy",
+    "sourcemap": "external",
+    "legalComments": "none",
+    "drop": ["debugger", "console"],
+    "minify": true,
+    "dropLabels": ["DEV", "TEST"]
+}
