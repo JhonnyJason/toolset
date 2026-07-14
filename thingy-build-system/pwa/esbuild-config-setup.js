@@ -148,20 +148,62 @@ const watchAllScriptPath = pathModule.resolve(configDir, "esbuild-watch-all.mjs"
 writeUnlessExists(watchAllScriptPath, watchAllMJS)
 
 
+
+
+
 //============================================================
-// entries-all.json
+// individual scripts
+function writeIndividualDevScript(head, entry) {
+    const mjs =`
+    import * as esbuild from 'esbuild'
+    import base from '../toolset/thingy-build-system/pwa/esbuild-base.mjs'
+
+    import options from "./esbuild-dev-options.json" with { type: "json" }
+    const entryPoints = ["${entry}"]
+
+    await esbuild.build({ ...base, entryPoints, ...options })
+    `
+    const filename = "esbuild-dev-"+head+".mjs"
+    const path = pathModule.resolve(configDir, filename)
+
+    writeUnlessExists(path, mjs)
+}
+
+function writeIndividualWatchScript(head, entry) {
+    const mjs =`
+    import * as esbuild from 'esbuild'
+    import base from '../toolset/thingy-build-system/pwa/esbuild-base.mjs'
+
+    import addedOpts from "./esbuild-dev-options.json" with { type: "json" }
+    const entryPoints = ["${entry}"]
+
+    const options = { ...base, entryPoints, ...addedOpts }
+
+    const ctx = await esbuild.context(options)
+    await ctx.watch()
+    `
+    const filename = "esbuild-watch-"+head+".mjs"
+    const path = pathModule.resolve(configDir, filename)
+
+    writeUnlessExists(path, mjs)
+}
+
+//============================================================
 const heads = fs.readdirSync(headsPath)
 const jsHeads = (heads).map(head => head + ".js")
 var entries = []
 for(var i = 0; i < heads.length; i++) {
-    entries.push(pathModule.join("toolset/build/js", jsHeads[i]))
+    let entryPath = pathModule.join("toolset/build/js", jsHeads[i])
+    entries.push(entryPath)
+    writeIndividualDevScript(heads[i], entryPath)
+    writeIndividualWatchScript(heads[i], entryPath)
 }
+// entries-all.json
 const entriesFile = JSON.stringify(entries, null, 4)
 const entriesPath = pathModule.resolve(configDir, "entries-all.json")
 writeUnlessEqual(entriesPath, entriesFile)
 
 //============================================================
-// entries-worker.json
 const jss = fs.readdirSync(sourceHeadsPath)
 const workers = []
 for(var i = 0; i < jss.length; i++) {
@@ -172,46 +214,5 @@ for(var i = 0; i < jss.length; i++) {
 }
 const workerEntriesFile = JSON.stringify(workers, null, 4)
 const workerEntriesPath = pathModule.resolve(configDir, "entries-worker.json")
+// entries-worker.json
 writeUnlessEqual(workerEntriesPath, workerEntriesFile)
-
-
-
-
-
-// function writeIndividualConfigFiles() {
-//     let heads = Object.keys(entries)
-//     for(let i = 0; i < heads.length; i++) {
-//         writeIndividualDevConfig(heads[i], entries[heads[i]])
-//         writeIndividualWatchConfig(heads[i], entries[heads[i]])
-//     }
-// }
-
-// function writeIndividualDevConfig(head, entry) {
-//     let config = Object.assign({}, devConfig)
-//     config.entry = {}
-//     config.entry[head] = entry
-
-//     const configString = exportsString + JSON.stringify(config, null, 4)
-
-//     const filename = "webpack-dev-"+head+".config.js"
-//     const configPath = pathModule.resolve(process.cwd(), ".build-config", filename)
-
-//     fs.writeFileSync(configPath, configString)    
-
-// }
-
-// function writeIndividualWatchConfig(head, entry) {
-//     let config = Object.assign({}, watchConfig)
-//     config.entry = {}
-//     config.entry[head] = entry
-
-//     const configString = exportsString + JSON.stringify(config, null, 4)
-
-//     const filename = "webpack-watch-"+head+".config.js"
-//     const configPath = pathModule.resolve(process.cwd(), ".build-config", filename)
-
-//     fs.writeFileSync(configPath, configString)    
-
-// }
-
-// writeIndividualConfigFiles()
