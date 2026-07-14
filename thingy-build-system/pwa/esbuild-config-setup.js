@@ -8,11 +8,26 @@ function olog(obj) {
 
 const headsPath = pathModule.resolve(process.cwd(), "sources/page-heads")
 const sourceHeadsPath = pathModule.resolve(process.cwd(), "toolset/build/js")
-const bundlePath = pathModule.resolve(process.cwd(), "toolset/build/bundles")
+const configDir = pathModule.resolve(process.cwd(), ".build-config")
 
+const bundlePath = pathModule.resolve(process.cwd(), "toolset/build/bundles")
 
 function writeUnlessExists(path, file) {
     if(!fs.existsSync(path)) { fs.writeFileSync(path, file) }
+    else {
+        console.log("file already existed - skipping write: "+path)
+    }
+}
+
+function writeUnlessEqual(path, file) {
+    if (fs.existsSync(path)) {
+        const current = fs.readFileSync(path, { encoding: "utf8" })
+        if (file === current) {
+            console.log("file exists with equal content - skipping write: "+path)
+            return
+        }
+    }
+    fs.writeFileSync(path, file)
 }
 
 function syncOptions(opts, path) {
@@ -28,20 +43,23 @@ function syncOptions(opts, path) {
     if(JSON.stringify(opts) !== JSON.stringify(specOpts)) {
         //otherwise write the file
         fs.writeFileSync(path, JSON.stringify(opts, null, 4))
-    }
+    } else {
+        console.log("options already up-to-date - skipping write: "+path)
+    } 
 }
 
 
 
 //default dev options
 const defaultDevOptions = require("./default-dev-options.json")
-const devOptionsPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-dev-options.json")
+const devOptionsPath = pathModule.resolve(configDir, "esbuild-dev-options.json")
 syncOptions(defaultDevOptions, devOptionsPath)
 
 
 //default production options
 const defaultProductionOptions = require("./default-production-options.json")
-const productionOptionsPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-production-options.json")
+const path = require("path")
+const productionOptionsPath = pathModule.resolve(configDir, "esbuild-production-options.json")
 syncOptions(defaultProductionOptions, productionOptionsPath)
 
 
@@ -55,7 +73,7 @@ import options from "./esbuild-production-options.json" with { type: "json" }
 
 await esbuild.build({ ...base, entryPoints, ...options })
 `
-const productionScriptPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-production.mjs")
+const productionScriptPath = pathModule.resolve(configDir, "esbuild-production.mjs")
 writeUnlessExists(productionScriptPath, productionMJS)
 
 
@@ -68,7 +86,7 @@ import options from "./esbuild-dev-options.json" with { type: "json" }
 
 await esbuild.build({ ...base, entryPoints, ...options })
 `
-const devScriptPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-dev.mjs")
+const devScriptPath = pathModule.resolve(configDir, "esbuild-dev.mjs")
 writeUnlessExists(devScriptPath, devMJS)
 
 
@@ -81,7 +99,7 @@ import options from "./esbuild-production-options.json" with { type: "json" }
 
 await esbuild.build({ ...base, entryPoints, ...options })
 `
-const workerScriptPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-dev.mjs")
+const workerScriptPath = pathModule.resolve(configDir, "esbuild-worker.mjs")
 writeUnlessExists(workerScriptPath, workerMJS)
 
 
@@ -94,7 +112,7 @@ import options from "./esbuild-dev-options.json" with { type: "json" }
 
 await esbuild.build({ ...base, entryPoints, ...options })
 `
-const devWorkerScriptPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-dev.mjs")
+const devWorkerScriptPath = pathModule.resolve(configDir, "esbuild-dev-worker.mjs")
 writeUnlessExists(devWorkerScriptPath, devWorkerMJS)
 
 
@@ -110,7 +128,7 @@ const options = { ...base, entryPoints, ...addedOpts }
 const ctx = await esbuild.context(options)
 await ctx.watch()
 `
-const watchWokerScriptPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-dev.mjs")
+const watchWokerScriptPath = pathModule.resolve(configDir, "esbuild-watch-worker.mjs")
 writeUnlessExists(watchWokerScriptPath, watchWorkerMJS)
 
 
@@ -126,19 +144,35 @@ const options = { ...base, entryPoints, ...addedOpts }
 const ctx = await esbuild.context(options)
 await ctx.watch()
 `
-const watchAllScriptPath = pathModule.resolve(process.cwd(), ".build-config/esbuild-dev.mjs")
+const watchAllScriptPath = pathModule.resolve(configDir, "esbuild-watch-all.mjs")
 writeUnlessExists(watchAllScriptPath, watchAllMJS)
 
 
-// TODO write out entries.json and per page watch and dev scripts
+//============================================================
+// entries-all.json
 const heads = fs.readdirSync(headsPath)
 const jsHeads = (heads).map(head => head + ".js")
-var entries = {}
+var entries = []
 for(var i = 0; i < heads.length; i++) {
-    entries[heads[i]] = pathModule.resolve(sourceHeadsPath, jsHeads[i])
+    entries.push(pathModule.join("toolset/build/js", jsHeads[i]))
 }
+const entriesFile = JSON.stringify(entries, null, 4)
+const entriesPath = pathModule.resolve(configDir, "entries-all.json")
+writeUnlessEqual(entriesPath, entriesFile)
 
-console.log(JSON.stringify(entries, null, 4))
+//============================================================
+// entries-worker.json
+const jss = fs.readdirSync(sourceHeadsPath)
+const workers = []
+for(var i = 0; i < jss.length; i++) {
+    if(jss[i].endsWith("worker.js")) {
+        let name = jss[i].slice(0, jss[i].length - 3)
+        workers.push(pathModule.join("toolset/build/js", jss[i]))
+    }
+}
+const workerEntriesFile = JSON.stringify(workers, null, 4)
+const workerEntriesPath = pathModule.resolve(configDir, "entries-worker.json")
+writeUnlessEqual(workerEntriesPath, workerEntriesFile)
 
 
 

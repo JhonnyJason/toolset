@@ -147,7 +147,7 @@ module.exports = {
             
             //scripts for building config files
             "rebuild-browser-sync-config": buildBrowserSyncConfigScript,
-            "prepare-esbuild": esbuildConfigScriptSetup,
+            "prepare-esbuild": "node "+esbuildConfigScriptSetup,
             
             //linkage for testing
             "link-for-test": linkIncludesForTestingScript,

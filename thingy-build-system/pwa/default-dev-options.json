@@ -3,5 +3,5 @@
     "sourcemap": "inline",
     "legalComments": "none",
     "minifyWhitespace": true,
-    "minifySynthax": true
+    "minifySyntax": true
 }
