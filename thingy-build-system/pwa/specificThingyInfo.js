@@ -170,7 +170,7 @@ module.exports = {
         var thingyDeps = {
             "browser-sync": "^3.0.4",
             "clean-css-cli": "^5.6.3",
-            "esbuild": "^0.28.1",
+            "esbuild": "^0.28.2",
             "html-minifier": "^4.0.0",
             "implicit-dom-connect": "^0.2.3",
             "pug-cli": "^1.0.0-alpha6",
